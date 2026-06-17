@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Carrousel — Bar · Ambiance · Partage · Annemasse</title>
+<meta name="description" content="Carrousel — le bar forain d'Annemasse. Cocktails, lumières et nuits qui tournent. Bar · Ambiance · Partage." />
+<meta name="theme-color" content="#1b0b2e" />
+<meta property="og:title" content="Carrousel — Bar · Ambiance · Partage" />
+<meta property="og:description" content="Le bar forain d'Annemasse. La fête ne s'arrête jamais." />
+<meta property="og:locale" content="fr_FR" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b0b2e'/%3E%3Cpath d='M16 5l10 14H6z' fill='%23f8c63a'/%3E%3Cpath d='M16 5l3.4 14h-6.8z' fill='%23e01e37'/%3E%3Ccircle cx='16' cy='4' r='2' fill='%23ffe08a'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600;0,9..144,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================ TOKENS ============================ */
+  :root{
+    --red:#e01e37; --red-2:#b3122a; --red-deep:#7a0c1f;
+    --cream:#fdf3e0; --white:#fffaf1; --wine:#2a0a12;
+    --gold:#f8c63a; --gold-2:#e3a92b; --gold-light:#ffe08a;
+    --grad-gold:linear-gradient(170deg,#ffe9a8 0%,#f8c63a 42%,#dca018 100%);
+    --night:#1b0b2e; --night-2:#3a0f4a; --plum:#240a33;
+    --magenta:#ff2e88; --cyan:#22d3c4;
+    --ink:#190810;
+    --font-display:'Anton',Impact,sans-serif;
+    --font-script:'Fraunces',Georgia,serif;
+    --font-body:'Outfit',system-ui,-apple-system,sans-serif;
+    --maxw:1240px;
+    --pad:clamp(1.25rem,5vw,4.5rem);
+    --ease:cubic-bezier(.22,1,.36,1);
+    --bounce:cubic-bezier(.34,1.56,.64,1);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;}
+  html{-webkit-text-size-adjust:100%;overflow-x:hidden;scroll-behavior:smooth;}
+  body{background:var(--night);color:var(--cream);font-family:var(--font-body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  img{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+  ::selection{background:var(--magenta);color:#fff;}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+  .container{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad);}
+
+  /* ============================ TYPE HELPERS ============================ */
+  .display{font-family:var(--font-display);font-weight:400;text-transform:uppercase;line-height:.92;letter-spacing:.005em;}
+  .kicker{font-family:var(--font-body);font-weight:700;text-transform:uppercase;letter-spacing:.28em;font-size:.74rem;}
+  .script{font-family:var(--font-script);font-style:italic;font-weight:500;}
+  .gold-text{background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stroke{color:transparent;-webkit-text-stroke:2px var(--gold);}
+
+  /* ============================ BUTTONS ============================ */
+  .btn{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-body);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.82rem;padding:1rem 1.8rem;border-radius:999px;transition:transform .25s var(--bounce),box-shadow .25s var(--ease),background .25s var(--ease),color .25s var(--ease);}
+  @property --cta-stripe{syntax:'<length>';inherits:true;initial-value:0px;}
+  .btn--gold{--cta-stripe:.42rem;position:relative;overflow:hidden;isolation:isolate;border:none;color:var(--wine);background:var(--cream);padding:.95rem 1.7rem .95rem calc(1.7rem + var(--cta-stripe) + .55rem);transform:rotate(-1.4deg);box-shadow:0 6px 0 0 var(--gold-2),0 7px 0 1px var(--red-deep);transition:transform .28s var(--bounce),box-shadow .28s var(--ease),--cta-stripe .28s var(--ease);}
+  .btn--gold::before{content:"";position:absolute;z-index:-1;left:0;top:0;bottom:0;width:calc(var(--cta-stripe) + .55rem);background:repeating-linear-gradient(-52deg,var(--red) 0 .42rem,var(--white) .42rem .84rem);box-shadow:inset -1px 0 0 rgba(122,12,31,.4);transition:width .28s var(--ease);}
+  .btn--gold::after{content:"";position:absolute;z-index:-1;inset:0;border-radius:999px;box-shadow:inset 0 0 0 2px rgba(122,12,31,.16);pointer-events:none;}
+  .btn--gold:hover{transform:rotate(-1.4deg) translateY(-3px);box-shadow:0 9px 0 0 var(--gold-2),0 10px 0 1px var(--red-deep);--cta-stripe:1.15rem;}
+  .btn--gold:active{transform:rotate(-1.4deg) translateY(0);box-shadow:0 3px 0 0 var(--gold-2),0 4px 0 1px var(--red-deep);}
+  .btn--gold:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+  @media (prefers-reduced-motion:reduce){
+    .btn--gold,.btn--gold::before{transition:box-shadow .15s var(--ease);}
+    .btn--gold:hover{transform:rotate(-1.4deg);--cta-stripe:.42rem;}
+    .btn--gold:active{transform:rotate(-1.4deg);}
+    .nav__links a.nav__cta:hover,.nav__links a.nav__cta:active{transform:rotate(0);--cta-stripe:.34rem;}
+  }
+  .btn--red{background:var(--red);color:var(--white);box-shadow:0 10px 0 -2px var(--red-deep),0 18px 34px -14px rgba(224,30,55,.6);}
+  .btn--red:hover{transform:translateY(-3px);}
+  .btn--out{border:2px solid currentColor;color:var(--cream);}
+  .btn--out:hover{background:var(--cream);color:var(--wine);transform:translateY(-3px);}
+
+  /* ============================ BULBS ============================ */
+  .bulb{width:14px;height:14px;border-radius:50%;flex:none;
+    background:radial-gradient(circle at 38% 32%,#fff7d8,var(--gold-light) 45%,var(--gold-2));
+    box-shadow:0 0 8px 2px rgba(255,224,138,.9),0 0 20px 6px rgba(248,198,58,.5);
+    animation:tw 1.8s var(--ease) infinite;}
+  @keyframes tw{0%,100%{opacity:1}50%{opacity:.35}}
+
+  /* ============================ NAV ============================ */
+  .nav{position:fixed;inset:0 0 auto 0;z-index:80;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+    padding:.6rem var(--pad);transition:background .4s var(--ease),padding .4s var(--ease),box-shadow .4s var(--ease);}
+  .nav.solid{background:rgba(42,10,18,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(248,198,58,.25);padding-block:.4rem;}
+  .nav__brand{grid-column:2;grid-row:1;justify-self:center;align-self:center;display:flex;align-items:center;line-height:0;}
+  .nav__logo{height:80px;width:auto;transition:height .4s var(--ease);filter:drop-shadow(0 3px 12px rgba(0,0,0,.7));}
+  .nav.solid .nav__logo{height:60px;}
+  .nav__menu{display:contents;}
+  .nav__links{display:flex;align-items:center;gap:clamp(1rem,2vw,1.9rem);list-style:none;}
+  .nav__links--l{grid-column:1;grid-row:1;justify-self:start;}
+  .nav__links--r{grid-column:3;grid-row:1;justify-self:end;}
+  .nav__links a{font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;color:var(--cream);position:relative;padding:.3rem 0;text-shadow:0 1px 10px rgba(0,0,0,.55);}
+  .nav.solid .nav__links a{text-shadow:none;}
+  .nav__links a::after{content:"";position:absolute;left:0;bottom:-2px;height:3px;width:100%;border-radius:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--bounce);}
+  .nav__links a:hover::after{transform:scaleX(1);}
+  .nav__links a.nav__cta{--cta-stripe:.34rem;color:var(--wine);font-weight:700;letter-spacing:.1em;padding:.62rem 1.2rem .62rem calc(1.2rem + var(--cta-stripe) + .45rem);transform:rotate(0);box-shadow:0 5px 0 0 var(--gold-2),0 6px 0 1px var(--red-deep);}
+  .nav__links a.nav__cta::before{width:calc(var(--cta-stripe) + .45rem);}
+  .nav__links a.nav__cta:hover{transform:rotate(0) translateY(-2px);box-shadow:0 7px 0 0 var(--gold-2),0 8px 0 1px var(--red-deep);--cta-stripe:.78rem;}
+  .nav__links a.nav__cta:active{transform:rotate(0) translateY(0);box-shadow:0 3px 0 0 var(--gold-2),0 4px 0 1px var(--red-deep);}
+  .nav__links a.nav__cta:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+  .nav__cta::after{display:none!important;}
+  .nav__burger{display:none;grid-column:3;justify-self:end;flex-direction:column;gap:5px;width:44px;height:44px;align-items:center;justify-content:center;}
+  .nav__burger span{width:26px;height:3px;border-radius:3px;background:var(--gold);transition:transform .3s var(--ease),opacity .3s var(--ease);}
+  .nav.open .nav__burger span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .nav.open .nav__burger span:nth-child(2){opacity:0;}
+  .nav.open .nav__burger span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+
+  /* ============================ HERO ============================ */
+.heroA{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  overflow:hidden;
+  isolation:isolate;
+  padding:6rem clamp(1.1rem,5vw,4rem) 3.4rem;
+  background:var(--red-2);
+  color:var(--cream);
+}
+
+/* ---- big-top stripes: radiating red/cream wedges from upper centre ---- */
+.heroA__stripes{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  background:
+    conic-gradient(from 0deg at 50% 30%,
+      var(--red) 0 9deg, var(--cream) 9deg 18deg,
+      var(--red) 18deg 27deg, var(--cream) 27deg 36deg,
+      var(--red) 36deg 45deg, var(--cream) 45deg 54deg,
+      var(--red) 54deg 63deg, var(--cream) 63deg 72deg,
+      var(--red) 72deg 81deg, var(--cream) 81deg 90deg,
+      var(--red) 90deg 99deg, var(--cream) 99deg 108deg,
+      var(--red) 108deg 117deg, var(--cream) 117deg 126deg,
+      var(--red) 126deg 135deg, var(--cream) 135deg 144deg,
+      var(--red) 144deg 153deg, var(--cream) 153deg 162deg,
+      var(--red) 162deg 171deg, var(--cream) 171deg 180deg,
+      var(--red) 180deg 189deg, var(--cream) 189deg 198deg,
+      var(--red) 198deg 207deg, var(--cream) 207deg 216deg,
+      var(--red) 216deg 225deg, var(--cream) 225deg 234deg,
+      var(--red) 234deg 243deg, var(--cream) 243deg 252deg,
+      var(--red) 252deg 261deg, var(--cream) 261deg 270deg,
+      var(--red) 270deg 279deg, var(--cream) 279deg 288deg,
+      var(--red) 288deg 297deg, var(--cream) 297deg 306deg,
+      var(--red) 306deg 315deg, var(--cream) 315deg 324deg,
+      var(--red) 324deg 333deg, var(--cream) 333deg 342deg,
+      var(--red) 342deg 351deg, var(--cream) 351deg 360deg);
+}
+
+/* ---- gold sunburst rays glowing behind the headline ---- */
+.heroA__rays{
+  position:absolute;
+  left:50%; top:30%;
+  width:min(170vh,200vw);
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  z-index:-2;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%,
+      rgba(248,198,58,.85) 0 5deg, rgba(248,198,58,0) 5deg 10deg);
+  -webkit-mask:radial-gradient(circle at 50% 50%, #000 0 30%, rgba(0,0,0,.65) 46%, transparent 62%);
+  mask:radial-gradient(circle at 50% 50%, #000 0 30%, rgba(0,0,0,.65) 46%, transparent 62%);
+  opacity:.9;
+  filter:saturate(1.05);
+  animation:heroA-spin 60s linear infinite;
+}
+.heroA__rays::after{
+  content:"";
+  position:absolute;
+  inset:34% 34%;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,233,168,.95), rgba(248,198,58,.55) 55%, transparent 72%);
+}
+
+/* ---- dark saturated top band so the fixed nav (cream links + gold logo) stays legible ---- */
+.heroA__topband{
+  position:absolute;
+  inset:0 0 auto 0;
+  height:170px;
+  z-index:-1;
+  background:linear-gradient(180deg,
+    var(--red-deep) 0%,
+    rgba(122,12,31,.92) 42%,
+    rgba(122,12,31,.55) 72%,
+    transparent 100%);
+}
+
+/* ---- content ---- */
+.heroA__content{
+  position:relative;
+  z-index:3;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  max-width:min(94vw,980px);
+}
+
+.heroA__head{
+  margin-top:clamp(.6rem,1.6vw,1rem);
+  font-size:clamp(2.4rem,7.7vw,5.7rem);
+  line-height:.9;
+  color:var(--cream);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.04em;
+}
+.heroA__line{
+  display:block;
+  text-shadow:
+    0 4px 0 var(--red-deep),
+    0 5px 0 var(--red-deep),
+    0 16px 26px rgba(42,10,18,.45);
+}
+.heroA__line--big{
+  font-size:1.12em;
+  color:var(--white);
+}
+.heroA__head em{
+  display:inline-block;
+  font-size:1.04em;
+  line-height:1;
+  text-transform:none;
+  letter-spacing:0;
+  transform:rotate(-2deg);
+  margin-top:-.18em;
+  text-shadow:none;
+  filter:drop-shadow(0 4px 0 rgba(122,12,31,.65)) drop-shadow(0 0 22px rgba(248,198,58,.45));
+}
+
+/* ---- tilted gold ticket pill for the tagline ---- */
+.heroA__ticket{
+  margin-top:clamp(.8rem,1.7vw,1.1rem);
+  font-family:var(--font-display);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:clamp(.95rem,2.2vw,1.35rem);
+  color:var(--wine);
+  background:var(--cream);
+  padding:.5rem 1.4rem;
+  border-radius:8px;
+  transform:rotate(1.6deg);
+  box-shadow:0 6px 0 0 var(--gold-2), 0 7px 0 1px var(--red-deep);
+  position:relative;
+}
+.heroA__ticket::before,
+.heroA__ticket::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  width:12px; height:12px;
+  border-radius:50%;
+  background:var(--red-2);
+  transform:translateY(-50%);
+}
+.heroA__ticket::before{left:-6px;}
+.heroA__ticket::after{right:-6px;}
+
+.heroA__cta{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:clamp(.9rem,2vw,1.4rem);
+}
+/* ---- secondary CTA: solid wine pill so it stays legible on the bright stripes ---- */
+.heroA .btn--out{border:2px solid var(--gold);background:var(--red);color:var(--white);box-shadow:0 6px 0 0 var(--red-deep);}
+.heroA .btn--out:hover{background:var(--red-2);color:var(--white);border-color:var(--gold-light);transform:translateY(-3px);box-shadow:0 9px 0 0 var(--red-deep);}
+
+/* ---- red/cream striped base strip (echoes the kit) ---- */
+.heroA__base{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height:24px;
+  z-index:2;
+  background:repeating-linear-gradient(-55deg, var(--red) 0 28px, var(--cream) 28px 56px);
+  border-top:4px solid var(--gold);
+}
+
+/* ---- keyframes ---- */
+@keyframes heroA-spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+
+/* ---- responsive ---- */
+@media (max-width:560px){
+  .heroA__head{font-size:clamp(2.5rem,12vw,3.4rem);}
+  .heroA__cta{width:100%;}
+  .heroA__cta .btn{flex:1 1 auto;justify-content:center;}
+}
+
+/* ---- reduced motion ---- */
+@media (prefers-reduced-motion:reduce){
+  .heroA__rays{animation:none;}
+}
+
+  /* ============================ TICKER ============================ */
+  .ticker{background:var(--gold);color:var(--wine);overflow:hidden;white-space:nowrap;border-block:4px solid var(--red);position:relative;z-index:5;}
+  .ticker__row{display:inline-flex;align-items:center;gap:1.4rem;padding-block:.7rem;animation:slide 26s linear infinite;}
+  .ticker__row .it{font-family:var(--font-display);text-transform:uppercase;font-size:1.05rem;letter-spacing:.04em;display:inline-flex;align-items:center;gap:1.4rem;}
+  .ticker__row .it::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--red);}
+  @keyframes slide{to{transform:translateX(-50%)}}
+
+  /* ============================ SECTION BASE ============================ */
+  .section{position:relative;padding-block:clamp(4.5rem,10vw,9rem);z-index:2;}
+  .eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;font-size:.78rem;}
+  .eyebrow::before{content:"";width:26px;height:3px;border-radius:3px;background:currentColor;}
+  .h-big{font-family:var(--font-display);text-transform:uppercase;font-size:clamp(2.3rem,6.5vw,5rem);line-height:.92;}
+
+  /* ESPRIT — cream block */
+  .esprit{background:var(--cream);color:var(--wine);border-block:5px solid var(--red);}
+  .esprit .eyebrow{color:var(--red);}
+  .esprit__grid{display:grid;grid-template-columns:1fr;gap:clamp(2rem,4vw,3rem);margin-top:1.6rem;align-items:end;}
+  .esprit__lead{font-family:var(--font-script);font-style:italic;font-weight:600;font-size:clamp(1.4rem,3vw,2.1rem);line-height:1.2;color:var(--red-2);max-width:22ch;}
+  .esprit__body{font-size:clamp(1.05rem,1.5vw,1.2rem);max-width:52ch;color:#5a2a20;}
+  .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:clamp(2.4rem,5vw,3.6rem);}
+  .feat{background:var(--white);border:3px solid var(--wine);border-radius:18px;padding:1.6rem;box-shadow:8px 8px 0 var(--red);transition:transform .25s var(--bounce),box-shadow .25s var(--ease);}
+  .feat:hover{transform:translate(-2px,-2px);box-shadow:12px 12px 0 var(--red);}
+  .feat__ic{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--grad-gold);color:var(--wine);margin-bottom:1rem;}
+  .feat__ic svg{width:24px;height:24px;}
+  .feat h3{font-family:var(--font-display);text-transform:uppercase;font-size:1.25rem;letter-spacing:.02em;color:var(--red-2);}
+  .feat p{font-size:.95rem;color:#6a352a;margin-top:.4rem;}
+
+  /* CARTE — vibrant cocktail blocks */
+  .carte{background:var(--night);position:relative;overflow:hidden;}
+  .carte::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(80% 60% at 80% 0%,rgba(255,46,136,.18),transparent 60%),radial-gradient(70% 60% at 10% 100%,rgba(34,211,196,.14),transparent 60%);}
+  .carte .container{position:relative;z-index:1;}
+  .carte__head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;}
+  .carte .eyebrow{color:var(--gold);}
+  .carte__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(1rem,2vw,1.5rem);margin-top:clamp(2.4rem,5vw,3.6rem);}
+  .ck{position:relative;border-radius:22px;overflow:hidden;padding:1.8rem;min-height:230px;display:flex;flex-direction:column;justify-content:flex-end;border:3px solid rgba(255,255,255,.12);transition:transform .3s var(--bounce);}
+  .ck:hover{transform:translateY(-6px) rotate(-.6deg);}
+  .ck--1{background:linear-gradient(150deg,#e01e37,#7a0c1f);}
+  .ck--2{background:linear-gradient(150deg,#ff2e88,#7a0c4a);}
+  .ck--3{background:linear-gradient(150deg,#f8c63a,#b9700e);color:var(--wine);}
+  .ck--4{background:linear-gradient(150deg,#22d3c4,#0b6f6a);}
+  .ck__no{position:absolute;top:1rem;right:1.3rem;font-family:var(--font-display);font-size:3.2rem;opacity:.28;}
+  .ck__name{font-family:var(--font-display);text-transform:uppercase;font-size:1.9rem;line-height:.95;}
+  .ck__ing{font-size:.92rem;opacity:.9;margin-top:.5rem;max-width:24ch;}
+  .ck__price{position:absolute;top:1.3rem;left:1.3rem;background:var(--white);color:var(--wine);font-family:var(--font-display);font-size:1.05rem;padding:.3rem .7rem;border-radius:999px;transform:rotate(-8deg);box-shadow:0 6px 14px rgba(0,0,0,.3);}
+  .carte__note{margin-top:1.6rem;font-size:.82rem;color:rgba(253,243,224,.6);font-style:italic;}
+
+  /* AMBIANCE — checker + neon */
+  .ambiance{background:var(--ink);position:relative;overflow:hidden;}
+  .ambiance__floor{position:absolute;inset:auto 0 0 0;height:46%;z-index:0;background:repeating-conic-gradient(#0c0507 0% 25%,#fdf3e0 0% 50%) 0 0/64px 64px;transform:perspective(560px) rotateX(64deg);transform-origin:bottom;opacity:.16;}
+  .ambiance .container{position:relative;z-index:1;}
+  .ambiance .eyebrow{color:var(--cyan);}
+  .ambiance .h-big{color:var(--white);}
+  .ambiance .h-big em{font-family:var(--font-script);font-style:italic;text-transform:none;color:var(--magenta);text-shadow:0 0 24px rgba(255,46,136,.6);}
+  .gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:clamp(120px,17vw,200px);gap:.8rem;margin-top:clamp(2.4rem,5vw,3.4rem);}
+  .tile{position:relative;border-radius:16px;overflow:hidden;border:2px solid rgba(255,255,255,.1);}
+  .tile.tall{grid-row:span 2;}
+  .tile.wide{grid-column:span 2;}
+  .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .tile__art{position:absolute;inset:0;}
+  .a-stripes{background:repeating-linear-gradient(90deg,var(--red) 0 12%,var(--cream) 12% 24%);}
+  .a-checker{background:repeating-conic-gradient(#100509 0% 25%,#fdf3e0 0% 50%) 0 0/40px 40px;}
+  .a-red{background:radial-gradient(120% 90% at 50% 0%,var(--red),var(--red-deep));}
+  .a-neon{background:radial-gradient(90% 90% at 50% 50%,rgba(255,46,136,.5),#1a0820);box-shadow:inset 0 0 60px rgba(255,46,136,.4);}
+  .a-gold{background:var(--grad-gold);}
+  .tile__cap{position:absolute;left:0;bottom:0;right:0;padding:.9rem 1rem;background:linear-gradient(transparent,rgba(8,3,8,.85));font-family:var(--font-display);text-transform:uppercase;font-size:.92rem;letter-spacing:.04em;color:var(--white);}
+
+  /* EVENTS — poster list */
+  .events{background:var(--red);color:var(--white);border-block:5px solid var(--gold);}
+  .events .eyebrow{color:var(--gold-light);}
+  .ev-list{margin-top:clamp(2rem,4vw,3rem);}
+  .ev{display:grid;grid-template-columns:auto 1fr auto;gap:1.4rem;align-items:center;padding:1.5rem 0;border-top:3px dashed rgba(255,255,255,.4);}
+  .ev:last-child{border-bottom:3px dashed rgba(255,255,255,.4);}
+  .ev__day{font-family:var(--font-display);text-transform:uppercase;font-size:1.1rem;color:var(--gold-light);white-space:nowrap;}
+  .ev__title{font-family:var(--font-display);text-transform:uppercase;font-size:clamp(1.5rem,3.4vw,2.6rem);line-height:.95;}
+  .ev__desc{font-size:.95rem;opacity:.92;margin-top:.2rem;}
+  .ev__tag{background:var(--wine);color:var(--gold-light);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;padding:.5rem .9rem;border-radius:999px;white-space:nowrap;}
+
+  /* INFOS */
+  .infos{background:var(--night);}
+  .infos__grid{display:grid;grid-template-columns:1fr;gap:clamp(2rem,4vw,3rem);margin-top:clamp(2rem,4vw,3rem);}
+  .infos .eyebrow{color:var(--magenta);}
+  .hours{list-style:none;}
+  .hours li{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0;border-bottom:1px solid rgba(248,198,58,.2);}
+  .hours li b{font-family:var(--font-body);font-weight:600;color:var(--cream);}
+  .hours li span{font-family:var(--font-display);font-size:1.2rem;color:var(--gold-light);}
+  .hours li.off span{color:var(--magenta);}
+  .resv{background:var(--grad-gold);color:var(--wine);border-radius:24px;padding:clamp(1.8rem,4vw,2.6rem);position:relative;overflow:hidden;box-shadow:0 24px 50px -20px rgba(248,198,58,.5);}
+  .resv::before{content:"";position:absolute;inset:0 0 auto 0;height:18px;background:repeating-linear-gradient(90deg,var(--red) 0 22px,var(--cream) 22px 44px);}
+  .resv h3{font-family:var(--font-display);text-transform:uppercase;font-size:clamp(1.7rem,3.5vw,2.4rem);margin:.6rem 0 .6rem;}
+  .resv p{font-weight:500;margin-bottom:1.4rem;}
+  .resv .btn{margin-right:.6rem;margin-bottom:.6rem;}
+  .info-line{display:flex;gap:.7rem;align-items:flex-start;margin-bottom:.7rem;font-size:1rem;}
+  .info-line svg{width:20px;height:20px;color:var(--gold);flex:none;margin-top:.2rem;}
+
+  /* FOOTER */
+  .footer{background:linear-gradient(180deg,var(--red-deep) 0%,var(--wine) 58%,#140509 100%);position:relative;padding:clamp(3rem,6vw,5rem) var(--pad) 2rem;text-align:center;}
+  .footer__bulbs{display:flex;justify-content:center;gap:clamp(14px,3vw,28px);margin-bottom:2.6rem;}
+  .footer__logo{width:min(360px,80vw);height:auto;margin:0 auto 1.6rem;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));}
+  .footer__nav{display:flex;flex-wrap:wrap;justify-content:center;gap:1.4rem;margin-bottom:1.6rem;}
+  .footer__nav a{font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:.8rem;color:var(--cream);}
+  .footer__nav a:hover{color:var(--gold);}
+  .socials{display:flex;justify-content:center;gap:.7rem;margin-bottom:2rem;}
+  .socials a{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--gold);color:var(--gold);transition:all .25s var(--bounce);}
+  .socials a:hover{background:var(--gold);color:var(--ink);transform:translateY(-3px) scale(1.05);}
+  .socials svg{width:20px;height:20px;}
+  .footer__base{border-top:1px solid rgba(248,198,58,.2);padding-top:1.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.78rem;color:rgba(253,243,224,.55);}
+
+  /* ============================ REVEAL ============================ */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+  .reveal[data-d="1"]{transition-delay:.1s;}
+  .reveal[data-d="2"]{transition-delay:.2s;}
+  .reveal[data-d="3"]{transition-delay:.3s;}
+
+  /* ============================ RESPONSIVE ============================ */
+  @media (min-width:760px){
+    .esprit__grid{grid-template-columns:1fr 1.2fr;}
+    .infos__grid{grid-template-columns:1.1fr .9fr;align-items:start;}
+  }
+  @media (max-width:760px){
+    .nav__menu{display:flex;flex-direction:column;justify-content:center;gap:1.8rem;position:fixed;inset:0 0 0 auto;width:min(82vw,320px);padding:5.5rem 2rem 2rem;background:var(--night-2);transform:translateX(100%);transition:transform .4s var(--bounce);box-shadow:-20px 0 50px rgba(0,0,0,.5);}
+    .nav.open .nav__menu{transform:none;}
+    .nav__links{flex-direction:column;align-items:flex-start;gap:1.5rem;}
+    .nav__links a{font-size:1.2rem;text-shadow:none;}
+    .nav__burger{display:flex;}
+    .nav__cta{padding:.85rem 1.4rem;}
+    .feats{grid-template-columns:1fr;}
+    .carte__grid{grid-template-columns:1fr;}
+    .gal{grid-template-columns:repeat(2,1fr);}
+    .ev{grid-template-columns:1fr;gap:.4rem;}
+    .ev__tag{justify-self:start;}
+  }
+  @media (max-width:430px){.gal{grid-template-columns:1fr;}.tile.wide{grid-column:span 1;}}
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;scroll-behavior:auto!important;}
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#accueil" aria-label="Carrousel"><img class="nav__logo" src="images/logo.svg" alt="Carrousel" /></a>
+  <div class="nav__menu" id="menu">
+    <ul class="nav__links nav__links--l">
+      <li><a href="#esprit">L'esprit</a></li>
+      <li><a href="#carte">La carte</a></li>
+      <li><a href="#ambiance">Ambiance</a></li>
+    </ul>
+    <ul class="nav__links nav__links--r">
+      <li><a href="#evenements">Événements</a></li>
+      <li><a href="#infos">Infos</a></li>
+      <li><a class="btn btn--gold nav__cta" href="#infos">Réserver</a></li>
+    </ul>
+  </div>
+  <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="heroA" id="accueil">
+  <div class="heroA__stripes" aria-hidden="true"></div>
+  <div class="heroA__rays" aria-hidden="true"></div>
+  <div class="heroA__topband" aria-hidden="true"></div>
+  <div class="heroA__content">
+    <h1 class="heroA__head display">
+      <span class="heroA__line">La fête</span>
+      <span class="heroA__line">ne s'arrête</span>
+      <span class="heroA__line"><em class="script gold-text">jamais</em></span>
+    </h1>
+
+    <span class="heroA__ticket" aria-hidden="true">Bar · Ambiance · Partage</span>
+
+    <div class="heroA__cta">
+      <a class="btn btn--gold" href="#infos">Réserver une table</a>
+      <a class="btn btn--out" href="#carte">Voir la carte</a>
+    </div>
+  </div>
+
+  <div class="heroA__base" aria-hidden="true"></div>
+</section>
+
+  <!-- ============ TICKER ============ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__row" id="tickRow">
+      <span class="it">Bienvenue au Carrousel</span><span class="it">Cocktails maison</span><span class="it">DJ sets</span><span class="it">Ouvert mar — sam</span><span class="it">Bar · Ambiance · Partage</span>
+      <span class="it">Bienvenue au Carrousel</span><span class="it">Cocktails maison</span><span class="it">DJ sets</span><span class="it">Ouvert mar — sam</span><span class="it">Bar · Ambiance · Partage</span>
+    </div>
+  </div>
+
+  <!-- ============ ESPRIT ============ -->
+  <section class="section esprit" id="esprit">
+    <div class="container">
+      <span class="eyebrow reveal">Le lieu</span>
+      <div class="esprit__grid">
+        <h2 class="h-big reveal" style="color:var(--red-2)">Entrez sous<br>le chapiteau</h2>
+        <div>
+          <p class="esprit__lead reveal" data-d="1">Un manège pour adultes, au cœur d'Annemasse.</p>
+          <p class="esprit__body reveal" data-d="2" style="margin-top:1.2rem">Velours, ampoules dorées et damier au sol : on a glissé un cabaret forain dans la ville. On vient pour un verre, on reste pour l'ambiance — et on repart en parlant déjà du prochain tour.</p>
+        </div>
+      </div>
+      <div class="feats">
+        <div class="feat reveal">
+          <div class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 22h14M6 2h12M6 2c0 5 6 5 6 9s-6 4-6 9M18 2c0 5-6 5-6 9"/></svg></div>
+          <h3>Cocktails maison</h3><p>Une carte signature qui ne ressemble à aucune autre.</p>
+        </div>
+        <div class="feat reveal" data-d="1">
+          <div class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+          <h3>DJ &amp; soirées</h3><p>Des nuits qui montent en température chaque week-end.</p>
+        </div>
+        <div class="feat reveal" data-d="2">
+          <div class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
+          <h3>Esprit forain</h3><p>Lumières, rayures et un grain de folie. La fête comme décor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CARTE ============ -->
+  <section class="section carte" id="carte">
+    <div class="container">
+      <div class="carte__head">
+        <div>
+          <span class="eyebrow reveal">À déguster</span>
+          <h2 class="h-big reveal" data-d="1" style="color:var(--white);margin-top:.8rem">Les cocktails<br>qui <span class="gold-text">tournent</span></h2>
+        </div>
+        <a class="btn btn--red reveal" data-d="2" href="#infos">Réserver</a>
+      </div>
+      <div class="carte__grid">
+        <article class="ck ck--1 reveal"><span class="ck__no">01</span><span class="ck__price">—</span><div class="ck__name">(nom du cocktail)</div><p class="ck__ing">(ingrédients)</p></article>
+        <article class="ck ck--2 reveal" data-d="1"><span class="ck__no">02</span><span class="ck__price">—</span><div class="ck__name">(nom du cocktail)</div><p class="ck__ing">(ingrédients)</p></article>
+        <article class="ck ck--3 reveal" data-d="1"><span class="ck__no">03</span><span class="ck__price">—</span><div class="ck__name">(nom du cocktail)</div><p class="ck__ing">(ingrédients)</p></article>
+        <article class="ck ck--4 reveal" data-d="2"><span class="ck__no">04</span><span class="ck__price">—</span><div class="ck__name">(nom du cocktail)</div><p class="ck__ing">(ingrédients)</p></article>
+      </div>
+      <p class="carte__note reveal">Carte non contractuelle. L'abus d'alcool est dangereux pour la santé.</p>
+    </div>
+  </section>
+
+  <!-- ============ AMBIANCE ============ -->
+  <section class="section ambiance" id="ambiance">
+    <div class="ambiance__floor" aria-hidden="true"></div>
+    <div class="container">
+      <span class="eyebrow reveal">En images</span>
+      <h2 class="h-big reveal" data-d="1" style="margin-top:.8rem">La nuit <em>Carrousel</em></h2>
+      <div class="gal">
+        <div class="tile tall reveal"><div class="tile__art a-red"></div><img src="images/ambiance-1.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Le comptoir</span></div>
+        <div class="tile wide reveal" data-d="1"><div class="tile__art a-stripes"></div><img src="images/ambiance-2.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Le chapiteau</span></div>
+        <div class="tile reveal" data-d="2"><div class="tile__art a-gold"></div><img src="images/ambiance-3.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Les lumières</span></div>
+        <div class="tile reveal" data-d="2"><div class="tile__art a-checker"></div><img src="images/ambiance-4.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Le damier</span></div>
+        <div class="tile wide reveal" data-d="3"><div class="tile__art a-neon"></div><img src="images/ambiance-5.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Les nuits</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EVENTS ============ -->
+  <section class="section events" id="evenements">
+    <div class="container">
+      <span class="eyebrow reveal">Le programme</span>
+      <h2 class="h-big reveal" data-d="1" style="margin-top:.8rem;color:var(--white)">C'est la fête<br>tous les soirs</h2>
+      <div class="ev-list">
+        <article class="ev reveal"><div class="ev__day">Ven &amp; Sam</div><div><div class="ev__title">(nom de l'événement)</div><div class="ev__desc">(description)</div></div><div class="ev__tag">DJ set</div></article>
+        <article class="ev reveal" data-d="1"><div class="ev__day">Mer → Jeu</div><div><div class="ev__title">(nom de l'événement)</div><div class="ev__desc">(description)</div></div><div class="ev__tag">Happy hour</div></article>
+        <article class="ev reveal" data-d="2"><div class="ev__day">Sur demande</div><div><div class="ev__title">(nom de l'événement)</div><div class="ev__desc">(description)</div></div><div class="ev__tag">Privé</div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INFOS ============ -->
+  <section class="section infos" id="infos">
+    <div class="container">
+      <span class="eyebrow reveal">Nous trouver</span>
+      <h2 class="h-big reveal" data-d="1" style="margin-top:.8rem;color:var(--white)">On vous<br>attend</h2>
+      <div class="infos__grid">
+        <div class="reveal" data-d="1">
+          <ul class="hours">
+            <li class="off"><b>Lundi — Mardi</b><span>Fermé</span></li>
+            <li><b>Mercredi — Samedi</b><span>18h — 02h</span></li>
+            <li class="off"><b>Dimanche</b><span>Fermé</span></li>
+          </ul>
+          <p style="margin-top:.9rem;color:rgba(253,243,224,.55);font-size:.85rem">Jours fermés : ouverture possible pour des événements spéciaux.</p>
+          <div style="margin-top:1.8rem">
+            <p class="info-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><a href="https://www.google.com/maps/search/?api=1&amp;query=1+Rue+Fernand+David+74100+Annemasse" target="_blank" rel="noopener" style="color:inherit">1 Rue Fernand David<br>74100 Annemasse</a></p>
+            <p class="info-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span style="color:rgba(253,243,224,.6)">E-mail à compléter</span></p>
+          </div>
+        </div>
+        <div class="resv reveal" data-d="2">
+          <h3>Réservez votre tour</h3>
+          <p>Une table ce soir, un anniversaire à fêter ou une soirée à privatiser ? On s'occupe de tout.</p>
+          <a class="btn btn--red" href="https://www.google.com/maps/search/?api=1&amp;query=1+Rue+Fernand+David+74100+Annemasse" target="_blank" rel="noopener">Itinéraire</a>
+          <p style="margin-top:1rem;color:var(--wine);opacity:.72;font-size:.82rem">Téléphone &amp; e-mail à venir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer__bulbs" id="footBulbs" aria-hidden="true"></div>
+    <img class="footer__logo" src="images/logo.svg" alt="Carrousel" />
+    <nav class="footer__nav">
+      <a href="#esprit">L'esprit</a><a href="#carte">La carte</a><a href="#ambiance">Ambiance</a><a href="#evenements">Événements</a><a href="#infos">Infos</a>
+    </nav>
+    <div class="socials">
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.7l.4-3H13V9c0-.9.3-1.5 1.6-1.5H16V4.9c-.3 0-1.2-.1-2.2-.1-2.2 0-3.8 1.4-3.8 3.9V11H7.5v3H10v8z"/></svg></a>
+      <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2.1 1.5 3.6 3.6 3.8v2.6c-1.3.1-2.5-.3-3.6-1v5.9c0 3.4-2.7 5.9-5.9 5.4-2.6-.4-4.4-2.7-4.2-5.3.2-2.6 2.6-4.6 5.2-4.3v2.7c-.4-.1-.9-.2-1.3-.1-1.1.2-1.8 1.1-1.6 2.2.1 1 1 1.7 2 1.6 1.1-.1 1.8-1 1.8-2.1V3z"/></svg></a>
+    </div>
+    <div class="footer__base container">
+      <span>© <span id="year">2026</span> Carrousel — Annemasse</span>
+      <span>L'abus d'alcool est dangereux pour la santé</span>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* nav solid */
+  var nav = document.getElementById('nav');
+  function onScroll(){ nav.classList.toggle('solid', (window.scrollY||0) > 40); }
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* mobile menu */
+  var burger = document.getElementById('burger'), menu = document.getElementById('menu');
+  burger.addEventListener('click', function(){ var o=nav.classList.toggle('open'); burger.setAttribute('aria-expanded', o?'true':'false'); });
+  menu.addEventListener('click', function(e){ if(e.target.closest('a')) nav.classList.remove('open'); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') nav.classList.remove('open'); });
+
+  /* hero scattered fair lights */
+  var lights = document.getElementById('lights');
+  if (lights) {
+    var pts = [[6,30],[12,52],[18,24],[24,66],[32,18],[40,72],[48,30],[56,66],[64,20],[72,58],[80,34],[88,52],[94,26],[10,78],[90,78],[3,60],[97,44],[50,84],[36,46],[68,40]];
+    pts.forEach(function(p,i){ var s=document.createElement('span'); s.style.left=p[0]+'%'; s.style.top=p[1]+'%'; s.style.animationDelay=(i*0.19%2.6).toFixed(2)+'s'; lights.appendChild(s); });
+  }
+  /* hero side rails of bulbs (desktop fill) */
+  ['railL','railR'].forEach(function(id){ var r=document.getElementById(id); if(r){ for(var i=0;i<10;i++){ var b=document.createElement('span'); b.className='bulb'; b.style.animationDelay=(i*0.23%1.8).toFixed(2)+'s'; r.appendChild(b); } } });
+
+  /* footer bulbs */
+  var fb = document.getElementById('footBulbs');
+  if (fb) { for(var i=0;i<13;i++){ var b=document.createElement('span'); b.className='bulb'; b.style.animationDelay=(i*0.18%1.8).toFixed(2)+'s'; fb.appendChild(b); } }
+
+  /* duplicate ticker to guarantee seamless loop already handled by 2x content */
+
+  /* reveals */
+  var revs = document.querySelectorAll('.reveal');
+  if (REDUCE || !('IntersectionObserver' in window)) { revs.forEach(function(el){ el.classList.add('in'); }); }
+  else {
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); }, {threshold:.14, rootMargin:'0px 0px -8% 0px'});
+    revs.forEach(function(el){ io.observe(el); });
+  }
+
+  var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
