@@ -406,6 +406,23 @@
   .reveal[data-d="2"]{transition-delay:.2s;}
   .reveal[data-d="3"]{transition-delay:.3s;}
 
+  /* ============================ MENU (carte complète) ============================ */
+  .menu{margin-top:clamp(2.4rem,5vw,3.6rem);background:var(--cream);color:var(--wine);border-radius:22px;padding:clamp(1.6rem,4vw,3rem);box-shadow:0 10px 0 var(--red-deep),0 26px 50px -24px rgba(0,0,0,.6);position:relative;}
+  .menu__intro{text-align:center;margin-bottom:clamp(1.6rem,3vw,2.4rem);}
+  .menu__title{font-family:var(--font-display);text-transform:uppercase;color:var(--red-2);font-size:clamp(1.8rem,5vw,3rem);line-height:1;}
+  .menu__sub{font-family:var(--font-body);font-weight:600;color:var(--wine);opacity:.72;font-size:clamp(.82rem,1.6vw,.95rem);margin-top:.5rem;}
+  .menu__cols{columns:2;column-gap:clamp(2rem,5vw,4.5rem);}
+  .menu__cat{break-inside:avoid;-webkit-column-break-inside:avoid;margin-bottom:1.7rem;}
+  .menu__cat h3{font-family:var(--font-display);text-transform:uppercase;color:var(--red-2);font-size:1.14rem;letter-spacing:.02em;display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;border-bottom:2px solid rgba(122,12,31,.22);padding-bottom:.32rem;margin-bottom:.55rem;}
+  .menu__cat h3 small{font-family:var(--font-body);font-weight:700;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-2);white-space:nowrap;}
+  .menu__h{font-family:var(--font-script);font-style:italic;font-size:.96rem;color:var(--red);margin:.55rem 0 .15rem;}
+  .menu__row{display:flex;align-items:baseline;gap:.5rem;font-size:.9rem;padding:.16rem 0;line-height:1.3;}
+  .menu__row .n{color:var(--wine);}
+  .menu__row .d{flex:1;border-bottom:1px dotted rgba(122,12,31,.4);transform:translateY(-.2em);min-width:1rem;}
+  .menu__row .p{font-weight:700;color:var(--red-2);white-space:nowrap;}
+  .menu__row--name{display:block;color:var(--wine);}
+  @media (max-width:640px){.menu__cols{columns:1;}}
+
   /* ============================ RESPONSIVE ============================ */
   @media (min-width:760px){
     .esprit__grid{grid-template-columns:1fr 1.2fr;}
@@ -523,10 +540,195 @@
         <a class="btn btn--red reveal" data-d="2" href="#infos">Réserver</a>
       </div>
       <div class="carte__grid">
-        <article class="ck ck--1 reveal"><span class="ck__no">01</span><span class="ck__price">—</span><div class="ck__name">(nom du cocktail)</div><p class="ck__ing">(ingrédients)</p></article>
-        <article class="ck ck--2 reveal" data-d="1"><span class="ck__no">02</span><span class="ck__price">—</span><div class="ck__name">(nom du cocktail)</div><p class="ck__ing">(ingrédients)</p></article>
-        <article class="ck ck--3 reveal" data-d="1"><span class="ck__no">03</span><span class="ck__price">—</span><div class="ck__name">(nom du cocktail)</div><p class="ck__ing">(ingrédients)</p></article>
-        <article class="ck ck--4 reveal" data-d="2"><span class="ck__no">04</span><span class="ck__price">—</span><div class="ck__name">(nom du cocktail)</div><p class="ck__ing">(ingrédients)</p></article>
+        <article class="ck ck--1 reveal"><span class="ck__no">01</span><span class="ck__price">12€</span><div class="ck__name">Signature Maison</div><p class="ck__ing">Caramel · Whisky · Rhum · Vanille · Jus de pomme.</p></article>
+        <article class="ck ck--2 reveal" data-d="1"><span class="ck__no">02</span><span class="ck__price">12€</span><div class="ck__name">Pornstar</div><p class="ck__ing">Cocktail à la vodka.</p></article>
+        <article class="ck ck--3 reveal" data-d="1"><span class="ck__no">03</span><span class="ck__price">12€</span><div class="ck__name">Mojito</div><p class="ck__ing">Cocktail au rhum.</p></article>
+        <article class="ck ck--4 reveal" data-d="2"><span class="ck__no">04</span><span class="ck__price">12€</span><div class="ck__name">Old Fashioned</div><p class="ck__ing">Cocktail au whisky.</p></article>
+      </div>
+      <div class="menu reveal" data-d="1">
+        <div class="menu__intro"><h3 class="menu__title">La carte complète</h3><p class="menu__sub">Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl).</p></div>
+      <div class="menu__cols">
+      <div class="menu__cat">
+        <h3>Cocktails <small>Tous à 12 €</small></h3>
+        <div class="menu__h">Au rhum</div>
+        <div class="menu__row menu__row--name">Piña Colada</div>
+        <div class="menu__row menu__row--name">Mojito</div>
+        <div class="menu__row menu__row--name">Daiquiri</div>
+        <div class="menu__row menu__row--name">Blue Hawaiian</div>
+        <div class="menu__row menu__row--name">Cuba Libre</div>
+        <div class="menu__row menu__row--name">Mai Tai</div>
+        <div class="menu__row menu__row--name">Pain Killer</div>
+        <div class="menu__h">À la vodka</div>
+        <div class="menu__row menu__row--name">Pornstar</div>
+        <div class="menu__row menu__row--name">Sex on the Beach</div>
+        <div class="menu__row menu__row--name">Moscow Mule</div>
+        <div class="menu__h">Au whisky</div>
+        <div class="menu__row menu__row--name">Godfather</div>
+        <div class="menu__row menu__row--name">Mint Julep</div>
+        <div class="menu__row menu__row--name">Old Fashioned</div>
+        <div class="menu__row menu__row--name">Screaming Orgasm</div>
+        <div class="menu__h">Signature</div>
+        <div class="menu__row menu__row--name">Caramel · Whisky · Rhum · Vanille · Jus de pomme</div>
+      </div>
+      <div class="menu__cat">
+        <h3>Vins <small>35 €</small></h3>
+        <div class="menu__h">Blancs</div>
+        <div class="menu__row menu__row--name">Chardonnay</div>
+        <div class="menu__row menu__row--name">Sauvignon</div>
+        <div class="menu__row menu__row--name">Sancerre</div>
+        <div class="menu__row menu__row--name">Bordeaux blanc</div>
+        <div class="menu__h">Rouges</div>
+        <div class="menu__row menu__row--name">Bordeaux rouge</div>
+        <div class="menu__row menu__row--name">Bourgogne rouge</div>
+        <div class="menu__row menu__row--name">Côte du Rhône rouge</div>
+        <div class="menu__h">Rosé</div>
+        <div class="menu__row menu__row--name">Rosé</div>
+      </div>
+      <div class="menu__cat">
+        <h3>Bulles &amp; Champagnes</h3>
+        <div class="menu__row"><span class="n">Prosecco</span><span class="d"></span><span class="p">40 €</span></div>
+        <div class="menu__row"><span class="n">Brut</span><span class="d"></span><span class="p">—</span></div>
+        <div class="menu__row"><span class="n">Rosé</span><span class="d"></span><span class="p">—</span></div>
+        <div class="menu__h">Champagnes</div>
+        <div class="menu__row"><span class="n">Nicolas Feuillatte</span><span class="d"></span><span class="p">—</span></div>
+        <div class="menu__row"><span class="n">Moët &amp; Chandon</span><span class="d"></span><span class="p">—</span></div>
+        <div class="menu__row"><span class="n">Perrier-Jouët</span><span class="d"></span><span class="p">—</span></div>
+        <div class="menu__row"><span class="n">Ruinart</span><span class="d"></span><span class="p">—</span></div>
+        <div class="menu__row"><span class="n">Blanc de Blancs</span><span class="d"></span><span class="p">—</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Bières <small>33 cl</small></h3>
+        <div class="menu__row"><span class="n">1664 Blonde</span><span class="d"></span><span class="p">6 €</span></div>
+        <div class="menu__row"><span class="n">1664 Blanche</span><span class="d"></span><span class="p">6 €</span></div>
+        <div class="menu__row"><span class="n">1664 0%</span><span class="d"></span><span class="p">5 €</span></div>
+        <div class="menu__row"><span class="n">Bud</span><span class="d"></span><span class="p">7 €</span></div>
+        <div class="menu__row"><span class="n">Corona</span><span class="d"></span><span class="p">7 €</span></div>
+        <div class="menu__row"><span class="n">Desperados</span><span class="d"></span><span class="p">7 €</span></div>
+        <div class="menu__row"><span class="n">Guinness</span><span class="d"></span><span class="p">7 €</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Softs</h3>
+        <div class="menu__row"><span class="n">Coca-Cola / Zero</span><span class="d"></span><span class="p">4 €</span></div>
+        <div class="menu__row"><span class="n">Sprite</span><span class="d"></span><span class="p">4 €</span></div>
+        <div class="menu__row"><span class="n">Diabolo</span><span class="d"></span><span class="p">4 €</span></div>
+        <div class="menu__row"><span class="n">Oasis Tropical</span><span class="d"></span><span class="p">4 €</span></div>
+        <div class="menu__row"><span class="n">Schweppes Agrume</span><span class="d"></span><span class="p">4 €</span></div>
+        <div class="menu__row"><span class="n">Schweppes Tonic</span><span class="d"></span><span class="p">4 €</span></div>
+        <div class="menu__row"><span class="n">Orangina</span><span class="d"></span><span class="p">4 €</span></div>
+        <div class="menu__row"><span class="n">Eau de source</span><span class="d"></span><span class="p">3 €</span></div>
+        <div class="menu__row"><span class="n">Eau gazeuse</span><span class="d"></span><span class="p">3 €</span></div>
+        <div class="menu__row"><span class="n">Red Bull « Flavors »</span><span class="d"></span><span class="p">5 €</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Jus de fruits <small>4 €</small></h3>
+        <div class="menu__row menu__row--name">Abricot</div>
+        <div class="menu__row menu__row--name">Fraise</div>
+        <div class="menu__row menu__row--name">Pêche</div>
+        <div class="menu__row menu__row--name">Lychee</div>
+        <div class="menu__row menu__row--name">Autres jus</div>
+      </div>
+      <div class="menu__cat">
+        <h3>Shots</h3>
+        <div class="menu__row"><span class="n">Jäger Bomb</span><span class="d"></span><span class="p">8,5 €</span></div>
+        <div class="menu__row"><span class="n">Sambuca flambée</span><span class="d"></span><span class="p">12 €</span></div>
+        <div class="menu__row"><span class="n">Le mètre de shots ×10</span><span class="d"></span><span class="p">60 €</span></div>
+        <div class="menu__row"><span class="n">Mètre — alcools à 5 €</span><span class="d"></span><span class="p">40 €</span></div>
+        <div class="menu__row"><span class="n">Mètre — alcools 6–7 €</span><span class="d"></span><span class="p">60 €</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Vodka <small>2cl · 4cl · 70cl</small></h3>
+        <div class="menu__row"><span class="n">Absolut « Flavors »</span><span class="d"></span><span class="p">5 · 10 · 120</span></div>
+        <div class="menu__row"><span class="n">Cîroc « Flavors »</span><span class="d"></span><span class="p">7 · 12 · 140</span></div>
+        <div class="menu__row"><span class="n">Belvedere</span><span class="d"></span><span class="p">7 · 13 · 150</span></div>
+        <div class="menu__row"><span class="n">Grey Goose</span><span class="d"></span><span class="p">7 · 13 · 150</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Gin <small>2cl · 4cl · 70cl</small></h3>
+        <div class="menu__row"><span class="n">Gordon's</span><span class="d"></span><span class="p">5 · 9 · 100</span></div>
+        <div class="menu__row"><span class="n">Bombay Sapphire</span><span class="d"></span><span class="p">5 · 10 · 120</span></div>
+        <div class="menu__row"><span class="n">Tanqueray</span><span class="d"></span><span class="p">5 · 11 · 130</span></div>
+        <div class="menu__row"><span class="n">Monkey 47</span><span class="d"></span><span class="p">7 · 14</span></div>
+        <div class="menu__row"><span class="n">Roku Gin</span><span class="d"></span><span class="p">8 · 15</span></div>
+        <div class="menu__row"><span class="n">Hendrick's</span><span class="d"></span><span class="p">8 · 15 · 150</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Rhum <small>2cl · 4cl · 70cl</small></h3>
+        <div class="menu__row"><span class="n">Captain Morgan</span><span class="d"></span><span class="p">5 · 8 · 100</span></div>
+        <div class="menu__row"><span class="n">Bacardi Blanca</span><span class="d"></span><span class="p">5 · 9</span></div>
+        <div class="menu__row"><span class="n">Trois Rivières</span><span class="d"></span><span class="p">5 · 9 · 110</span></div>
+        <div class="menu__row"><span class="n">Havana Club Especial</span><span class="d"></span><span class="p">5 · 10 · 110</span></div>
+        <div class="menu__row"><span class="n">Havana 7 ans</span><span class="d"></span><span class="p">7 · 12 · 130</span></div>
+        <div class="menu__row"><span class="n">Diplomático</span><span class="d"></span><span class="p">7 · 12 · 130</span></div>
+        <div class="menu__row"><span class="n">Don Papa Baroko</span><span class="d"></span><span class="p">7 · 14</span></div>
+        <div class="menu__row"><span class="n">Don Papa</span><span class="d"></span><span class="p">7 · 14</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Cachaça <small>4 cl · environ</small></h3>
+        <div class="menu__row"><span class="n">Ypióca</span><span class="d"></span><span class="p">12</span></div>
+        <div class="menu__row"><span class="n">Aguacana</span><span class="d"></span><span class="p">10</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Whiskies <small>2cl · 4cl · 70cl</small></h3>
+        <div class="menu__row"><span class="n">Red Label</span><span class="d"></span><span class="p">5 · 8 · 100</span></div>
+        <div class="menu__row"><span class="n">Ballantine's</span><span class="d"></span><span class="p">5 · 8 · 100</span></div>
+        <div class="menu__row"><span class="n">J&amp;B</span><span class="d"></span><span class="p">5 · 8 · 100</span></div>
+        <div class="menu__row"><span class="n">Johnnie Walker Black</span><span class="d"></span><span class="p">7 · 11 · 130</span></div>
+        <div class="menu__row"><span class="n">Deacon</span><span class="d"></span><span class="p">—</span></div>
+        <div class="menu__row"><span class="n">Chivas 12</span><span class="d"></span><span class="p">5 · 12 · 130</span></div>
+        <div class="menu__row"><span class="n">Chivas 15</span><span class="d"></span><span class="p">7 · 15 · 160</span></div>
+        <div class="menu__row"><span class="n">Monkey Shoulder</span><span class="d"></span><span class="p">7 · 15 · 150</span></div>
+        <div class="menu__row"><span class="n">Chivas 18</span><span class="d"></span><span class="p">10 · 18 · 200</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Bourbon <small>2cl · 4cl · 70cl</small></h3>
+        <div class="menu__row"><span class="n">Jack Daniel's</span><span class="d"></span><span class="p">5 · 10 · 120</span></div>
+        <div class="menu__row"><span class="n">Bulleit</span><span class="d"></span><span class="p">7 · 14 · 150</span></div>
+        <div class="menu__row"><span class="n">Jack Daniel's « Flavors »</span><span class="d"></span><span class="p">6 · 12 · 140</span></div>
+        <div class="menu__row"><span class="n">Jack Daniel's N°7 Black</span><span class="d"></span><span class="p">7 · 14</span></div>
+        <div class="menu__row"><span class="n">Jack Daniel's Single Barrel</span><span class="d"></span><span class="p">7 · 15</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Cognacs <small>2cl · 4cl · 70cl</small></h3>
+        <div class="menu__row"><span class="n">Hennessy Special</span><span class="d"></span><span class="p">7 · 14 · 150</span></div>
+        <div class="menu__row"><span class="n">Courvoisier</span><span class="d"></span><span class="p">7 · 13 · 140</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Tequila <small>2cl · 4cl · 70cl</small></h3>
+        <div class="menu__row"><span class="n">Sierra</span><span class="d"></span><span class="p">5</span></div>
+        <div class="menu__row"><span class="n">Don Julio Blanco</span><span class="d"></span><span class="p">7 · 14</span></div>
+        <div class="menu__row"><span class="n">Don Julio Reposado</span><span class="d"></span><span class="p">8 · 16</span></div>
+        <div class="menu__row"><span class="n">Patrón Silver</span><span class="d"></span><span class="p">7 · 14</span></div>
+        <div class="menu__row"><span class="n">Azul Reposado</span><span class="d"></span><span class="p">35 · 70 · 800</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Apéritifs <small>2cl · 4cl</small></h3>
+        <div class="menu__row"><span class="n">Martini</span><span class="d"></span><span class="p">5 · 8</span></div>
+        <div class="menu__row"><span class="n">Campari</span><span class="d"></span><span class="p">5 · 8</span></div>
+        <div class="menu__row"><span class="n">Suze</span><span class="d"></span><span class="p">5 · 8</span></div>
+        <div class="menu__row"><span class="n">Ricard</span><span class="d"></span><span class="p">4</span></div>
+        <div class="menu__row"><span class="n">Pastis 51</span><span class="d"></span><span class="p">4</span></div>
+        <div class="menu__row"><span class="n">Jet 27 / Jet 31</span><span class="d"></span><span class="p">5 · 8</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Digestifs <small>2cl · 4cl</small></h3>
+        <div class="menu__row"><span class="n">Poire Williams</span><span class="d"></span><span class="p">5 · 10</span></div>
+        <div class="menu__row"><span class="n">Saké</span><span class="d"></span><span class="p">5</span></div>
+        <div class="menu__row"><span class="n">Bailey's</span><span class="d"></span><span class="p">5 · 8</span></div>
+        <div class="menu__row"><span class="n">Chartreuse</span><span class="d"></span><span class="p">7 · 12</span></div>
+        <div class="menu__row"><span class="n">Amaretto</span><span class="d"></span><span class="p">5 · 10</span></div>
+        <div class="menu__row"><span class="n">Limoncello</span><span class="d"></span><span class="p">5 · 8</span></div>
+        <div class="menu__row"><span class="n">Sambuca</span><span class="d"></span><span class="p">5 · 9</span></div>
+      </div>
+      <div class="menu__cat">
+        <h3>Liqueurs <small>2cl · 4cl</small></h3>
+        <div class="menu__row"><span class="n">Malibu</span><span class="d"></span><span class="p">5 · 9</span></div>
+        <div class="menu__row"><span class="n">Midori</span><span class="d"></span><span class="p">5 · 9</span></div>
+        <div class="menu__row"><span class="n">Soho</span><span class="d"></span><span class="p">5 · 9</span></div>
+        <div class="menu__row"><span class="n">Passoa</span><span class="d"></span><span class="p">5 · 10</span></div>
+        <div class="menu__row"><span class="n">Manzana</span><span class="d"></span><span class="p">5 · 10</span></div>
+        <div class="menu__row"><span class="n">Jägermeister</span><span class="d"></span><span class="p">5 · 10</span></div>
+      </div>
+      </div>
       </div>
       <p class="carte__note reveal">Carte non contractuelle. L'abus d'alcool est dangereux pour la santé.</p>
     </div>
