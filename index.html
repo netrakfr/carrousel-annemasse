@@ -524,13 +524,13 @@
     .decoA__svg,.decoA__horse,.decoD__sway,.decoD__canopy,.decoD__h1,.decoD__h2{animation:none;}
   }
   /* ============ IMPRESSION DE LA CARTE (Cmd+P) ============ */
-  /* On imprime UNIQUEMENT la carte complète, IDENTIQUE à l'écran : on garde le
-     panneau .menu tel quel (cadre or, bande foraine, fond rayé noir/blanc, cartes
-     colorées, ampoules). On isole simplement la carte du reste de la page et on
-     force l'impression des couleurs. break-inside:avoid = aucune catégorie coupée.
-     Aucun changement à l'affichage écran. */
+  /* On imprime UNIQUEMENT la carte complète. ESTHÉTIQUE IDENTIQUE à l'écran
+     (cadre or, bande foraine, fond rayé noir/blanc, cartes colorées, ampoules,
+     couleurs forcées) MAIS densité retravaillée pour tenir en 2 PAGES bien
+     organisées, chaque catégorie entière (break-inside:avoid). Rien ne change
+     à l'écran : toutes ces règles sont sous @media print. */
   @media print{
-    @page{size:A4;margin:8mm;}
+    @page{size:A4;margin:6mm;}
     *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
     html,body{background:#fff!important;margin:0!important;}
     .reveal{opacity:1!important;transform:none!important;}
@@ -539,13 +539,24 @@
     main>*:not(#carte){display:none!important;}
     .decoA,.decoD-mount{display:none!important;}
     .carte__head,.carte__grid{display:none!important;}
-    /* la section passe au blanc et pleine largeur ; le panneau .menu garde TOUT son style */
+    /* la section passe au blanc et pleine largeur ; le panneau .menu garde son style */
     .carte{background:#fff!important;padding:0!important;overflow:visible!important;}
     .carte::before{display:none!important;}
     .carte .container{max-width:none!important;width:auto!important;padding:0!important;margin:0!important;}
-    .menu{margin:0!important;}
-    /* sécurité : chaque catégorie reste entière sur une page */
-    .menu__cat{break-inside:avoid!important;-webkit-column-break-inside:avoid!important;page-break-inside:avoid!important;}
+    /* panneau : on garde cadre/bande/ampoules/fond rayé, on resserre les marges */
+    .menu{margin:0!important;padding:5mm 5mm 4mm!important;padding-top:9mm!important;}
+    .menu__intro{margin-bottom:3mm!important;}
+    .menu__title{font-size:17pt!important;}
+    .menu__sub{font-size:7.4pt!important;margin-top:.3rem!important;}
+    /* colonnes : fond rayé conservé, gouttière et marges resserrées */
+    .menu__cols{padding:3.5mm!important;column-gap:3.5mm!important;}
+    /* cartes : couleur + ombre conservées, densité augmentée */
+    .menu__cat{break-inside:avoid!important;-webkit-column-break-inside:avoid!important;page-break-inside:avoid!important;
+      margin-bottom:3mm!important;padding:1.4mm 2.4mm 2.2mm!important;box-shadow:0 2px 5px rgba(40,8,12,.3)!important;}
+    .menu__cat h3{font-size:9.8pt!important;padding:1mm 2.2mm!important;margin-bottom:1mm!important;}
+    .menu__h{font-size:8.2pt!important;margin:.9mm 0 .15mm!important;}
+    .menu__row,.menu__spirit,.menu__row--name{font-size:8pt!important;padding:.3mm 0!important;line-height:1.16!important;}
+    .menu__shdr{font-size:5.8pt!important;padding-bottom:.35mm!important;margin-bottom:.15mm!important;}
   }
 </style>
 </head>
