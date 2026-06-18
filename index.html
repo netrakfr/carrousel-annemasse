@@ -431,6 +431,22 @@
   .menu__shdr .pr{color:var(--gold-2);}
   @media (max-width:640px){.menu__cols{columns:1;}}
 
+  /* ---- Carrousel : habillage forain de la carte ---- */
+  .menu{position:relative;overflow:hidden;border:3px solid var(--gold);box-shadow:0 12px 0 var(--red-deep),0 30px 60px -28px rgba(0,0,0,.65);padding-top:clamp(3rem,5vw,4rem);}
+  .menu::before{content:"";position:absolute;top:0;left:0;right:0;height:20px;z-index:1;background:repeating-linear-gradient(-52deg,var(--red) 0 22px,var(--cream) 22px 44px);border-bottom:3px solid var(--gold);}
+  .menu::after{content:"";position:absolute;top:30px;left:16px;right:16px;height:9px;z-index:1;pointer-events:none;background:radial-gradient(circle,var(--gold) 0 3px,transparent 3.6px) repeat-x;background-size:28px 9px;filter:drop-shadow(0 0 3px rgba(248,198,58,.55));opacity:.85;}
+  .menu__intro{position:relative;z-index:2;margin-top:.4rem;}
+  .menu__title{transform:rotate(-1.4deg);}
+  .menu__title::after{content:"";display:block;width:74px;height:5px;margin:.55rem auto 0;border-radius:3px;background:var(--grad-gold);}
+  .menu__cat h3{color:var(--red-2);border-bottom:2px dashed rgba(122,12,31,.34);}
+  .menu__cat h3 small{color:var(--gold-2);}
+  .menu__cat--sp h3{border-bottom:none;}
+  .menu__h{color:var(--red);}
+  .menu__shdr{border-bottom:2px dashed rgba(122,12,31,.42);}
+  .menu__shdr .pr,.menu__spirit .pr{border-left:1px solid rgba(227,169,43,.6);}
+  .menu__shdr .pr{color:var(--gold-2);}
+  @media (prefers-reduced-motion:reduce){.menu__title{transform:none;}}
+
   /* ============================ COUPE DU MONDE (events) ============================ */
   .ev-sub{margin-top:1rem;font-weight:600;color:var(--cream);opacity:.92;font-size:clamp(.9rem,2vw,1.05rem);max-width:40ch;}
   .wc{margin-top:clamp(2rem,5vw,3rem);}
