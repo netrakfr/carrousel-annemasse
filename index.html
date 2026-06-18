@@ -595,7 +595,7 @@
       </div>
       <div class="menu reveal" data-d="1">
         <div class="menu__intro"><h3 class="menu__title">La carte complète</h3><p class="menu__sub">Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl).</p></div>
-      <div class="menu__cols">
+      <div class="menu__cols" id="menu-cols">
         <div class="menu__cat" style="--cat:var(--red);--catt:var(--cream);--catbg:#fbe1e4;">
           <h3>Cocktails <small>Tous à 12 €</small></h3>
           <div class="menu__h">Au rhum</div>
@@ -1118,6 +1118,61 @@
   }
 
   var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
+})();
+</script>
+
+<!-- ============ MENU DYNAMIQUE (Supabase) ============ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  "use strict";
+  var SB_URL="https://hwkuwotvpnhisxrbjcxc.supabase.co";
+  var SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3a3V3b3R2cG5oaXN4cmJqY3hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3Nzk0ODcsImV4cCI6MjA5NzM1NTQ4N30.rUbvxZF-tD_YPWJAhFIN8U8ydWb1Fl89RFMzW4gk6rQ";
+  if(!window.supabase||!window.supabase.createClient) return;
+  var sb=window.supabase.createClient(SB_URL,SB_KEY);
+  var PAL=[["var(--red)","var(--cream)","#fbe1e4"],["var(--magenta)","#ffffff","#ffe2ef"],["var(--gold)","var(--wine)","#fdf1d2"],["var(--cyan)","var(--wine)","#d9f4f0"],["var(--plum)","var(--cream)","#ece2f1"],["var(--red-2)","var(--cream)","#f7dee1"]];
+  function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+  function catNode(c,items){
+    var sp=c.layout==='spirit';
+    var cat=el('div',sp?'menu__cat menu__cat--sp':'menu__cat');
+    var p=PAL[(c.color_index||0)%PAL.length];
+    cat.style.setProperty('--cat',p[0]);cat.style.setProperty('--catt',p[1]);cat.style.setProperty('--catbg',p[2]);
+    var cols=[];
+    if(sp){cols=(c.cols||'').split(',').map(function(s){return s.trim();}).filter(Boolean);cat.style.setProperty('--n',cols.length);}
+    var h3=el('h3',null,c.name);
+    if(c.note){h3.appendChild(document.createTextNode(' '));h3.appendChild(el('small',null,c.note));}
+    cat.appendChild(h3);
+    if(sp){
+      var shdr=el('div','menu__shdr');shdr.appendChild(el('span'));
+      cols.forEach(function(x){shdr.appendChild(el('span','pr',x));});
+      cat.appendChild(shdr);
+      items.forEach(function(it){
+        var row=el('div','menu__spirit');row.appendChild(el('span','n',it.name));
+        var vals=(it.price||'').split('·').map(function(s){return s.trim();});
+        while(vals.length<cols.length)vals.push('');vals=vals.slice(0,cols.length);
+        vals.forEach(function(v){row.appendChild(el('span','pr',v));});
+        cat.appendChild(row);
+      });
+    }else{
+      items.forEach(function(it){
+        if(it.kind==='subheader')cat.appendChild(el('div','menu__h',it.name));
+        else if(it.price==null||it.price==='')cat.appendChild(el('div','menu__row menu__row--name',it.name));
+        else{var row=el('div','menu__row');row.appendChild(el('span','n',it.name));row.appendChild(el('span','d'));row.appendChild(el('span','p',it.price));cat.appendChild(row);}
+      });
+    }
+    return cat;
+  }
+  sb.from('menu_categories').select('*').order('sort').then(function(cr){
+    if(cr.error||!cr.data||!cr.data.length) return;
+    sb.from('menu_items').select('*').then(function(ir){
+      if(ir.error||!ir.data) return;
+      var byCat={};ir.data.forEach(function(it){(byCat[it.category_id]=byCat[it.category_id]||[]).push(it);});
+      Object.keys(byCat).forEach(function(k){byCat[k].sort(function(a,b){return (a.sort||0)-(b.sort||0);});});
+      var root=document.getElementById('menu-cols');if(!root)return;
+      var nodes=cr.data.map(function(c){return catNode(c,byCat[c.id]||[]);});
+      if(nodes.length) root.replaceChildren.apply(root,nodes);
+    });
+  });
 })();
 </script>
 </body>
