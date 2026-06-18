@@ -433,7 +433,7 @@
 
   /* ---- Carrousel : habillage forain de la carte ---- */
   .menu{position:relative;overflow:hidden;border:3px solid var(--gold);box-shadow:0 12px 0 var(--red-deep),0 30px 60px -28px rgba(0,0,0,.65);padding-top:clamp(3rem,5vw,4rem);}
-  .menu::before{content:"";position:absolute;top:0;left:0;right:0;height:20px;z-index:1;background:repeating-linear-gradient(-52deg,var(--red) 0 22px,var(--cream) 22px 44px);border-bottom:3px solid var(--gold);}
+  .menu::before{content:"";position:absolute;top:0;left:0;right:0;height:20px;z-index:1;background:repeating-linear-gradient(-52deg,#16110d 0 22px,var(--cream) 22px 44px);border-bottom:3px solid var(--gold);}
   .menu::after{content:"";position:absolute;top:30px;left:16px;right:16px;height:9px;z-index:1;pointer-events:none;background:radial-gradient(circle,var(--gold) 0 3px,transparent 3.6px) repeat-x;background-size:28px 9px;filter:drop-shadow(0 0 3px rgba(248,198,58,.55));opacity:.85;}
   .menu__intro{position:relative;z-index:2;margin-top:.4rem;}
   .menu__title{transform:rotate(-1.4deg);}
@@ -447,7 +447,7 @@
   .menu__shdr .pr{color:var(--gold-2);}
   @media (prefers-reduced-motion:reduce){.menu__title{transform:none;}}
   /* ---- Carrousel : catégories colorées ---- */
-  .menu__cols{column-gap:clamp(1rem,2.2vw,1.6rem);background:repeating-linear-gradient(-52deg,var(--red) 0 20px,var(--cream) 20px 40px);padding:clamp(1rem,2.4vw,1.7rem);border-radius:16px;box-shadow:inset 0 0 0 3px var(--gold),inset 0 0 0 6px rgba(122,12,31,.25);}
+  .menu__cols{column-gap:clamp(1rem,2.2vw,1.6rem);background:repeating-linear-gradient(-52deg,#16110d 0 20px,var(--cream) 20px 40px);padding:clamp(1rem,2.4vw,1.7rem);border-radius:16px;box-shadow:inset 0 0 0 3px var(--gold),inset 0 0 0 6px rgba(0,0,0,.32);}
   .menu__cat{background:var(--catbg,#fff);border-radius:14px;padding:.7rem .9rem 1rem;margin-bottom:clamp(1rem,2.2vw,1.6rem);box-shadow:0 6px 16px rgba(40,8,12,.34);}
   .menu__cat h3{background:var(--cat,var(--red));color:var(--catt,var(--cream));padding:.42rem .8rem;border-radius:9px;border-bottom:none;box-shadow:0 4px 0 rgba(122,12,31,.25);transform:rotate(-1deg);margin-bottom:.6rem;}
   .menu__cat h3 small{color:inherit;opacity:.82;}
@@ -493,6 +493,59 @@
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;scroll-behavior:auto!important;}
     .reveal{opacity:1;transform:none;transition:none;}
+  }
+  /* ============ DÉCORS CARROUSEL (animés, décoratifs) ============ */
+  /* Peu d'éléments, juste pour l'ambiance foraine. Tout est décoratif
+     (pointer-events:none, aria-hidden), masqué sur mobile et figé en
+     prefers-reduced-motion. Les sections hôtes laissent déborder l'angle. */
+  .esprit,.events{overflow:visible;}
+  /* decoA — cheval de manège : bob (galop) + léger balancement, comme sur la barre */
+  .decoA{position:absolute;width:clamp(70px,8vw,116px);pointer-events:none;user-select:none;z-index:1;filter:drop-shadow(0 14px 14px rgba(42,10,18,.26));}
+  .decoA__svg{display:block;width:100%;height:auto;overflow:visible;transform-origin:50% 4%;animation:decoA-sway 7s var(--ease) infinite;}
+  .decoA__horse{transform-origin:50% 58%;animation:decoA-bob 2.6s ease-in-out infinite;}
+  @keyframes decoA-bob{0%,100%{transform:translateY(-5%) rotate(-1deg);}50%{transform:translateY(5%) rotate(1deg);}}
+  @keyframes decoA-sway{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}}
+  .decoA--esprit{top:1.2rem;right:2.6vw;}
+  /* decoD — petit dais foraine : 2 chevaux qui galopent en opposition, dais qui « tourne », balancement */
+  .decoD-mount{position:absolute;top:0;z-index:3;pointer-events:none;}
+  .decoD{--decoD-size:clamp(7.5rem,12vw,12rem);width:var(--decoD-size);pointer-events:none;user-select:none;}
+  .decoD svg{display:block;width:100%;height:auto;overflow:visible;}
+  .decoD__sway{transform-origin:50% 5%;animation:decoD-sway 7s var(--ease) infinite;}
+  .decoD__canopy{transform-origin:50% 16%;animation:decoD-turn 9s ease-in-out infinite;}
+  .decoD__h1{transform-box:fill-box;transform-origin:center;animation:decoD-bob 2.6s ease-in-out infinite;}
+  .decoD__h2{transform-box:fill-box;transform-origin:center;animation:decoD-bob 2.6s ease-in-out infinite;animation-delay:-1.3s;}
+  @keyframes decoD-sway{0%,100%{transform:rotate(-2.2deg);}50%{transform:rotate(2.2deg);}}
+  @keyframes decoD-turn{0%,100%{transform:scaleX(1);}50%{transform:scaleX(.94);}}
+  @keyframes decoD-bob{0%,100%{transform:translateY(-7%);}50%{transform:translateY(7%);}}
+  .decoD-mount--events{right:clamp(.5rem,3vw,2.5rem);}
+  @media (max-width:560px){.decoD-mount{display:none;}}
+  @media (max-width:480px){.decoA{display:none;}}
+  @media (prefers-reduced-motion:reduce){
+    .decoA__svg,.decoA__horse,.decoD__sway,.decoD__canopy,.decoD__h1,.decoD__h2{animation:none;}
+  }
+  /* ============ IMPRESSION DE LA CARTE (Cmd+P) ============ */
+  /* On imprime UNIQUEMENT la carte complète, IDENTIQUE à l'écran : on garde le
+     panneau .menu tel quel (cadre or, bande foraine, fond rayé noir/blanc, cartes
+     colorées, ampoules). On isole simplement la carte du reste de la page et on
+     force l'impression des couleurs. break-inside:avoid = aucune catégorie coupée.
+     Aucun changement à l'affichage écran. */
+  @media print{
+    @page{size:A4;margin:8mm;}
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+    html,body{background:#fff!important;margin:0!important;}
+    .reveal{opacity:1!important;transform:none!important;}
+    /* isoler : masquer tout sauf le panneau menu (#carte) */
+    #nav{display:none!important;}
+    main>*:not(#carte){display:none!important;}
+    .decoA,.decoD-mount{display:none!important;}
+    .carte__head,.carte__grid{display:none!important;}
+    /* la section passe au blanc et pleine largeur ; le panneau .menu garde TOUT son style */
+    .carte{background:#fff!important;padding:0!important;overflow:visible!important;}
+    .carte::before{display:none!important;}
+    .carte .container{max-width:none!important;width:auto!important;padding:0!important;margin:0!important;}
+    .menu{margin:0!important;}
+    /* sécurité : chaque catégorie reste entière sur une page */
+    .menu__cat{break-inside:avoid!important;-webkit-column-break-inside:avoid!important;page-break-inside:avoid!important;}
   }
 </style>
 </head>
@@ -551,12 +604,13 @@
 
   <!-- ============ ESPRIT ============ -->
   <section class="section esprit" id="esprit">
+    <div class="decoA decoA--esprit" aria-hidden="true"><svg class="decoA__svg" viewBox="0 0 150 260" role="img" aria-label="Cheval de manège" xmlns="http://www.w3.org/2000/svg"><g class="decoA__pole"><rect x="71" y="8" width="9" height="244" rx="4" fill="#f8c63a" stroke="#7a0c1f"/><path d="M71 40 80 28M71 96 80 84M71 152 80 140M71 208 80 196" stroke="#e01e37" stroke-width="3.8" stroke-linecap="round"/><circle cx="76" cy="11" r="6.5" fill="#f8c63a" stroke="#7a0c1f" stroke-width="1.1"/></g><g class="decoA__horse"><path class="decoA__tail" d="M112 138q24 6 28 30q2 14-6 26q4-16-4-26q2 14-8 24q3-16-6-24q3 12-4 22q1-19-9-36z" fill="#e01e37" stroke="#7a0c1f" stroke-width="2.2" stroke-linejoin="round"/><g fill="#fffaf1" stroke="#7a0c1f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M52 128q-4-26 22-34q30-9 44 12q12 18 4 40q-6 14-24 16q-28 4-44-12q-6-8-2-22z"/><path d="M56 132q-12 6-14 20q-1 9 6 14q6 4 4 10q-8 1-13-4q-8-9-6-22q2-16 17-22z"/><path d="M70 142q-3 24-2 42q1 8-2 14h-10q-2-8 0-16q-3-22 5-42z"/><path d="M116 134q13 5 16 22q2 10-4 16q-4 4-2 10q-8 1-11-5q-3-7 2-13q-7-10-8-23q-1-7 7-8z"/><path d="M106 144q7 21 7 40q0 8-3 16h-10q-2-8 1-16q-3-20-4-38z"/><path d="M60 106q-13-7-18-23q-4-14 2-27q-4 8-3 17q-6-10-1-22q4-9 13-10q12-1 18 7q5 7 3 16q8 2 10 10q2 8-4 13q-6 5-15 3q-3 9-14 9q5-8 5-16z"/><path d="M40 28q-10 0-16 9q-5 7-4 16q1 6 7 8q5 1 8-2q3 4 8 2q6-2 7-9q1-9-3-17q-4-9-14-16z"/><path d="M45 23q-1-12 4-17q3 7 2 17z"/></g><path class="decoA__mane" d="M52 22q12-1 17 8q-7-2-10 3q9 1 12 9q-8-2-11 3q8 2 10 11q-12 1-19-7q-9-10-9-26q0-10 6-14z" fill="#e01e37" stroke="#7a0c1f" stroke-width="2.2" stroke-linejoin="round"/><path class="decoA__saddle" d="M60 110q24-8 46 0q5 13-2 26q-24 7-48 0q-5-14 4-26z" fill="#22d3c4" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/><circle cx="34" cy="40" r="2.8" fill="#2a0a12"/></g></svg></div>
     <div class="container">
       <span class="eyebrow reveal">Le lieu</span>
       <div class="esprit__grid">
         <h2 class="h-big reveal" style="color:var(--red-2)">Entrez sous<br>le chapiteau</h2>
         <div>
-          <p class="esprit__lead reveal" data-d="1">Un manège pour adultes, au cœur d'Annemasse.</p>
+          <p class="esprit__lead reveal" data-d="1">Un manège pour les grands, au cœur d'Annemasse.</p>
           <p class="esprit__body reveal" data-d="2" style="margin-top:1.2rem">Velours, ampoules dorées et damier au sol : on a glissé un cabaret forain dans la ville. On vient pour un verre, on reste pour l'ambiance — et on repart en parlant déjà du prochain tour.</p>
         </div>
       </div>
@@ -811,6 +865,77 @@
 
   <!-- ============ EVENTS ============ -->
   <section class="section events" id="evenements">
+    <div class="decoD-mount decoD-mount--events" aria-hidden="true"><div class="decoD" role="img" aria-label="Décoration carrousel : deux chevaux de manège sous un dais">
+<svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="dD-barber" width="9" height="9" patternTransform="rotate(40)" patternUnits="userSpaceOnUse">
+      <rect width="9" height="9" fill="var(--gold)"/>
+      <rect width="4.5" height="9" fill="var(--red)"/>
+    </pattern>
+  </defs>
+  <g class="decoD__sway">
+    <line x1="100" y1="0" x2="100" y2="14" stroke="var(--gold-2)" stroke-width="2.4"/>
+    <circle cx="100" cy="6" r="4.4" fill="none" stroke="var(--gold)" stroke-width="2"/>
+    <g class="decoD__canopy">
+      <path d="M100 12 L100 24" stroke="var(--gold-2)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="100" cy="22" r="3.2" fill="var(--gold-light)" stroke="var(--gold-2)" stroke-width="1"/>
+      <path d="M100 24 C 66 26, 40 44, 32 64 L 168 64 C 160 44, 134 26, 100 24 Z" fill="var(--red)" stroke="var(--red-deep)" stroke-width="1.6"/>
+      <path d="M100 24 C 88 27, 82 46, 80 64 L 120 64 C 118 46, 112 27, 100 24 Z" fill="var(--cream)"/>
+      <path d="M32 64 C 38 50, 46 40, 56 33 C 54 46, 54 56, 56 64 Z" fill="var(--cream)" opacity=".92"/>
+      <path d="M168 64 C 162 50, 154 40, 144 33 C 146 46, 146 56, 144 64 Z" fill="var(--cream)" opacity=".92"/>
+      <path d="M32 64 q 9 12 17 0 q 9 12 17 0 q 9 12 17 0 q 9 12 17 0 q 9 12 17 0 q 9 12 17 0 q 9 12 17 0 q 9 12 17 0" fill="none" stroke="var(--gold)" stroke-width="2.6" stroke-linejoin="round"/>
+      <path d="M52 44 C 76 34, 124 34, 148 44" fill="none" stroke="var(--gold)" stroke-width="1.8"/>
+      <circle cx="40" cy="58" r="2.4" fill="var(--gold-light)" stroke="var(--gold-2)" stroke-width=".7"/>
+      <circle cx="100" cy="48" r="2.4" fill="var(--gold-light)" stroke="var(--gold-2)" stroke-width=".7"/>
+      <circle cx="160" cy="58" r="2.4" fill="var(--gold-light)" stroke="var(--gold-2)" stroke-width=".7"/>
+    </g>
+    <rect x="62.2" y="60" width="5.6" height="170" rx="2.8" fill="url(#dD-barber)" stroke="var(--gold-2)" stroke-width=".9"/>
+    <circle cx="65" cy="60" r="4.2" fill="var(--gold)" stroke="var(--red-deep)" stroke-width="1.1"/>
+    <ellipse cx="65" cy="230" rx="7" ry="2.4" fill="var(--gold-2)"/>
+    <rect x="132.2" y="60" width="5.6" height="170" rx="2.8" fill="url(#dD-barber)" stroke="var(--gold-2)" stroke-width=".9"/>
+    <circle cx="135" cy="60" r="4.2" fill="var(--gold)" stroke="var(--red-deep)" stroke-width="1.1"/>
+    <ellipse cx="135" cy="230" rx="7" ry="2.4" fill="var(--gold-2)"/>
+    <g class="decoD__h1" style="transform-box:fill-box;transform-origin:center">
+      <g transform="translate(65 150)">
+        <g transform="translate(-29 -30)">
+          <path d="M47 34 C 50 41, 51 48, 50 54 C 49.5 57, 53 57, 53.5 54 C 54.5 47, 53.5 39, 51 33 Z" fill="var(--white)" stroke="var(--red-deep)" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M20 33 C 19 39, 16 45, 12 49 C 10 52, 13 53.5, 14.5 50.5 C 19 45, 22 39, 23 33 Z" fill="var(--white)" stroke="var(--red-deep)" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M52 19 C 61 16, 67 23, 65 33 C 63 41, 58 45, 56 41 C 60 35, 59 28, 53 29 C 56 25, 55 21, 52 19 Z" fill="var(--red)" stroke="var(--red-deep)" stroke-width="1" stroke-linejoin="round"/>
+          <path d="M20 31 C 16 31, 14 27, 16 23 C 18 20, 21 19, 23 20 C 22 17, 20.5 14, 21 11 C 18 11, 15.5 10.2, 13.8 8.6 C 12.8 7.6, 13.6 6.2, 15.4 6.2 C 17 6.2, 19 6.8, 21 7.2 C 21.5 6, 23 5.5, 24.5 6.2 C 26.5 7.2, 26.5 10, 25 12 C 27 11, 30 10.5, 32.5 12 C 34.5 13.5, 34 16.5, 32 17.5 C 38 18, 43 20.5, 46 24 C 50 22, 55 23, 57 27 C 58 30, 56 34, 52 34 C 48 34, 45 32, 43 29 C 36 32, 27 32, 20 31 Z" fill="var(--cream)" stroke="var(--red-deep)" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M40 31 C 42 38, 43 46, 41 53 C 40 56, 44 56, 45 53 C 47 45, 46 37, 44 31 Z" fill="var(--cream)" stroke="var(--red-deep)" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M26 31 C 26 36, 24 41, 20 44 C 18 46, 21 48, 23 45.5 C 28 41, 30 36, 30 31 Z" fill="var(--cream)" stroke="var(--red-deep)" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M23 6 C 23 2.5, 24.5 1.5, 25.5 4 C 25.5 5.5, 25 7, 24.3 8 Z" fill="var(--cream)" stroke="var(--red-deep)" stroke-width="1"/>
+          <path d="M23.5 7 C 21 10, 20 15, 21.5 19.5 C 23.5 17, 26.5 15, 28.5 15 C 26 12.5, 24.5 9.5, 23.5 7 Z" fill="var(--red)" stroke="var(--red-deep)" stroke-width=".8" stroke-linejoin="round"/>
+          <ellipse cx="15.8" cy="8" rx="1" ry="1.3" fill="var(--red-deep)" opacity=".6"/>
+          <path d="M31 20 C 38 19, 45 21, 49 25 C 47 29, 42 30, 37 30 C 33 30, 30 26.5, 30 23 Z" fill="var(--red)" stroke="var(--gold)" stroke-width="1.2" stroke-linejoin="round"/>
+          <circle cx="40" cy="25" r="1.5" fill="var(--gold)"/>
+          <circle cx="19.5" cy="9.5" r="1.2" fill="var(--wine)"/>
+          <path d="M15.5 9.5 C 17.5 11.5, 20 12, 22 11" fill="none" stroke="var(--gold)" stroke-width="1" stroke-linecap="round"/>
+        </g>
+      </g>
+    </g>
+    <g class="decoD__h2" style="transform-box:fill-box;transform-origin:center">
+      <g transform="translate(135 150)">
+        <g transform="translate(29 -30) scale(-1,1)">
+          <path d="M47 34 C 50 41, 51 48, 50 54 C 49.5 57, 53 57, 53.5 54 C 54.5 47, 53.5 39, 51 33 Z" fill="var(--white)" stroke="var(--red-deep)" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M20 33 C 19 39, 16 45, 12 49 C 10 52, 13 53.5, 14.5 50.5 C 19 45, 22 39, 23 33 Z" fill="var(--white)" stroke="var(--red-deep)" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M52 19 C 61 16, 67 23, 65 33 C 63 41, 58 45, 56 41 C 60 35, 59 28, 53 29 C 56 25, 55 21, 52 19 Z" fill="var(--red)" stroke="var(--red-deep)" stroke-width="1" stroke-linejoin="round"/>
+          <path d="M20 31 C 16 31, 14 27, 16 23 C 18 20, 21 19, 23 20 C 22 17, 20.5 14, 21 11 C 18 11, 15.5 10.2, 13.8 8.6 C 12.8 7.6, 13.6 6.2, 15.4 6.2 C 17 6.2, 19 6.8, 21 7.2 C 21.5 6, 23 5.5, 24.5 6.2 C 26.5 7.2, 26.5 10, 25 12 C 27 11, 30 10.5, 32.5 12 C 34.5 13.5, 34 16.5, 32 17.5 C 38 18, 43 20.5, 46 24 C 50 22, 55 23, 57 27 C 58 30, 56 34, 52 34 C 48 34, 45 32, 43 29 C 36 32, 27 32, 20 31 Z" fill="var(--cream)" stroke="var(--red-deep)" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M40 31 C 42 38, 43 46, 41 53 C 40 56, 44 56, 45 53 C 47 45, 46 37, 44 31 Z" fill="var(--cream)" stroke="var(--red-deep)" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M26 31 C 26 36, 24 41, 20 44 C 18 46, 21 48, 23 45.5 C 28 41, 30 36, 30 31 Z" fill="var(--cream)" stroke="var(--red-deep)" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M23 6 C 23 2.5, 24.5 1.5, 25.5 4 C 25.5 5.5, 25 7, 24.3 8 Z" fill="var(--cream)" stroke="var(--red-deep)" stroke-width="1"/>
+          <path d="M23.5 7 C 21 10, 20 15, 21.5 19.5 C 23.5 17, 26.5 15, 28.5 15 C 26 12.5, 24.5 9.5, 23.5 7 Z" fill="var(--red)" stroke="var(--red-deep)" stroke-width=".8" stroke-linejoin="round"/>
+          <ellipse cx="15.8" cy="8" rx="1" ry="1.3" fill="var(--red-deep)" opacity=".6"/>
+          <path d="M31 20 C 38 19, 45 21, 49 25 C 47 29, 42 30, 37 30 C 33 30, 30 26.5, 30 23 Z" fill="var(--red)" stroke="var(--gold)" stroke-width="1.2" stroke-linejoin="round"/>
+          <circle cx="40" cy="25" r="1.5" fill="var(--gold)"/>
+          <circle cx="19.5" cy="9.5" r="1.2" fill="var(--wine)"/>
+          <path d="M15.5 9.5 C 17.5 11.5, 20 12, 22 11" fill="none" stroke="var(--gold)" stroke-width="1" stroke-linecap="round"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
+</div></div>
     <div class="container">
       <span class="eyebrow reveal">Sur écran géant</span>
       <h2 class="h-big reveal" data-d="1" style="margin-top:.8rem;color:var(--white)">Coupe du Monde<br><span class="gold-text">2026</span></h2>
