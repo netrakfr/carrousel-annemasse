@@ -68,7 +68,7 @@
   var app=document.getElementById('app'), toastEl=document.getElementById('toast');
   if(!window.supabase){app.textContent="Erreur de chargement.";return;}
   var sb=window.supabase.createClient(SB_URL,SB_KEY);
-  var session=null, cats=[], itemsByCat={}, settings={};
+  var session=null, cats=[], itemsByCat={}, settings={}, events=[];
 
   function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
   function toast(m,err){toastEl.textContent=m;toastEl.className='toast show'+(err?' err':'');setTimeout(function(){toastEl.className='toast';},1900);}
@@ -106,6 +106,35 @@
     (ir.data||[]).forEach(function(it){(itemsByCat[it.category_id]=itemsByCat[it.category_id]||[]).push(it);});
     Object.keys(itemsByCat).forEach(function(k){itemsByCat[k].sort(function(a,b){return (a.sort||0)-(b.sort||0);});});
     var sr=await sb.from('site_settings').select('*');settings={};(sr.data||[]).forEach(function(o){settings[o.key]=o.value;});
+    var er=await sb.from('events').select('*').order('sort');events=(er.data||[]);
+  }
+  function eventRow(ev){
+    var row=el('div','item');row.style.flexWrap='wrap';
+    [['day','Jour (ex. Vendredi & Samedi)','90px'],['time','Heure','70px'],['title','Titre','150px'],['tag','Étiquette','80px']].forEach(function(f){
+      var inp=el('input');inp.value=ev[f[0]]||'';inp.placeholder=f[1];
+      inp.style.cssText='flex:1 1 '+f[2]+';padding:.4rem .55rem;border-radius:7px;border:1px solid rgba(0,0,0,.2);font:inherit;';
+      inp.addEventListener('change',function(){var o={};o[f[0]]=inp.value;guard(sb.from('events').update(o).eq('id',ev.id));ev[f[0]]=inp.value;});
+      row.appendChild(inp);
+    });
+    var x=el('button','btn--x','✕');x.title='Supprimer';
+    x.addEventListener('click',async function(){if(!confirm('Supprimer cet événement ?'))return;await guard(sb.from('events').delete().eq('id',ev.id));refresh();});
+    row.appendChild(x);return row;
+  }
+  function eventsCard(){
+    var card=el('div','cat');card.style.padding='1rem';card.style.marginBottom='1.2rem';
+    card.appendChild(el('h3','','🎉 Événements'));
+    var hint=el('p','','Soirées, DJ sets, afters… (affichés dans la section Événements du site). Laisse un champ vide pour le masquer.');hint.style.cssText='font-size:.8rem;opacity:.7;margin:.2rem 0 .8rem;';
+    card.appendChild(hint);
+    events.forEach(function(ev){card.appendChild(eventRow(ev));});
+    var add=el('button','btn btn--sm','+ Nouvel événement');
+    add.addEventListener('click',async function(){var mx=events.reduce(function(m,e){return Math.max(m,e.sort||0);},-1);await guard(sb.from('events').insert({day:'',time:'',title:'Nouvel événement',tag:'',sort:mx+1}));refresh();});
+    card.appendChild(add);
+    var w=el('div');w.style.cssText='margin-top:1rem;display:flex;align-items:center;gap:.5rem;';
+    var cb=el('input');cb.type='checkbox';cb.checked=(settings.show_wc!=='false');cb.id='showwc';
+    cb.addEventListener('change',function(){guard(sb.from('site_settings').upsert({key:'show_wc',value:cb.checked?'true':'false'}));settings.show_wc=cb.checked?'true':'false';});
+    var lb=el('label','','Afficher le calendrier Coupe du Monde');lb.setAttribute('for','showwc');
+    w.appendChild(cb);w.appendChild(lb);card.appendChild(w);
+    return card;
   }
   function settingRow(label,key,val,multi){
     var w=el('div');w.style.marginBottom='.7rem';
@@ -232,6 +261,7 @@
     intro.textContent='Modifie noms et prix directement (sauvegarde automatique). Ajoute / supprime / réordonne avec les boutons. Les changements apparaissent sur le site en direct.';
     wrap.appendChild(intro);
     wrap.appendChild(settingsCard());
+    wrap.appendChild(eventsCard());
     cats.forEach(function(c){wrap.appendChild(catCard(c));});
     var addCat=el('button','btn','+ Nouvelle catégorie');
     addCat.addEventListener('click',newCat);

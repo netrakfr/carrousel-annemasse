@@ -448,6 +448,15 @@
   .cds__lbl{font-family:var(--font-body);font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:.62rem;color:#fff;background:var(--cobalt);padding:.28rem .6rem;border-radius:999px;white-space:nowrap;}
   .cds__v{font-family:var(--font-script);font-style:italic;font-size:1.08rem;color:var(--cream);}
   .annonce{background:var(--red);color:#fff;font-weight:700;text-align:center;padding:.7rem 1rem;border-radius:12px;margin-bottom:1.4rem;box-shadow:0 5px 0 var(--red-deep);}
+  .ev-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin:clamp(1.6rem,3vw,2.4rem) 0;}
+  .ev-card{background:rgba(255,248,240,.07);border:2px solid rgba(255,248,240,.2);border-radius:16px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.45rem;align-items:flex-start;transition:transform .2s var(--ease),border-color .2s;}
+  .ev-card:hover{transform:translateY(-3px);border-color:rgba(255,248,240,.55);}
+  .ev-card__top{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;}
+  .ev-card__day{font-family:var(--font-body);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;color:rgba(255,248,240,.82);}
+  .ev-card__time{font-family:var(--font-display);font-size:1.15rem;color:var(--cream);}
+  .ev-card__title{font-family:var(--font-display);text-transform:uppercase;font-size:1.35rem;line-height:1;color:var(--white);}
+  .ev-card__tag{font-family:var(--font-body);font-weight:700;font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--red);background:#fff;padding:.22rem .6rem;border-radius:999px;}
+  .ev-wc-title{font-family:var(--font-display);text-transform:uppercase;color:var(--white);font-size:clamp(1.1rem,2.6vw,1.5rem);margin:clamp(2rem,4vw,3rem) 0 .5rem;opacity:.95;}
   .menu__cat--sp h3{border-bottom:none;margin-bottom:.2rem;}
   .menu__shdr,.menu__spirit{display:grid;grid-template-columns:minmax(0,1fr) repeat(var(--n,3),2.8rem);align-items:baseline;}
   .menu__shdr{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gold-2);border-bottom:2px solid rgba(122,12,31,.28);padding-bottom:.28rem;margin-bottom:.1rem;}
@@ -994,10 +1003,12 @@
 </svg>
 </div></div>
     <div class="container">
-      <span class="eyebrow reveal">Sur écran géant</span>
-      <h2 class="h-big reveal" data-d="1" style="margin-top:.8rem;color:var(--white)">Coupe du Monde<br><span class="gold-text">2026</span></h2>
-      <p class="ev-sub reveal" data-d="1">Tous les matchs en direct sur écran géant — du 11 juin au 19 juillet.</p>
-      <div class="wc reveal" data-d="1">
+      <span class="eyebrow reveal">À l'affiche</span>
+      <h2 class="h-big reveal" data-d="1" style="margin-top:.8rem;color:var(--white)">Nos<br><span class="gold-text">événements</span></h2>
+      <p class="ev-sub reveal" data-d="1">Soirées, DJ sets, afters — et les grands matchs en direct sur écran géant.</p>
+      <div id="ownEvents" class="ev-list reveal" data-d="1"></div>
+      <h3 class="ev-wc-title reveal" data-d="1" id="wcTitle">Coupe du Monde 2026 · sur écran géant</h3>
+      <div class="wc reveal" id="wcCal" data-d="1">
       <div class="wc__cols">
         <div class="wc__day">
           <h4>jeu. 11 juin</h4>
@@ -1423,6 +1434,22 @@
         box.insertBefore(a,box.firstChild);
       }
     }
+    if(s.show_wc==='false'){var wc=document.getElementById('wcCal');if(wc)wc.style.display='none';var wt=document.getElementById('wcTitle');if(wt)wt.style.display='none';}
+  });
+  /* événements éditables (table events) */
+  sb.from('events').select('*').order('sort').then(function(r){
+    var host=document.getElementById('ownEvents');if(!host)return;
+    if(r.error||!r.data||!r.data.length){host.style.display='none';return;}
+    host.replaceChildren.apply(host,r.data.map(function(e){
+      var c=document.createElement('div');c.className='ev-card';
+      var top=document.createElement('div');top.className='ev-card__top';
+      if(e.day){var d=document.createElement('span');d.className='ev-card__day';d.textContent=e.day;top.appendChild(d);}
+      if(e.time){var t=document.createElement('span');t.className='ev-card__time';t.textContent=e.time;top.appendChild(t);}
+      c.appendChild(top);
+      var ti=document.createElement('div');ti.className='ev-card__title';ti.textContent=e.title||'';c.appendChild(ti);
+      if(e.tag){var g=document.createElement('span');g.className='ev-card__tag';g.textContent=e.tag;c.appendChild(g);}
+      return c;
+    }));
   });
 })();
 </script>
