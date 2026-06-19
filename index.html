@@ -2,11 +2,11 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="robots" content="noindex, nofollow" />
 <title>Carrousel — Bar · Ambiance · Partage · Annemasse</title>
 <meta name="description" content="Carrousel — le bar forain d'Annemasse. Cocktails, lumières et nuits qui tournent. Bar · Ambiance · Partage." />
-<meta name="theme-color" content="#1b0b2e" />
+<meta name="theme-color" content="#12112a" />
 <meta property="og:title" content="Carrousel — Bar · Ambiance · Partage" />
 <meta property="og:description" content="Le bar forain d'Annemasse. La fête ne s'arrête jamais." />
 <meta property="og:locale" content="fr_FR" />
@@ -17,13 +17,14 @@
 <style>
   /* ============================ TOKENS ============================ */
   :root{
-    --red:#e01e37; --red-2:#b3122a; --red-deep:#7a0c1f;
-    --cream:#fdf3e0; --white:#fffaf1; --wine:#2a0a12;
-    --gold:#f8c63a; --gold-2:#e3a92b; --gold-light:#ffe08a;
-    --grad-gold:linear-gradient(170deg,#ffe9a8 0%,#f8c63a 42%,#dca018 100%);
-    --night:#1b0b2e; --night-2:#3a0f4a; --plum:#240a33;
-    --magenta:#ff2e88; --cyan:#22d3c4;
-    --ink:#190810;
+    /* Palette « Carrousel vif » — accesi, sans or dominant (or = micro-accent) */
+    --red:#e8173a; --red-2:#c4122f; --red-deep:#7a0c1f;        /* Carousel Crimson */
+    --cream:#fff8f0; --white:#fff8f0; --wine:#160a12;          /* Candyfloss White / Ink */
+    --gold:#ffba08; --gold-2:#e89c0a; --gold-light:#ffd98a;    /* Bulb Amber (accent) */
+    --grad-gold:linear-gradient(170deg,#ffd98a 0%,#ffba08 45%,#e89c0a 100%);
+    --night:#12112a; --night-2:#1c1b3e; --plum:#1a1838;        /* Deep Velvet */
+    --magenta:#ff2e88; --cyan:#00b4a6; --cobalt:#1b4fd8;       /* Teal Spark / Fairground Cobalt */
+    --ink:#160a12;
     --font-display:'Anton',Impact,sans-serif;
     --font-script:'Fraunces',Georgia,serif;
     --font-body:'Outfit',system-ui,-apple-system,sans-serif;
@@ -79,7 +80,10 @@
   /* ============================ NAV ============================ */
   .nav{position:fixed;inset:0 0 auto 0;z-index:80;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
     padding:.6rem var(--pad);transition:background .4s var(--ease),padding .4s var(--ease),box-shadow .4s var(--ease);}
-  .nav.solid{background:rgba(42,10,18,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(248,198,58,.25);padding-block:.4rem;}
+  .nav.solid{background:rgba(18,17,42,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(255,186,8,.18);padding-block:.4rem;}
+  /* pendant que le tiroir mobile est ouvert, AUCUN filtre/transform sur .nav (sinon le drawer fixed se brise) */
+  .nav.open{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;}
+  .nav__scrim{display:none;}
   .nav__brand{grid-column:2;grid-row:1;justify-self:center;align-self:center;display:flex;align-items:center;line-height:0;}
   .nav__logo{height:80px;width:auto;transition:height .4s var(--ease);filter:drop-shadow(0 3px 12px rgba(0,0,0,.7));}
   .nav.solid .nav__logo{height:60px;}
@@ -88,8 +92,8 @@
   .nav__links--l{grid-column:1;grid-row:1;justify-self:start;}
   .nav__links--r{grid-column:3;grid-row:1;justify-self:end;}
   .nav__links a{font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;color:var(--cream);position:relative;padding:.3rem 0;text-shadow:0 1px 10px rgba(0,0,0,.55);}
-  .nav.solid .nav__links a{text-shadow:none;}
-  .nav__links a::after{content:"";position:absolute;left:0;bottom:-2px;height:3px;width:100%;border-radius:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--bounce);}
+  .nav.solid .nav__links a{text-shadow:0 1px 4px rgba(0,0,0,.4);}
+  .nav__links a::after{content:"";position:absolute;left:0;bottom:-2px;height:3px;width:100%;border-radius:3px;background:var(--cobalt);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--bounce);}
   .nav__links a:hover::after{transform:scaleX(1);}
   .nav__links a.nav__cta{--cta-stripe:.34rem;color:var(--wine);font-weight:700;letter-spacing:.1em;padding:.62rem 1.2rem .62rem calc(1.2rem + var(--cta-stripe) + .45rem);transform:rotate(0);box-shadow:0 5px 0 0 var(--gold-2),0 6px 0 1px var(--red-deep);}
   .nav__links a.nav__cta::before{width:calc(var(--cta-stripe) + .45rem);}
@@ -432,12 +436,12 @@
   @media (max-width:640px){.menu__cols{columns:1;}}
 
   /* ---- Carrousel : habillage forain de la carte ---- */
-  .menu{position:relative;overflow:hidden;border:3px solid var(--gold);box-shadow:0 12px 0 var(--red-deep),0 30px 60px -28px rgba(0,0,0,.65);padding-top:clamp(3rem,5vw,4rem);}
-  .menu::before{content:"";position:absolute;top:0;left:0;right:0;height:20px;z-index:1;background:repeating-linear-gradient(-52deg,#16110d 0 22px,var(--cream) 22px 44px);border-bottom:3px solid var(--gold);}
-  .menu::after{content:"";position:absolute;top:30px;left:16px;right:16px;height:9px;z-index:1;pointer-events:none;background:radial-gradient(circle,var(--gold) 0 3px,transparent 3.6px) repeat-x;background-size:28px 9px;filter:drop-shadow(0 0 3px rgba(248,198,58,.55));opacity:.85;}
+  .menu{position:relative;overflow:hidden;border:3px solid #16110d;box-shadow:0 12px 0 var(--red-deep),0 30px 60px -28px rgba(0,0,0,.65);padding-top:clamp(3rem,5vw,4rem);}
+  .menu::before{content:"";position:absolute;top:0;left:0;right:0;height:22px;z-index:1;background:repeating-linear-gradient(-52deg,var(--red) 0 22px,var(--white) 22px 44px);border-bottom:3px solid #16110d;}
+  .menu::after{display:none;}
   .menu__intro{position:relative;z-index:2;margin-top:.4rem;}
   .menu__title{transform:none;}
-  .menu__title::after{content:"";display:block;width:74px;height:5px;margin:.55rem auto 0;border-radius:3px;background:var(--grad-gold);}
+  .menu__title::after{content:"";display:block;width:74px;height:5px;margin:.55rem auto 0;border-radius:3px;background:var(--red);}
   .menu__cat h3{color:var(--red-2);border-bottom:2px dashed rgba(122,12,31,.34);}
   .menu__cat h3 small{color:var(--gold-2);}
   .menu__cat--sp h3{border-bottom:none;}
@@ -447,8 +451,8 @@
   .menu__shdr .pr{color:var(--gold-2);}
   @media (prefers-reduced-motion:reduce){.menu__title{transform:none;}}
   /* ---- Carrousel : catégories colorées ---- */
-  .menu__cols{column-gap:clamp(1rem,2.2vw,1.6rem);background:repeating-linear-gradient(-52deg,#16110d 0 20px,var(--cream) 20px 40px);padding:clamp(1rem,2.4vw,1.7rem);border-radius:16px;box-shadow:inset 0 0 0 3px var(--gold),inset 0 0 0 6px rgba(0,0,0,.32);}
-  .menu__cat{background:var(--catbg,#fff);border-radius:14px;padding:.7rem .9rem 1rem;margin-bottom:clamp(1rem,2.2vw,1.6rem);box-shadow:0 6px 16px rgba(40,8,12,.34);}
+  .menu__cols{column-gap:clamp(1rem,2.2vw,1.6rem);background:repeating-linear-gradient(-52deg,#efe7d6 0 22px,var(--white) 22px 44px);padding:clamp(1rem,2.4vw,1.7rem);border-radius:16px;box-shadow:inset 0 0 0 2px var(--ink);}
+  .menu__cat{background:var(--catbg,#fff);border:1.5px solid var(--ink);border-radius:12px;padding:.7rem .9rem 1rem;margin-bottom:clamp(1rem,2.2vw,1.6rem);box-shadow:0 4px 11px rgba(22,10,18,.16);}
   .menu__cat h3{background:var(--cat,var(--red));color:#fff;padding:.48rem .85rem;border-radius:8px;border-bottom:none;box-shadow:0 3px 0 rgba(0,0,0,.16);transform:none;margin-bottom:.72rem;letter-spacing:.01em;text-shadow:0 1px 1px rgba(0,0,0,.18);}
   .menu__cat h3 small{color:#fff;opacity:.85;text-shadow:none;}
   .menu__cat--sp h3{border-bottom:none;}
@@ -477,11 +481,13 @@
     .infos__grid{grid-template-columns:1.1fr .9fr;align-items:start;}
   }
   @media (max-width:760px){
-    .nav__menu{display:flex;flex-direction:column;justify-content:center;gap:1.8rem;position:fixed;inset:0 0 0 auto;width:min(82vw,320px);padding:5.5rem 2rem 2rem;background:var(--night-2);transform:translateX(100%);transition:transform .4s var(--bounce);box-shadow:-20px 0 50px rgba(0,0,0,.5);}
+    .nav__menu{display:flex;flex-direction:column;justify-content:center;gap:1.6rem;position:fixed;inset:0 0 0 auto;width:min(84vw,330px);height:calc(var(--vh,1vh)*100);height:100dvh;padding:5.5rem 2rem calc(2rem + env(safe-area-inset-bottom));background:var(--night-2);transform:translateX(100%);transition:transform .42s cubic-bezier(.76,0,.24,1);box-shadow:-20px 0 50px rgba(0,0,0,.5);z-index:1000;overscroll-behavior:none;}
     .nav.open .nav__menu{transform:none;}
-    .nav__links{flex-direction:column;align-items:flex-start;gap:1.5rem;}
-    .nav__links a{font-size:1.2rem;text-shadow:none;}
-    .nav__burger{display:flex;}
+    .nav__scrim{display:block;position:fixed;inset:0;background:rgba(18,17,42,.55);opacity:0;visibility:hidden;transition:opacity .35s ease;z-index:999;}
+    .nav.open .nav__scrim{opacity:1;visibility:visible;}
+    .nav__links{flex-direction:column;align-items:flex-start;gap:1.4rem;}
+    .nav__links a{font-size:1.2rem;text-shadow:none;padding:.5rem 0;}
+    .nav__burger{display:flex;position:relative;z-index:1001;}
     .nav__cta{padding:.85rem 1.4rem;}
     .feats{grid-template-columns:1fr;}
     .carte__grid{grid-template-columns:1fr;}
@@ -549,7 +555,9 @@
     .carte .menu.reveal{display:none!important;}
     .carte__note{display:none!important;}
     .menu-print{display:block!important;}
-    .menu-print__page{margin:0!important;}
+    /* chaque page = un panneau étiré qui REMPLIT l'A4 (le fond rayé comble le bas) */
+    .menu-print__page{margin:0!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important;min-height:255mm!important;}
+    .menu-print__page .menu__cols{flex:1 1 auto!important;}
     .menu-print__page:not(:last-child){break-after:page!important;page-break-after:always!important;}
     /* panneau : on garde cadre/bande/ampoules/fond rayé, on resserre les marges */
     .menu{margin:0!important;padding:5mm 5mm 4mm!important;padding-top:12mm!important;}
@@ -558,13 +566,13 @@
     .menu__sub{font-size:7.4pt!important;margin-top:.3rem!important;}
     /* colonnes : fond rayé conservé, gouttière et marges resserrées */
     .menu__cols{padding:3.5mm!important;column-gap:3.5mm!important;}
-    /* cartes : couleur + ombre conservées, densité augmentée */
+    /* cartes : densité compacte (tient en 2 pages) ; le min-height remplit le reste */
     .menu__cat{break-inside:avoid!important;-webkit-column-break-inside:avoid!important;page-break-inside:avoid!important;
-      margin-bottom:3mm!important;padding:1.4mm 2.4mm 2.2mm!important;box-shadow:0 2px 5px rgba(40,8,12,.3)!important;}
-    .menu__cat h3{font-size:9.8pt!important;padding:1mm 2.2mm!important;margin-bottom:1mm!important;}
-    .menu__h{font-size:8.2pt!important;margin:.9mm 0 .15mm!important;}
-    .menu__row,.menu__spirit,.menu__row--name{font-size:8pt!important;padding:.3mm 0!important;line-height:1.16!important;}
-    .menu__shdr{font-size:5.8pt!important;padding-bottom:.35mm!important;margin-bottom:.15mm!important;}
+      margin-bottom:3mm!important;padding:1.4mm 2.4mm 2.2mm!important;box-shadow:0 2px 5px rgba(40,8,12,.24)!important;}
+    .menu__cat h3{font-size:9.6pt!important;padding:1.1mm 2.3mm!important;margin-bottom:1.1mm!important;}
+    .menu__h{font-size:8.2pt!important;margin:.9mm 0 .2mm!important;}
+    .menu__row,.menu__spirit,.menu__row--name{font-size:8pt!important;padding:.35mm 0!important;line-height:1.18!important;}
+    .menu__shdr{font-size:5.8pt!important;padding-bottom:.4mm!important;margin-bottom:.2mm!important;}
   }
 </style>
 </head>
@@ -586,6 +594,7 @@
     </ul>
   </div>
   <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  <div class="nav__scrim" id="navScrim" aria-hidden="true"></div>
 </header>
 
 <main>
@@ -669,7 +678,7 @@
       <div class="menu reveal" data-d="1">
         <div class="menu__intro"><h3 class="menu__title">La carte complète</h3><p class="menu__sub">Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl).</p></div>
       <div class="menu__cols" id="menu-cols">
-        <div class="menu__cat" style="--cat:#e01e37;--catt:#fff;--catbg:#fbe1e4;">
+        <div class="menu__cat" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Cocktails <small>Tous à 12 €</small></h3>
           <div class="menu__h">Au rhum</div>
           <div class="menu__row menu__row--name">Piña Colada</div>
@@ -691,7 +700,7 @@
           <div class="menu__h">Signature</div>
           <div class="menu__row menu__row--name">Caramel · Whisky · Rhum · Vanille · Jus de pomme</div>
         </div>
-        <div class="menu__cat" style="--cat:#d81f6f;--catt:#fff;--catbg:#fbe0ee;">
+        <div class="menu__cat" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;">
           <h3>Vins <small>35 €</small></h3>
           <div class="menu__h">Blancs</div>
           <div class="menu__row menu__row--name">Chardonnay</div>
@@ -705,7 +714,7 @@
           <div class="menu__h">Rosé</div>
           <div class="menu__row menu__row--name">Rosé</div>
         </div>
-        <div class="menu__cat" style="--cat:#bb650e;--catt:#fff;--catbg:#f7e8d0;">
+        <div class="menu__cat" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Bulles &amp; Champagnes</h3>
           <div class="menu__row"><span class="n">Prosecco</span><span class="d"></span><span class="p">40 €</span></div>
           <div class="menu__row"><span class="n">Brut</span><span class="d"></span><span class="p">—</span></div>
@@ -717,7 +726,7 @@
           <div class="menu__row"><span class="n">Ruinart</span><span class="d"></span><span class="p">—</span></div>
           <div class="menu__row"><span class="n">Blanc de Blancs</span><span class="d"></span><span class="p">—</span></div>
         </div>
-        <div class="menu__cat" style="--cat:#0b7a6d;--catt:#fff;--catbg:#d6efe9;">
+        <div class="menu__cat" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;">
           <h3>Bières <small>33 cl</small></h3>
           <div class="menu__row"><span class="n">1664 Blonde</span><span class="d"></span><span class="p">6 €</span></div>
           <div class="menu__row"><span class="n">1664 Blanche</span><span class="d"></span><span class="p">6 €</span></div>
@@ -727,7 +736,7 @@
           <div class="menu__row"><span class="n">Desperados</span><span class="d"></span><span class="p">7 €</span></div>
           <div class="menu__row"><span class="n">Guinness</span><span class="d"></span><span class="p">7 €</span></div>
         </div>
-        <div class="menu__cat" style="--cat:#4d2270;--catt:#fff;--catbg:#ece2f4;">
+        <div class="menu__cat" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Softs</h3>
           <div class="menu__row"><span class="n">Coca-Cola / Zero</span><span class="d"></span><span class="p">4 €</span></div>
           <div class="menu__row"><span class="n">Sprite</span><span class="d"></span><span class="p">4 €</span></div>
@@ -740,7 +749,7 @@
           <div class="menu__row"><span class="n">Eau gazeuse</span><span class="d"></span><span class="p">3 €</span></div>
           <div class="menu__row"><span class="n">Red Bull « Flavors »</span><span class="d"></span><span class="p">5 €</span></div>
         </div>
-        <div class="menu__cat" style="--cat:#b3122a;--catt:#fff;--catbg:#f6dde2;">
+        <div class="menu__cat" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;">
           <h3>Jus de fruits <small>4 €</small></h3>
           <div class="menu__row menu__row--name">Abricot</div>
           <div class="menu__row menu__row--name">Fraise</div>
@@ -748,7 +757,7 @@
           <div class="menu__row menu__row--name">Lychee</div>
           <div class="menu__row menu__row--name">Autres jus</div>
         </div>
-        <div class="menu__cat" style="--cat:#e01e37;--catt:#fff;--catbg:#fbe1e4;">
+        <div class="menu__cat" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Shots</h3>
           <div class="menu__row"><span class="n">Jäger Bomb</span><span class="d"></span><span class="p">8,5 €</span></div>
           <div class="menu__row"><span class="n">Sambuca flambée</span><span class="d"></span><span class="p">12 €</span></div>
@@ -756,7 +765,7 @@
           <div class="menu__row"><span class="n">Mètre — alcools à 5 €</span><span class="d"></span><span class="p">40 €</span></div>
           <div class="menu__row"><span class="n">Mètre — alcools 6–7 €</span><span class="d"></span><span class="p">60 €</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#d81f6f;--catt:#fff;--catbg:#fbe0ee;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:3;">
           <h3>Vodka</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Absolut « Flavors »</span><span class="pr">5</span><span class="pr">10</span><span class="pr">120</span></div>
@@ -764,7 +773,7 @@
           <div class="menu__spirit"><span class="n">Belvedere</span><span class="pr">7</span><span class="pr">13</span><span class="pr">150</span></div>
           <div class="menu__spirit"><span class="n">Grey Goose</span><span class="pr">7</span><span class="pr">13</span><span class="pr">150</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#bb650e;--catt:#fff;--catbg:#f7e8d0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:3;">
           <h3>Gin</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Gordon's</span><span class="pr">5</span><span class="pr">9</span><span class="pr">100</span></div>
@@ -774,7 +783,7 @@
           <div class="menu__spirit"><span class="n">Roku Gin</span><span class="pr">8</span><span class="pr">15</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Hendrick's</span><span class="pr">8</span><span class="pr">15</span><span class="pr">150</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#0b7a6d;--catt:#fff;--catbg:#d6efe9;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:3;">
           <h3>Rhum</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Captain Morgan</span><span class="pr">5</span><span class="pr">8</span><span class="pr">100</span></div>
@@ -786,13 +795,13 @@
           <div class="menu__spirit"><span class="n">Don Papa Baroko</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Don Papa</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#4d2270;--catt:#fff;--catbg:#ece2f4;--n:1;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:1;">
           <h3>Cachaça <small>environ</small></h3>
           <div class="menu__shdr"><span></span><span class="pr">4cl</span></div>
           <div class="menu__spirit"><span class="n">Ypióca</span><span class="pr">12</span></div>
           <div class="menu__spirit"><span class="n">Aguacana</span><span class="pr">10</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#b3122a;--catt:#fff;--catbg:#f6dde2;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:3;">
           <h3>Whiskies</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Red Label</span><span class="pr">5</span><span class="pr">8</span><span class="pr">100</span></div>
@@ -805,7 +814,7 @@
           <div class="menu__spirit"><span class="n">Monkey Shoulder</span><span class="pr">7</span><span class="pr">15</span><span class="pr">150</span></div>
           <div class="menu__spirit"><span class="n">Chivas 18</span><span class="pr">10</span><span class="pr">18</span><span class="pr">200</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#e01e37;--catt:#fff;--catbg:#fbe1e4;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:3;">
           <h3>Bourbon</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Jack Daniel's</span><span class="pr">5</span><span class="pr">10</span><span class="pr">120</span></div>
@@ -814,13 +823,13 @@
           <div class="menu__spirit"><span class="n">Jack Daniel's N°7 Black</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Jack Daniel's Single Barrel</span><span class="pr">7</span><span class="pr">15</span><span class="pr"></span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#d81f6f;--catt:#fff;--catbg:#fbe0ee;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:3;">
           <h3>Cognacs</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Hennessy Special</span><span class="pr">7</span><span class="pr">14</span><span class="pr">150</span></div>
           <div class="menu__spirit"><span class="n">Courvoisier</span><span class="pr">7</span><span class="pr">13</span><span class="pr">140</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#bb650e;--catt:#fff;--catbg:#f7e8d0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:3;">
           <h3>Tequila</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Sierra</span><span class="pr">5</span><span class="pr"></span><span class="pr"></span></div>
@@ -829,7 +838,7 @@
           <div class="menu__spirit"><span class="n">Patrón Silver</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Azul Reposado</span><span class="pr">35</span><span class="pr">70</span><span class="pr">800</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#0b7a6d;--catt:#fff;--catbg:#d6efe9;--n:2;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:2;">
           <h3>Apéritifs</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span></div>
           <div class="menu__spirit"><span class="n">Martini</span><span class="pr">5</span><span class="pr">8</span></div>
@@ -839,7 +848,7 @@
           <div class="menu__spirit"><span class="n">Pastis 51</span><span class="pr">4</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Jet 27 / Jet 31</span><span class="pr">5</span><span class="pr">8</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#4d2270;--catt:#fff;--catbg:#ece2f4;--n:2;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:2;">
           <h3>Digestifs</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span></div>
           <div class="menu__spirit"><span class="n">Poire Williams</span><span class="pr">5</span><span class="pr">10</span></div>
@@ -850,7 +859,7 @@
           <div class="menu__spirit"><span class="n">Limoncello</span><span class="pr">5</span><span class="pr">8</span></div>
           <div class="menu__spirit"><span class="n">Sambuca</span><span class="pr">5</span><span class="pr">9</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#b3122a;--catt:#fff;--catbg:#f6dde2;--n:2;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:2;">
           <h3>Liqueurs</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span></div>
           <div class="menu__spirit"><span class="n">Malibu</span><span class="pr">5</span><span class="pr">9</span></div>
@@ -1228,25 +1237,41 @@
   "use strict";
   var REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* nav solid */
+  /* nav solid — figée tant que le tiroir mobile est ouvert (sinon le drawer fixed se brise) */
   var nav = document.getElementById('nav');
-  function onScroll(){ nav.classList.toggle('solid', (window.scrollY||0) > 40); }
+  function onScroll(){ if(nav.classList.contains('open')) return; nav.classList.toggle('solid', (window.scrollY||0) > 40); }
   onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
 
-  /* mobile menu */
-  var burger = document.getElementById('burger'), menu = document.getElementById('menu');
-  burger.addEventListener('click', function(){ var o=nav.classList.toggle('open'); burger.setAttribute('aria-expanded', o?'true':'false'); });
-  menu.addEventListener('click', function(e){ if(e.target.closest('a')) nav.classList.remove('open'); });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') nav.classList.remove('open'); });
+  /* --vh stable (corrige le bug 100vh iOS pour le tiroir) */
+  function setVH(){ document.documentElement.style.setProperty('--vh', (window.innerHeight*0.01)+'px'); }
+  setVH();
+  var vhT; window.addEventListener('resize', function(){ clearTimeout(vhT); vhT=setTimeout(setVH,150); }, {passive:true});
 
-  /* hero scattered fair lights */
-  var lights = document.getElementById('lights');
-  if (lights) {
-    var pts = [[6,30],[12,52],[18,24],[24,66],[32,18],[40,72],[48,30],[56,66],[64,20],[72,58],[80,34],[88,52],[94,26],[10,78],[90,78],[3,60],[97,44],[50,84],[36,46],[68,40]];
-    pts.forEach(function(p,i){ var s=document.createElement('span'); s.style.left=p[0]+'%'; s.style.top=p[1]+'%'; s.style.animationDelay=(i*0.19%2.6).toFixed(2)+'s'; lights.appendChild(s); });
+  /* menu mobile : ouverture/fermeture avec verrou de défilement iOS-safe + scrim */
+  var burger = document.getElementById('burger'), menu = document.getElementById('menu'), scrim = document.getElementById('navScrim');
+  var lockY = 0;
+  function openMenu(){
+    lockY = window.scrollY || 0;
+    nav.classList.remove('solid');
+    nav.classList.add('open');
+    var b = document.body;
+    b.style.position='fixed'; b.style.top=(-lockY)+'px'; b.style.left='0'; b.style.right='0'; b.style.width='100%';
+    burger.setAttribute('aria-expanded','true');
   }
-  /* hero side rails of bulbs (desktop fill) */
-  ['railL','railR'].forEach(function(id){ var r=document.getElementById(id); if(r){ for(var i=0;i<10;i++){ var b=document.createElement('span'); b.className='bulb'; b.style.animationDelay=(i*0.23%1.8).toFixed(2)+'s'; r.appendChild(b); } } });
+  function closeMenu(){
+    if(!nav.classList.contains('open')) return;
+    nav.classList.remove('open');
+    var b = document.body;
+    b.style.position=''; b.style.top=''; b.style.left=''; b.style.right=''; b.style.width='';
+    window.scrollTo(0,lockY);
+    burger.setAttribute('aria-expanded','false');
+    onScroll();
+    burger.focus();
+  }
+  burger.addEventListener('click', function(){ nav.classList.contains('open') ? closeMenu() : openMenu(); });
+  if(scrim) scrim.addEventListener('click', closeMenu);
+  menu.addEventListener('click', function(e){ if(e.target.closest('a')) closeMenu(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenu(); });
 
   /* footer bulbs */
   var fb = document.getElementById('footBulbs');
@@ -1275,7 +1300,7 @@
   var SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3a3V3b3R2cG5oaXN4cmJqY3hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3Nzk0ODcsImV4cCI6MjA5NzM1NTQ4N30.rUbvxZF-tD_YPWJAhFIN8U8ydWb1Fl89RFMzW4gk6rQ";
   if(!window.supabase||!window.supabase.createClient) return;
   var sb=window.supabase.createClient(SB_URL,SB_KEY);
-  var PAL=[["#e01e37","#fff","#fbe1e4"],["#d81f6f","#fff","#fbe0ee"],["#bb650e","#fff","#f7e8d0"],["#0b7a6d","#fff","#d6efe9"],["#4d2270","#fff","#ece2f4"],["#b3122a","#fff","#f6dde2"]];
+  var PAL=[["#e8173a","#fff","#fff8f0"],["#1b4fd8","#fff","#fff8f0"],["#160a12","#fff","#fff8f0"],["#0c7d72","#fff","#fff8f0"],["#e8173a","#fff","#fff8f0"],["#1b4fd8","#fff","#fff8f0"]];
   function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
   function catNode(c,items){
     var sp=c.layout==='spirit';
