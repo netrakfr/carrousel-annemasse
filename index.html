@@ -444,6 +444,10 @@
   .menu__row .p{font-weight:700;color:var(--red-2);white-space:nowrap;}
   .menu__row--name{display:block;color:var(--wine);}
   .menu__desc{display:block;font-family:var(--font-script);font-style:italic;font-weight:500;font-size:.8rem;color:rgba(22,10,18,.58);margin-top:.02rem;line-height:1.25;}
+  .cds{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin:1.3rem 0 0;padding:.6rem .9rem;background:rgba(27,79,216,.16);border:2px solid var(--cobalt);border-radius:14px;}
+  .cds__lbl{font-family:var(--font-body);font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:.62rem;color:#fff;background:var(--cobalt);padding:.28rem .6rem;border-radius:999px;white-space:nowrap;}
+  .cds__v{font-family:var(--font-script);font-style:italic;font-size:1.08rem;color:var(--cream);}
+  .annonce{background:var(--red);color:#fff;font-weight:700;text-align:center;padding:.7rem 1rem;border-radius:12px;margin-bottom:1.4rem;box-shadow:0 5px 0 var(--red-deep);}
   .menu__cat--sp h3{border-bottom:none;margin-bottom:.2rem;}
   .menu__shdr,.menu__spirit{display:grid;grid-template-columns:minmax(0,1fr) repeat(var(--n,3),2.8rem);align-items:baseline;}
   .menu__shdr{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gold-2);border-bottom:2px solid rgba(122,12,31,.28);padding-bottom:.28rem;margin-bottom:.1rem;}
@@ -1390,6 +1394,33 @@
       var nodes=cr.data.map(function(c){return catNode(c,byCat[c.id]||[]);});
       if(nodes.length) root.replaceChildren.apply(root,nodes);
     });
+  });
+  /* réglages éditables : cocktail de la semaine, annonce, e-mail */
+  sb.from('site_settings').select('*').then(function(r){
+    if(r.error||!r.data) return;
+    var s={};r.data.forEach(function(o){s[o.key]=o.value;});
+    if(s.email){[].forEach.call(document.querySelectorAll('a[href^="mailto:"]'),function(a){
+      var q=a.getAttribute('href').split('?')[1];
+      a.setAttribute('href','mailto:'+s.email+(q?'?'+q:''));
+      if((a.textContent||'').indexOf('@')>-1)a.textContent=s.email;
+    });}
+    if(s.cocktail_semaine&&s.cocktail_semaine.trim()){
+      var head=document.querySelector('.carte__head');
+      if(head&&!document.getElementById('cds')){
+        var d=document.createElement('div');d.id='cds';d.className='cds';
+        var l=document.createElement('span');l.className='cds__lbl';l.textContent='Cocktail de la semaine';
+        var v=document.createElement('span');v.className='cds__v';v.textContent=s.cocktail_semaine;
+        d.appendChild(l);d.appendChild(v);head.parentNode.insertBefore(d,head.nextSibling);
+      }
+    }
+    if(s.annonce&&s.annonce.trim()){
+      var inf=document.getElementById('infos');
+      if(inf&&!document.getElementById('annonce')){
+        var box=inf.querySelector('.container')||inf;
+        var a=document.createElement('div');a.id='annonce';a.className='annonce';a.textContent=s.annonce;
+        box.insertBefore(a,box.firstChild);
+      }
+    }
   });
 })();
 </script>
