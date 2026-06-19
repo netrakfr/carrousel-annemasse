@@ -463,8 +463,12 @@
 
   /* ============================ COUPE DU MONDE (events) ============================ */
   .ev-sub{margin-top:1rem;font-weight:600;color:var(--cream);opacity:.92;font-size:clamp(.9rem,2vw,1.05rem);max-width:40ch;}
-  .wc{margin-top:clamp(2rem,5vw,3rem);}
+  .wc{margin-top:clamp(2rem,5vw,3rem);position:relative;}
   .wc__cols{columns:3;column-gap:clamp(1.6rem,3vw,3rem);}
+  .wc:not(.wc--open) .wc__cols > .wc__day:nth-of-type(n+8){display:none;}
+  .wc__toggle{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.4rem;padding:.7rem 1.5rem;border-radius:999px;background:var(--cobalt);color:#fff;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;box-shadow:0 4px 0 rgba(0,0,0,.28);transition:transform .2s var(--ease);touch-action:manipulation;}
+  .wc__toggle:hover{transform:translateY(-2px);}
+  .wc__toggle:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
   .wc__day{break-inside:avoid;-webkit-column-break-inside:avoid;margin-bottom:1.1rem;}
   .wc__day h4{font-family:var(--font-display);text-transform:uppercase;color:var(--gold-light);font-size:.96rem;letter-spacing:.04em;border-bottom:2px dashed rgba(253,243,224,.32);padding-bottom:.26rem;margin-bottom:.4rem;}
   .wc__m{display:flex;align-items:baseline;gap:.5rem;font-size:.82rem;color:var(--cream);padding:.14rem 0;line-height:1.25;}
@@ -1181,6 +1185,7 @@
           <div class="wc__m"><span class="t">21:00</span><span class="vs">Vainqueur M101 – Vainqueur M102</span><span class="ph">Finale</span></div>
         </div>
       </div>
+      <button class="wc__toggle" id="wcToggle" type="button" aria-expanded="false" aria-controls="evenements">Voir tout le calendrier ↓</button>
       <p class="wc__note">Horaires en heure française, sous réserve de modifications. Phases finales : équipes selon le tableau. Tous les matchs diffusés sur écran géant.</p>
       </div>
     </div>
@@ -1272,6 +1277,17 @@
   if(scrim) scrim.addEventListener('click', closeMenu);
   menu.addEventListener('click', function(e){ if(e.target.closest('a')) closeMenu(); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenu(); });
+
+  /* calendrier Coupe du Monde : repliable (anti scroll-fleuve mobile) */
+  var wcToggle = document.getElementById('wcToggle');
+  if(wcToggle){
+    var wc = wcToggle.closest('.wc');
+    wcToggle.addEventListener('click', function(){
+      var open = wc.classList.toggle('wc--open');
+      wcToggle.setAttribute('aria-expanded', open?'true':'false');
+      wcToggle.textContent = open ? 'Réduire le calendrier ↑' : 'Voir tout le calendrier ↓';
+    });
+  }
 
   /* footer bulbs */
   var fb = document.getElementById('footBulbs');
