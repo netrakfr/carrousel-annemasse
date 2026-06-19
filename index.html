@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="robots" content="noindex, nofollow" />
 <title>Carrousel — Bar · Ambiance · Partage · Annemasse</title>
 <meta name="description" content="Carrousel — le bar forain d'Annemasse. Cocktails, lumières et nuits qui tournent. Bar · Ambiance · Partage." />
 <meta name="theme-color" content="#12112a" />
@@ -218,11 +217,20 @@
 }
 .heroA__line{
   display:block;
+  opacity:0;
+  animation:heroLineIn .75s var(--ease) both;
   text-shadow:
     0 4px 0 var(--red-deep),
     0 5px 0 var(--red-deep),
     0 16px 26px rgba(42,10,18,.45);
 }
+.heroA__line:nth-child(1){animation-delay:.18s;}
+.heroA__line:nth-child(2){animation-delay:.32s;}
+.heroA__line:nth-child(3){animation-delay:.46s;}
+@keyframes heroLineIn{from{opacity:0;transform:translateY(46px) scale(.97);}to{opacity:1;transform:none;}}
+.heroA__ticket{opacity:0;animation:heroFade .7s var(--ease) .66s both;}
+.heroA__cta{opacity:0;animation:heroFade .7s var(--ease) .8s both;}
+@keyframes heroFade{from{opacity:0;}to{opacity:1;}}
 .heroA__line--big{
   font-size:1.12em;
   color:var(--white);
@@ -275,8 +283,8 @@
   margin-top:clamp(.9rem,2vw,1.4rem);
 }
 /* ---- secondary CTA: solid wine pill so it stays legible on the bright stripes ---- */
-.heroA .btn--out{border:2px solid var(--gold);background:var(--red);color:var(--white);box-shadow:0 6px 0 0 var(--red-deep);}
-.heroA .btn--out:hover{background:var(--red-2);color:var(--white);border-color:var(--gold-light);transform:translateY(-3px);box-shadow:0 9px 0 0 var(--red-deep);}
+.heroA .btn--out{border:2px solid rgba(255,255,255,.85);background:var(--cobalt);color:var(--white);box-shadow:0 6px 0 0 #123a9e;}
+.heroA .btn--out:hover{background:#2a5ee6;color:var(--white);border-color:var(--white);transform:translateY(-3px);box-shadow:0 9px 0 0 #123a9e;}
 
 /* ---- red/cream striped base strip (echoes the kit) ---- */
 .heroA__base{
@@ -301,10 +309,11 @@
 /* ---- reduced motion ---- */
 @media (prefers-reduced-motion:reduce){
   .heroA__rays{animation:none;}
+  .heroA__line,.heroA__ticket,.heroA__cta{opacity:1!important;animation:none!important;transform:none!important;}
 }
 
   /* ============================ TICKER ============================ */
-  .ticker{background:var(--gold);color:var(--wine);overflow:hidden;white-space:nowrap;border-block:4px solid var(--red);position:relative;z-index:5;}
+  .ticker{background:var(--red);color:var(--white);overflow:hidden;white-space:nowrap;border-block:2px solid var(--gold);position:relative;z-index:5;}
   .ticker__row{display:inline-flex;align-items:center;gap:1.4rem;padding-block:.7rem;animation:slide 26s linear infinite;}
   .ticker__row .it{font-family:var(--font-display);text-transform:uppercase;font-size:1.05rem;letter-spacing:.04em;display:inline-flex;align-items:center;gap:1.4rem;}
   .ticker__row .it::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--red);}
@@ -636,8 +645,8 @@
   <!-- ============ TICKER ============ -->
   <div class="ticker" aria-hidden="true">
     <div class="ticker__row" id="tickRow">
-      <span class="it">Bienvenue au Carrousel</span><span class="it">Cocktails maison</span><span class="it">DJ sets</span><span class="it">Ouvert mar — sam</span><span class="it">Bar · Ambiance · Partage</span>
-      <span class="it">Bienvenue au Carrousel</span><span class="it">Cocktails maison</span><span class="it">DJ sets</span><span class="it">Ouvert mar — sam</span><span class="it">Bar · Ambiance · Partage</span>
+      <span class="it">Bienvenue au Carrousel</span><span class="it">Cocktails maison</span><span class="it">DJ sets</span><span class="it">Ouvert mer — sam · After le week-end</span><span class="it">Bar · Ambiance · Partage</span>
+      <span class="it">Bienvenue au Carrousel</span><span class="it">Cocktails maison</span><span class="it">DJ sets</span><span class="it">Ouvert mer — sam · After le week-end</span><span class="it">Bar · Ambiance · Partage</span>
     </div>
   </div>
 
