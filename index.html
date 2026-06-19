@@ -523,6 +523,7 @@
   @media (prefers-reduced-motion:reduce){
     .decoA__svg,.decoA__horse,.decoD__sway,.decoD__canopy,.decoD__h1,.decoD__h2{animation:none;}
   }
+  .menu-print{display:none;} /* structure réservée à l'impression (2 pages distinctes) */
   /* ============ IMPRESSION DE LA CARTE (Cmd+P) ============ */
   /* On imprime UNIQUEMENT la carte complète. ESTHÉTIQUE IDENTIQUE à l'écran
      (cadre or, bande foraine, fond rayé noir/blanc, cartes colorées, ampoules,
@@ -543,6 +544,13 @@
     .carte{background:#fff!important;padding:0!important;overflow:visible!important;}
     .carte::before{display:none!important;}
     .carte .container{max-width:none!important;width:auto!important;padding:0!important;margin:0!important;}
+    /* on masque le menu « écran » (un seul panneau continu) et la note ;
+       on imprime la structure 2 pages distinctes, chacune un panneau complet */
+    .carte .menu.reveal{display:none!important;}
+    .carte__note{display:none!important;}
+    .menu-print{display:block!important;}
+    .menu-print__page{margin:0!important;}
+    .menu-print__page:not(:last-child){break-after:page!important;page-break-after:always!important;}
     /* panneau : on garde cadre/bande/ampoules/fond rayé, on resserre les marges */
     .menu{margin:0!important;padding:5mm 5mm 4mm!important;padding-top:9mm!important;}
     .menu__intro{margin-bottom:3mm!important;}
@@ -854,6 +862,7 @@
         </div>
       </div>
       </div>
+      <div class="menu-print" aria-hidden="true"></div>
       <p class="carte__note reveal">Carte non contractuelle. L'abus d'alcool est dangereux pour la santé.</p>
     </div>
   </section>
@@ -1309,6 +1318,49 @@
       if(nodes.length) root.replaceChildren.apply(root,nodes);
     });
   });
+})();
+</script>
+<script>
+/* Construit une carte d'impression en 2 PAGES DISTINCTES (chacune un panneau
+   complet : cadre, bande foraine, ampoules). Cloné depuis le menu rendu (dynamique
+   Supabase ou statique), réparti en 2 groupes équilibrés par hauteur, avec un saut
+   de page forcé entre les deux. Invisible à l'écran (.menu-print{display:none}). */
+(function(){
+  "use strict";
+  function weight(c){return 2.4 + c.querySelectorAll('.menu__row,.menu__spirit,.menu__h,.menu__shdr').length;}
+  function makePage(group,first){
+    var page=document.createElement('section');
+    page.className='menu menu-print__page';
+    var intro=document.createElement('div');intro.className='menu__intro';
+    var h=document.createElement('h3');h.className='menu__title';h.textContent='La carte complète';
+    intro.appendChild(h);
+    if(first){var p=document.createElement('p');p.className='menu__sub';
+      p.textContent='Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl).';
+      intro.appendChild(p);}
+    page.appendChild(intro);
+    var cols=document.createElement('div');cols.className='menu__cols';
+    group.forEach(function(c){cols.appendChild(c.cloneNode(true));});
+    page.appendChild(cols);
+    return page;
+  }
+  function build(){
+    var src=document.getElementById('menu-cols');
+    var host=document.querySelector('.menu-print');
+    if(!src||!host)return;
+    var cats=Array.prototype.slice.call(src.querySelectorAll(':scope > .menu__cat'));
+    if(!cats.length)return;
+    var total=cats.reduce(function(s,c){return s+weight(c);},0);
+    /* page 1 porte le gros titre+sous-titre → on lui donne un peu moins (47%) */
+    var target=total*0.47,acc=0,split=cats.length;
+    for(var i=0;i<cats.length;i++){acc+=weight(cats[i]);if(acc>=target){split=i+1;break;}}
+    if(split<1)split=1;if(split>cats.length-1)split=cats.length-1;
+    host.replaceChildren(makePage(cats.slice(0,split),true),makePage(cats.slice(split),false));
+  }
+  window.__buildPrintMenu=build;
+  window.addEventListener('beforeprint',build);
+  if(window.matchMedia){try{window.matchMedia('print').addEventListener('change',function(e){if(e.matches)build();});}catch(_){}}
+  if(document.readyState!=='loading')build();else document.addEventListener('DOMContentLoaded',build);
+  setTimeout(build,1600); /* reconstruit après le rendu dynamique Supabase */
 })();
 </script>
 </body>
