@@ -75,26 +75,27 @@
   async function guard(p){var r=await p;if(r&&r.error){toast(r.error.message||'Erreur',true);}else{toast('Enregistré ✓');}return r;}
 
   /* ---------- AUTH ---------- */
-  function renderLogin(sent){
+  var ADMIN_EMAIL='carrousel@carrouselbar.fr';
+  function renderLogin(){
     app.replaceChildren();
     var box=el('div','login');
     box.appendChild(el('h2','','Carrousel · Admin'));
-    box.appendChild(el('p','','Gestion de la carte. Connecte-toi avec ton e-mail : tu recevras un lien de connexion.'));
-    var email=el('input');email.type='email';email.placeholder='ton@email.fr';email.autocomplete='email';
-    box.appendChild(email);
-    var btn=el('button','btn','Recevoir le lien de connexion');
+    box.appendChild(el('p','','Entre le code d’accès pour gérer la carte, les horaires, les infos et les événements.'));
+    var code=el('input');code.type='password';code.inputMode='numeric';code.autocomplete='off';code.placeholder='Code d’accès';
+    box.appendChild(code);
+    var btn=el('button','btn','Entrer');
     box.appendChild(btn);
     var msg=el('div','msg');box.appendChild(msg);
-    btn.addEventListener('click',async function(){
-      var e=email.value.trim();if(!e){return;}
-      btn.disabled=true;btn.textContent='Envoi…';
-      var r=await sb.auth.signInWithOtp({email:e,options:{emailRedirectTo:location.origin+location.pathname}});
-      btn.disabled=false;btn.textContent='Recevoir le lien de connexion';
-      if(r.error){msg.textContent=r.error.message;msg.className='msg err show';}
-      else{msg.textContent='E-mail envoyé à '+e+'. Ouvre-le sur cet appareil et clique le lien.';msg.className='msg show';}
-    });
-    if(sent){var m2=el('div','msg show','Lien envoyé, regarde tes e-mails.');box.appendChild(m2);}
-    app.appendChild(box);
+    async function submit(){
+      var c=code.value.trim();if(!c){return;}
+      btn.disabled=true;btn.textContent='…';
+      var r=await sb.auth.signInWithPassword({email:ADMIN_EMAIL,password:c});
+      btn.disabled=false;btn.textContent='Entrer';
+      if(r.error){msg.textContent='Code incorrect.';msg.className='msg err show';code.value='';code.focus();}
+    }
+    btn.addEventListener('click',submit);
+    code.addEventListener('keydown',function(e){if(e.key==='Enter')submit();});
+    app.appendChild(box);code.focus();
   }
 
   /* ---------- DATA ---------- */
