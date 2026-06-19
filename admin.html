@@ -126,6 +126,13 @@
       pr.placeholder = cat.layout==='spirit' ? 'ex. 5 · 8 · 100' : 'ex. 6 € (vide = sans prix)';
       pr.addEventListener('change',function(){guard(sb.from('menu_items').update({price:pr.value||null}).eq('id',it.id));it.price=pr.value;});
       row.appendChild(pr);
+      if(cat.layout!=='spirit'){
+        row.style.flexWrap='wrap';
+        var ds=el('input','ds');ds.value=it.description||'';ds.placeholder='Description (ex. Rhum, menthe, citron vert) — facultatif';
+        ds.style.cssText='flex:1 1 100%;margin-top:.35rem;font-style:italic;opacity:.92;';
+        ds.addEventListener('change',function(){guard(sb.from('menu_items').update({description:ds.value||null}).eq('id',it.id));it.description=ds.value;});
+        row.appendChild(ds);
+      }
     }
     var x=el('button','btn--x','✕');x.title='Supprimer';
     x.addEventListener('click',async function(){if(!confirm('Supprimer « '+(it.name||'')+' » ?'))return;await guard(sb.from('menu_items').delete().eq('id',it.id));refresh();});

@@ -441,6 +441,7 @@
   .menu__row .d{flex:1;min-width:1rem;}
   .menu__row .p{font-weight:700;color:var(--red-2);white-space:nowrap;}
   .menu__row--name{display:block;color:var(--wine);}
+  .menu__desc{display:block;font-family:var(--font-script);font-style:italic;font-weight:500;font-size:.8rem;color:rgba(22,10,18,.58);margin-top:.02rem;line-height:1.25;}
   .menu__cat--sp h3{border-bottom:none;margin-bottom:.2rem;}
   .menu__shdr,.menu__spirit{display:grid;grid-template-columns:minmax(0,1fr) repeat(var(--n,3),2.8rem);align-items:baseline;}
   .menu__shdr{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gold-2);border-bottom:2px solid rgba(122,12,31,.28);padding-bottom:.28rem;margin-bottom:.1rem;}
@@ -592,6 +593,7 @@
     .menu__cat h3{font-size:9.6pt!important;padding:1.1mm 2.3mm!important;margin-bottom:1.1mm!important;}
     .menu__h{font-size:8.2pt!important;margin:.9mm 0 .2mm!important;}
     .menu__row,.menu__spirit,.menu__row--name{font-size:8pt!important;padding:.35mm 0!important;line-height:1.18!important;}
+    .menu__desc{font-size:6.4pt!important;line-height:1.12!important;margin-top:0!important;}
     .menu__shdr{font-size:5.8pt!important;padding-bottom:.4mm!important;margin-bottom:.2mm!important;}
   }
 </style>
@@ -1369,7 +1371,7 @@
     }else{
       items.forEach(function(it){
         if(it.kind==='subheader')cat.appendChild(el('div','menu__h',it.name));
-        else if(it.price==null||it.price==='')cat.appendChild(el('div','menu__row menu__row--name',it.name));
+        else if(it.price==null||it.price===''){var nm=el('div','menu__row menu__row--name',it.name);if(it.description)nm.appendChild(el('span','menu__desc',it.description));cat.appendChild(nm);}
         else{var row=el('div','menu__row');row.appendChild(el('span','n',it.name));row.appendChild(el('span','d'));row.appendChild(el('span','p',it.price));cat.appendChild(row);}
       });
     }
@@ -1395,7 +1397,7 @@
    de page forcé entre les deux. Invisible à l'écran (.menu-print{display:none}). */
 (function(){
   "use strict";
-  function weight(c){return 2.4 + c.querySelectorAll('.menu__row,.menu__spirit,.menu__h,.menu__shdr').length;}
+  function weight(c){return 2.4 + c.querySelectorAll('.menu__row,.menu__spirit,.menu__h,.menu__shdr').length + c.querySelectorAll('.menu__desc').length*0.85;}
   function makePage(group,first){
     var page=document.createElement('section');
     page.className='menu menu-print__page';
@@ -1418,11 +1420,16 @@
     var cats=Array.prototype.slice.call(src.querySelectorAll(':scope > .menu__cat'));
     if(!cats.length)return;
     var total=cats.reduce(function(s,c){return s+weight(c);},0);
-    /* page 1 porte le gros titre+sous-titre → on lui donne un peu moins (47%) */
-    var target=total*0.47,acc=0,split=cats.length;
-    for(var i=0;i<cats.length;i++){acc+=weight(cats[i]);if(acc>=target){split=i+1;break;}}
-    if(split<1)split=1;if(split>cats.length-1)split=cats.length-1;
-    host.replaceChildren(makePage(cats.slice(0,split),true),makePage(cats.slice(split),false));
+    /* nb de pages adaptatif (capacité ~88 par A4) : 2 ou 3 panneaux complets, jamais coupés */
+    var n=Math.max(2,Math.ceil(total/88));
+    var per=total/n,acc=0,gi=1,groups=[],cur=[];
+    for(var i=0;i<cats.length;i++){
+      cur.push(cats[i]);acc+=weight(cats[i]);
+      if(gi<n && acc>=per*gi){groups.push(cur);cur=[];gi++;}
+    }
+    if(cur.length)groups.push(cur);
+    while(groups.length<n)groups.push([]);
+    host.replaceChildren.apply(host,groups.map(function(g,idx){return makePage(g,idx===0);}));
   }
   window.__buildPrintMenu=build;
   window.addEventListener('beforeprint',build);
