@@ -436,7 +436,7 @@
   .menu::before{content:"";position:absolute;top:0;left:0;right:0;height:20px;z-index:1;background:repeating-linear-gradient(-52deg,#16110d 0 22px,var(--cream) 22px 44px);border-bottom:3px solid var(--gold);}
   .menu::after{content:"";position:absolute;top:30px;left:16px;right:16px;height:9px;z-index:1;pointer-events:none;background:radial-gradient(circle,var(--gold) 0 3px,transparent 3.6px) repeat-x;background-size:28px 9px;filter:drop-shadow(0 0 3px rgba(248,198,58,.55));opacity:.85;}
   .menu__intro{position:relative;z-index:2;margin-top:.4rem;}
-  .menu__title{transform:rotate(-1.4deg);}
+  .menu__title{transform:none;}
   .menu__title::after{content:"";display:block;width:74px;height:5px;margin:.55rem auto 0;border-radius:3px;background:var(--grad-gold);}
   .menu__cat h3{color:var(--red-2);border-bottom:2px dashed rgba(122,12,31,.34);}
   .menu__cat h3 small{color:var(--gold-2);}
@@ -449,8 +449,8 @@
   /* ---- Carrousel : catégories colorées ---- */
   .menu__cols{column-gap:clamp(1rem,2.2vw,1.6rem);background:repeating-linear-gradient(-52deg,#16110d 0 20px,var(--cream) 20px 40px);padding:clamp(1rem,2.4vw,1.7rem);border-radius:16px;box-shadow:inset 0 0 0 3px var(--gold),inset 0 0 0 6px rgba(0,0,0,.32);}
   .menu__cat{background:var(--catbg,#fff);border-radius:14px;padding:.7rem .9rem 1rem;margin-bottom:clamp(1rem,2.2vw,1.6rem);box-shadow:0 6px 16px rgba(40,8,12,.34);}
-  .menu__cat h3{background:var(--cat,var(--red));color:var(--catt,var(--cream));padding:.42rem .8rem;border-radius:9px;border-bottom:none;box-shadow:0 4px 0 rgba(122,12,31,.25);transform:rotate(-1deg);margin-bottom:.6rem;}
-  .menu__cat h3 small{color:inherit;opacity:.82;}
+  .menu__cat h3{background:var(--cat,var(--red));color:#fff;padding:.48rem .85rem;border-radius:8px;border-bottom:none;box-shadow:0 3px 0 rgba(0,0,0,.16);transform:none;margin-bottom:.72rem;letter-spacing:.01em;text-shadow:0 1px 1px rgba(0,0,0,.18);}
+  .menu__cat h3 small{color:#fff;opacity:.85;text-shadow:none;}
   .menu__cat--sp h3{border-bottom:none;}
   .menu__h{color:var(--red-2);}
   .menu__shdr .pr{color:var(--red-deep);}
@@ -552,7 +552,7 @@
     .menu-print__page{margin:0!important;}
     .menu-print__page:not(:last-child){break-after:page!important;page-break-after:always!important;}
     /* panneau : on garde cadre/bande/ampoules/fond rayé, on resserre les marges */
-    .menu{margin:0!important;padding:5mm 5mm 4mm!important;padding-top:9mm!important;}
+    .menu{margin:0!important;padding:5mm 5mm 4mm!important;padding-top:12mm!important;}
     .menu__intro{margin-bottom:3mm!important;}
     .menu__title{font-size:17pt!important;}
     .menu__sub{font-size:7.4pt!important;margin-top:.3rem!important;}
@@ -669,7 +669,7 @@
       <div class="menu reveal" data-d="1">
         <div class="menu__intro"><h3 class="menu__title">La carte complète</h3><p class="menu__sub">Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl).</p></div>
       <div class="menu__cols" id="menu-cols">
-        <div class="menu__cat" style="--cat:var(--red);--catt:var(--cream);--catbg:#fbe1e4;">
+        <div class="menu__cat" style="--cat:#e01e37;--catt:#fff;--catbg:#fbe1e4;">
           <h3>Cocktails <small>Tous à 12 €</small></h3>
           <div class="menu__h">Au rhum</div>
           <div class="menu__row menu__row--name">Piña Colada</div>
@@ -691,7 +691,7 @@
           <div class="menu__h">Signature</div>
           <div class="menu__row menu__row--name">Caramel · Whisky · Rhum · Vanille · Jus de pomme</div>
         </div>
-        <div class="menu__cat" style="--cat:var(--magenta);--catt:#ffffff;--catbg:#ffe2ef;">
+        <div class="menu__cat" style="--cat:#d81f6f;--catt:#fff;--catbg:#fbe0ee;">
           <h3>Vins <small>35 €</small></h3>
           <div class="menu__h">Blancs</div>
           <div class="menu__row menu__row--name">Chardonnay</div>
@@ -705,7 +705,7 @@
           <div class="menu__h">Rosé</div>
           <div class="menu__row menu__row--name">Rosé</div>
         </div>
-        <div class="menu__cat" style="--cat:var(--gold);--catt:var(--wine);--catbg:#fdf1d2;">
+        <div class="menu__cat" style="--cat:#bb650e;--catt:#fff;--catbg:#f7e8d0;">
           <h3>Bulles &amp; Champagnes</h3>
           <div class="menu__row"><span class="n">Prosecco</span><span class="d"></span><span class="p">40 €</span></div>
           <div class="menu__row"><span class="n">Brut</span><span class="d"></span><span class="p">—</span></div>
@@ -717,7 +717,7 @@
           <div class="menu__row"><span class="n">Ruinart</span><span class="d"></span><span class="p">—</span></div>
           <div class="menu__row"><span class="n">Blanc de Blancs</span><span class="d"></span><span class="p">—</span></div>
         </div>
-        <div class="menu__cat" style="--cat:var(--cyan);--catt:var(--wine);--catbg:#d9f4f0;">
+        <div class="menu__cat" style="--cat:#0b7a6d;--catt:#fff;--catbg:#d6efe9;">
           <h3>Bières <small>33 cl</small></h3>
           <div class="menu__row"><span class="n">1664 Blonde</span><span class="d"></span><span class="p">6 €</span></div>
           <div class="menu__row"><span class="n">1664 Blanche</span><span class="d"></span><span class="p">6 €</span></div>
@@ -727,7 +727,7 @@
           <div class="menu__row"><span class="n">Desperados</span><span class="d"></span><span class="p">7 €</span></div>
           <div class="menu__row"><span class="n">Guinness</span><span class="d"></span><span class="p">7 €</span></div>
         </div>
-        <div class="menu__cat" style="--cat:var(--plum);--catt:var(--cream);--catbg:#ece2f1;">
+        <div class="menu__cat" style="--cat:#4d2270;--catt:#fff;--catbg:#ece2f4;">
           <h3>Softs</h3>
           <div class="menu__row"><span class="n">Coca-Cola / Zero</span><span class="d"></span><span class="p">4 €</span></div>
           <div class="menu__row"><span class="n">Sprite</span><span class="d"></span><span class="p">4 €</span></div>
@@ -740,7 +740,7 @@
           <div class="menu__row"><span class="n">Eau gazeuse</span><span class="d"></span><span class="p">3 €</span></div>
           <div class="menu__row"><span class="n">Red Bull « Flavors »</span><span class="d"></span><span class="p">5 €</span></div>
         </div>
-        <div class="menu__cat" style="--cat:var(--red-2);--catt:var(--cream);--catbg:#f7dee1;">
+        <div class="menu__cat" style="--cat:#b3122a;--catt:#fff;--catbg:#f6dde2;">
           <h3>Jus de fruits <small>4 €</small></h3>
           <div class="menu__row menu__row--name">Abricot</div>
           <div class="menu__row menu__row--name">Fraise</div>
@@ -748,7 +748,7 @@
           <div class="menu__row menu__row--name">Lychee</div>
           <div class="menu__row menu__row--name">Autres jus</div>
         </div>
-        <div class="menu__cat" style="--cat:var(--red);--catt:var(--cream);--catbg:#fbe1e4;">
+        <div class="menu__cat" style="--cat:#e01e37;--catt:#fff;--catbg:#fbe1e4;">
           <h3>Shots</h3>
           <div class="menu__row"><span class="n">Jäger Bomb</span><span class="d"></span><span class="p">8,5 €</span></div>
           <div class="menu__row"><span class="n">Sambuca flambée</span><span class="d"></span><span class="p">12 €</span></div>
@@ -756,7 +756,7 @@
           <div class="menu__row"><span class="n">Mètre — alcools à 5 €</span><span class="d"></span><span class="p">40 €</span></div>
           <div class="menu__row"><span class="n">Mètre — alcools 6–7 €</span><span class="d"></span><span class="p">60 €</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--magenta);--catt:#ffffff;--catbg:#ffe2ef;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#d81f6f;--catt:#fff;--catbg:#fbe0ee;--n:3;">
           <h3>Vodka</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Absolut « Flavors »</span><span class="pr">5</span><span class="pr">10</span><span class="pr">120</span></div>
@@ -764,7 +764,7 @@
           <div class="menu__spirit"><span class="n">Belvedere</span><span class="pr">7</span><span class="pr">13</span><span class="pr">150</span></div>
           <div class="menu__spirit"><span class="n">Grey Goose</span><span class="pr">7</span><span class="pr">13</span><span class="pr">150</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--gold);--catt:var(--wine);--catbg:#fdf1d2;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#bb650e;--catt:#fff;--catbg:#f7e8d0;--n:3;">
           <h3>Gin</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Gordon's</span><span class="pr">5</span><span class="pr">9</span><span class="pr">100</span></div>
@@ -774,7 +774,7 @@
           <div class="menu__spirit"><span class="n">Roku Gin</span><span class="pr">8</span><span class="pr">15</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Hendrick's</span><span class="pr">8</span><span class="pr">15</span><span class="pr">150</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--cyan);--catt:var(--wine);--catbg:#d9f4f0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#0b7a6d;--catt:#fff;--catbg:#d6efe9;--n:3;">
           <h3>Rhum</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Captain Morgan</span><span class="pr">5</span><span class="pr">8</span><span class="pr">100</span></div>
@@ -786,13 +786,13 @@
           <div class="menu__spirit"><span class="n">Don Papa Baroko</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Don Papa</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--plum);--catt:var(--cream);--catbg:#ece2f1;--n:1;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#4d2270;--catt:#fff;--catbg:#ece2f4;--n:1;">
           <h3>Cachaça <small>environ</small></h3>
           <div class="menu__shdr"><span></span><span class="pr">4cl</span></div>
           <div class="menu__spirit"><span class="n">Ypióca</span><span class="pr">12</span></div>
           <div class="menu__spirit"><span class="n">Aguacana</span><span class="pr">10</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--red-2);--catt:var(--cream);--catbg:#f7dee1;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#b3122a;--catt:#fff;--catbg:#f6dde2;--n:3;">
           <h3>Whiskies</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Red Label</span><span class="pr">5</span><span class="pr">8</span><span class="pr">100</span></div>
@@ -805,7 +805,7 @@
           <div class="menu__spirit"><span class="n">Monkey Shoulder</span><span class="pr">7</span><span class="pr">15</span><span class="pr">150</span></div>
           <div class="menu__spirit"><span class="n">Chivas 18</span><span class="pr">10</span><span class="pr">18</span><span class="pr">200</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--red);--catt:var(--cream);--catbg:#fbe1e4;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e01e37;--catt:#fff;--catbg:#fbe1e4;--n:3;">
           <h3>Bourbon</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Jack Daniel's</span><span class="pr">5</span><span class="pr">10</span><span class="pr">120</span></div>
@@ -814,13 +814,13 @@
           <div class="menu__spirit"><span class="n">Jack Daniel's N°7 Black</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Jack Daniel's Single Barrel</span><span class="pr">7</span><span class="pr">15</span><span class="pr"></span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--magenta);--catt:#ffffff;--catbg:#ffe2ef;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#d81f6f;--catt:#fff;--catbg:#fbe0ee;--n:3;">
           <h3>Cognacs</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Hennessy Special</span><span class="pr">7</span><span class="pr">14</span><span class="pr">150</span></div>
           <div class="menu__spirit"><span class="n">Courvoisier</span><span class="pr">7</span><span class="pr">13</span><span class="pr">140</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--gold);--catt:var(--wine);--catbg:#fdf1d2;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#bb650e;--catt:#fff;--catbg:#f7e8d0;--n:3;">
           <h3>Tequila</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
           <div class="menu__spirit"><span class="n">Sierra</span><span class="pr">5</span><span class="pr"></span><span class="pr"></span></div>
@@ -829,7 +829,7 @@
           <div class="menu__spirit"><span class="n">Patrón Silver</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Azul Reposado</span><span class="pr">35</span><span class="pr">70</span><span class="pr">800</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--cyan);--catt:var(--wine);--catbg:#d9f4f0;--n:2;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#0b7a6d;--catt:#fff;--catbg:#d6efe9;--n:2;">
           <h3>Apéritifs</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span></div>
           <div class="menu__spirit"><span class="n">Martini</span><span class="pr">5</span><span class="pr">8</span></div>
@@ -839,7 +839,7 @@
           <div class="menu__spirit"><span class="n">Pastis 51</span><span class="pr">4</span><span class="pr"></span></div>
           <div class="menu__spirit"><span class="n">Jet 27 / Jet 31</span><span class="pr">5</span><span class="pr">8</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--plum);--catt:var(--cream);--catbg:#ece2f1;--n:2;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#4d2270;--catt:#fff;--catbg:#ece2f4;--n:2;">
           <h3>Digestifs</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span></div>
           <div class="menu__spirit"><span class="n">Poire Williams</span><span class="pr">5</span><span class="pr">10</span></div>
@@ -850,7 +850,7 @@
           <div class="menu__spirit"><span class="n">Limoncello</span><span class="pr">5</span><span class="pr">8</span></div>
           <div class="menu__spirit"><span class="n">Sambuca</span><span class="pr">5</span><span class="pr">9</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:var(--red-2);--catt:var(--cream);--catbg:#f7dee1;--n:2;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#b3122a;--catt:#fff;--catbg:#f6dde2;--n:2;">
           <h3>Liqueurs</h3>
           <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span></div>
           <div class="menu__spirit"><span class="n">Malibu</span><span class="pr">5</span><span class="pr">9</span></div>
@@ -1275,7 +1275,7 @@
   var SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3a3V3b3R2cG5oaXN4cmJqY3hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3Nzk0ODcsImV4cCI6MjA5NzM1NTQ4N30.rUbvxZF-tD_YPWJAhFIN8U8ydWb1Fl89RFMzW4gk6rQ";
   if(!window.supabase||!window.supabase.createClient) return;
   var sb=window.supabase.createClient(SB_URL,SB_KEY);
-  var PAL=[["var(--red)","var(--cream)","#fbe1e4"],["var(--magenta)","#ffffff","#ffe2ef"],["var(--gold)","var(--wine)","#fdf1d2"],["var(--cyan)","var(--wine)","#d9f4f0"],["var(--plum)","var(--cream)","#ece2f1"],["var(--red-2)","var(--cream)","#f7dee1"]];
+  var PAL=[["#e01e37","#fff","#fbe1e4"],["#d81f6f","#fff","#fbe0ee"],["#bb650e","#fff","#f7e8d0"],["#0b7a6d","#fff","#d6efe9"],["#4d2270","#fff","#ece2f4"],["#b3122a","#fff","#f6dde2"]];
   function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
   function catNode(c,items){
     var sp=c.layout==='spirit';
