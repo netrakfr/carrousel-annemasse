@@ -611,6 +611,390 @@
     .menu__desc{font-size:6.4pt!important;line-height:1.12!important;margin-top:0!important;}
     .menu__shdr{font-size:5.8pt!important;padding-bottom:.4mm!important;margin-bottom:.2mm!important;}
   }
+
+
+/* ================= CARROUSEL LIVING-SITE FX (cx-*) ================= */
+/* ====================== CX-MANÈGE — Le manège qui tourne (signature) ======================
+   Drop-in: paste anywhere inside the existing <style>…<\/style> block (e.g. just before the
+   deco reduced-motion group near ~line 565). Master clock = 40s revolution. Bob 3.2s.
+   Bulb-chase = a LOCAL soft glow (cx-bulb-glow) whose peak rate is well under 2.5x/s.
+   NOTE: the host already kills all animation under prefers-reduced-motion via the global
+   `*{animation:none!important}` rule (~line 535); the block below additionally parks the
+   ring at a charming static angle and lights the bulbs, so the calm state is fully resolved. */
+
+/* Stage: own vertical band, FIRST child of #carte, behind .container (z:1), pointer-safe.
+   #carte is a .section (z-index:2) → this stacking context is internal: stage 0 < container 1. */
+.cx-manege-stage{
+  position:relative;
+  z-index:0;                       /* menu card (.carte .container) sits at z-index:1 above */
+  width:min(440px,82vw);
+  margin:0 auto clamp(1.4rem,4vw,2.6rem);
+  pointer-events:none;             /* never blocks menu/nav clicks */
+  user-select:none;
+  /* translucent gap so the menu card reads as floating above the dark canvas */
+  -webkit-mask-image:radial-gradient(120% 120% at 50% 42%,#000 78%,transparent 100%);
+          mask-image:radial-gradient(120% 120% at 50% 42%,#000 78%,transparent 100%);
+}
+.cx-manege{display:block;width:100%;height:auto;overflow:visible;}
+
+/* ---- THE TURN : one outer group rotates the whole horse-ring, continuous & slow ---- */
+.cx-manege__spin{
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:cx-spin 40s linear infinite;       /* master clock */
+}
+.cx-manege.is-near .cx-manege__spin{will-change:transform;}  /* only while onscreen */
+
+/* ---- each horse counter-bobs on its pole, staggered by --i (a harmonic of the ride) ---- */
+.cx-manege__horse{
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:cx-bob 3.2s ease-in-out infinite;
+  animation-delay:calc(var(--i,0) * -0.8s);     /* quarter-phase stagger, same easing family */
+}
+
+/* ---- canopy is FIXED (no spin). Only its bulb dots chase via cx-bulb-glow ---- */
+.cx-manege__bulb{
+  transform-box:fill-box;transform-origin:center;
+  animation:cx-bulb-glow 2.4s ease-in-out infinite;
+  animation-delay:calc(var(--b,0) * 0.12s);     /* ~0.12s per bulb → gentle chasing swell */
+}
+
+@keyframes cx-spin{to{transform:rotate(360deg);}}
+@keyframes cx-bob{0%,100%{transform:translateY(6%);}50%{transform:translateY(-6%);}}
+/* soft opacity swell, NEVER a strobe: 2.4s cycle, one .45→1→.45 swell ⇒ ~0.42 flashes/s */
+@keyframes cx-bulb-glow{0%,100%{opacity:.45;}50%{opacity:1;}}
+
+/* Mobile: shrink to a banner above the menu (same node count paints fewer pixels) */
+@media (max-width:560px){
+  .cx-manege-stage{width:min(260px,72vw);margin-bottom:clamp(1rem,5vw,1.8rem);}
+}
+
+/* Reduced motion: everything resolves to ONE calm static state — no turn, no bob, bulbs lit.
+   (Reinforces the host's global *{animation:none!important}; sets the parked transforms.) */
+@media (prefers-reduced-motion:reduce){
+  .cx-manege__spin{animation:none;transform:rotate(-8deg);}  /* a charming parked angle */
+  .cx-manege__horse{animation:none;transform:none;will-change:auto;}
+  .cx-manege__bulb{animation:none;opacity:1;}
+  .cx-manege.is-near .cx-manege__spin{will-change:auto;}
+}
+
+/* Print: decor for the velvet-night screen — never print it (matches existing print block) */
+@media print{ .cx-manege-stage{display:none!important;} }
+
+/* ============================ CX-BULBS — booth light-string ============================
+   A thin horizontal rail of evenly-spaced bulbs pinned to the TOP padding band of
+   velvet-night sections (#carte, #infos). Bulbs glow in a gentle TRAVELLING chase
+   (opacity only) whose 5s cycle is a clean harmonic of the 40s manège master clock
+   (40 / 8 = 5). The per-bulb phase sweeps exactly ONE cycle across the whole rail,
+   so the swell reads as a single warm wave circling the ring — the same heartbeat as
+   the canopy. Extends the existing .bulb + @keyframes tw vocabulary; does not replace it. */
+  .cx-bulbs{position:absolute;top:0;left:0;right:0;height:14px;z-index:0;pointer-events:none;
+    display:flex;justify-content:space-between;align-items:center;
+    padding-inline:clamp(10px,4vw,46px);
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
+  /* candy-stripe wire behind the bulbs (crimson/cream identity carried into the rail) */
+  .cx-bulbs::before{content:"";position:absolute;left:0;right:0;top:6px;height:2px;
+    background:repeating-linear-gradient(90deg,var(--red-deep) 0 7px,rgba(255,217,138,.22) 7px 11px);
+    opacity:.5;border-radius:2px;}
+  .cx-bulb{position:relative;width:8px;height:8px;border-radius:50%;flex:0 0 auto;
+    background:radial-gradient(circle at 38% 32%,#fff7d8,var(--gold-light) 46%,var(--gold-2));
+    box-shadow:0 0 5px 1px rgba(255,224,138,.85),0 0 11px 3px rgba(248,198,58,.45);
+    opacity:.7;
+    /* 5s = 40s manège clock / 8 ; negative delay spans exactly one cycle (-(--cx-i / --cx-n) * 5s)
+       so the chase is a seamless travelling swell, continuous no matter the bulb count */
+    animation:cx-bulb-glow 5s var(--ease) infinite;
+    animation-delay:calc(var(--cx-i,0) / var(--cx-n,1) * -5s);
+    will-change:opacity;}
+  /* occasional teal / magenta bulbs for the bright "carrousel vif" palette */
+  .cx-bulb--teal{background:radial-gradient(circle at 38% 32%,#d6fff9,#5ff0e0 46%,var(--cyan));
+    box-shadow:0 0 5px 1px rgba(0,180,166,.7),0 0 11px 3px rgba(0,180,166,.35);}
+  .cx-bulb--magenta{background:radial-gradient(circle at 38% 32%,#ffd9ec,#ff7ab4 46%,var(--magenta));
+    box-shadow:0 0 5px 1px rgba(255,46,136,.7),0 0 11px 3px rgba(255,46,136,.35);}
+  /* ONE gentle swell per 5s cycle = 0.2 peaks/sec, far under the 2.5/sec seizure ceiling;
+     a soft .45 swing (.55 -> 1) reads as warm lamplight, never a strobe */
+  @keyframes cx-bulb-glow{0%,100%{opacity:.55}50%{opacity:1}}
+  /* never print a stray bulb strip on the 2-page carte */
+  @media print{.cx-bulbs{display:none!important;}}
+  @media (prefers-reduced-motion: reduce){
+    .cx-bulb{animation:none;opacity:.82;will-change:auto;}
+  }
+
+/* ============================================================
+   cx-drift — Ambient Drifting Confetti & Tickets
+   Velvet-night ambient layer behind #carte, events gap, #infos.
+   Transform + opacity only. Long 20-40s loops (harmonics of the
+   40s manège master clock). No flashing. All counts/positions/
+   durations set in JS; CSS holds the motion language + a calm
+   reduced-motion static constellation.
+   ============================================================ */
+.cx-drift{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  /* z-index:-1 (NOT 0): the host sections .events and .infos do
+     NOT give their .container a positioned z-index, so a z-index:0
+     positioned layer would paint OVER their text/links. -1 keeps
+     the field ABOVE the flat section background but BELOW all
+     content in every host — .section establishes the stacking
+     context (position:relative; z-index:2), so -1 is scoped safely. */
+  z-index:-1;
+  pointer-events:none; /* never blocks clicks on text/buttons */
+  /* GPU compositing hint for the whole field; particles add their
+     own will-change only while their container is on-screen. */
+  contain:layout paint style;
+}
+
+/* Each particle is positioned via inline left/top (set once in JS,
+   NOT animated) and drifts purely with transform + holds opacity.
+   --cx-dur / --cx-delay / --cx-amp* / --cx-rot are JS-set vars. */
+.cx-drift__p{
+  position:absolute;
+  top:0;left:0;
+  display:block;
+  opacity:var(--cx-op,.5);
+  transform:translate3d(0,0,0);
+  /* ease-in-out, not linear: the unhurried, breathing heartbeat of
+     a turning manège — gentle swells in and out, never mechanical. */
+  animation:cx-drift-float var(--cx-dur,30s) ease-in-out var(--cx-delay,0s) infinite;
+  transform-origin:50% 50%;
+}
+/* On-screen flag (toggled by the IntersectionObserver) lifts particles
+   onto their own layer; cleared when offscreen to free the compositor. */
+.cx-drift.is-live .cx-drift__p{will-change:transform;}
+
+/* Long-arc drift: a gentle closed loop (returns to origin) with a
+   slight rotation swell — calm, non-repetitive, never strobing.
+   Opacity is constant across the whole loop (set on the element). */
+@keyframes cx-drift-float{
+  0%  {transform:translate3d(0,0,0) rotate(0deg);}
+  25% {transform:translate3d(var(--cx-ampx,18px),calc(var(--cx-ampy,-22px) * .55),0) rotate(var(--cx-rot,6deg));}
+  50% {transform:translate3d(calc(var(--cx-ampx,18px) * .35),var(--cx-ampy,-22px),0) rotate(0deg);}
+  75% {transform:translate3d(calc(var(--cx-ampx,18px) * -.6),calc(var(--cx-ampy,-22px) * .5),0) rotate(calc(var(--cx-rot,6deg) * -1));}
+  100%{transform:translate3d(0,0,0) rotate(0deg);}
+}
+
+/* Pause field whose host section is offscreen (set by IO). */
+.cx-drift.is-paused .cx-drift__p{animation-play-state:paused;}
+
+/* Rare gold star sparkle: a SLOW opacity swell on a clean 10s cycle
+   (a quarter of the 40s master clock) — peaks at ~0.1x/sec, far under
+   2.5x/sec, a twinkle, never a strobe. Runs only on the few sparkle
+   stars, layered over the steady drift via the inner <svg>'s own
+   animation so the drift transform is untouched. */
+.cx-drift__spark{animation:cx-drift-spark 10s ease-in-out var(--cx-delay,0s) infinite;}
+@keyframes cx-drift-spark{0%,100%{opacity:.55;}50%{opacity:1;}}
+.cx-drift.is-paused .cx-drift__spark{animation-play-state:paused;}
+
+/* Reduced motion: ONE calm static scattered constellation.
+   No drift, no twinkle — particles simply rest where JS placed them. */
+@media (prefers-reduced-motion:reduce){
+  .cx-drift__p{animation:none;transform:translate3d(0,0,0);will-change:auto;}
+  .cx-drift__spark{animation:none;opacity:.85;}
+  .cx-drift.is-live .cx-drift__p{will-change:auto;}
+}
+
+/* cx-reveal (trimmed: additive entrance modifiers only — parallax/festoon dropped to avoid class collisions with cx-manege/.cx-drift) */
+:root{ --cx-settle:cubic-bezier(.18,.92,.30,1.18); }
+.cx-reveal--spin{ transition:opacity .62s var(--ease), transform .74s var(--cx-settle); }
+.cx-reveal--spin:not(.in){ transform:translateY(30px) rotate(-6deg); transform-origin:50% 120%; }
+.cx-reveal--mount{ transition:opacity .55s var(--ease), transform .72s var(--cx-settle); }
+.cx-reveal--mount:not(.in){ transform:translateY(42px) scale(.955); will-change:transform; }
+.cx-reveal--stagger[data-d="1"]{transition-delay:.10s;}
+.cx-reveal--stagger[data-d="2"]{transition-delay:.20s;}
+.cx-reveal--stagger[data-d="3"]{transition-delay:.32s;}
+.cx-reveal--stagger[data-d="4"]{transition-delay:.44s;}
+.cx-reveal--stagger[data-d="5"]{transition-delay:.56s;}
+.cx-reveal--stagger[data-d="6"]{transition-delay:.68s;}
+@media (prefers-reduced-motion:reduce){
+  .cx-reveal--spin:not(.in),.cx-reveal--mount:not(.in){transform:translateY(34px);transform-origin:50% 50%;}
+  .cx-reveal--spin,.cx-reveal--mount{transition:opacity .8s var(--ease),transform .8s var(--ease);will-change:auto;}
+  .cx-reveal--stagger[data-d]{transition-delay:0s;}
+}
+
+/* ============================================================
+   cx-ride — Ride-Like Micro-Interactions (cards & buttons)
+   Grace-note layer over the manège ambient turn. The page's slow
+   ~40s carousel revolution is the master clock; everything ambient
+   is a harmonic of it. These are the ONLY quick beats — brief
+   interaction springs that resolve back to the steady ride:
+     • a cocktail card bobs + tilts and lights its bulb-edge,
+     • a candy CTA squashes then springs back via --bounce,
+     • a price/number badge winks (opacity, < 2.5x/sec).
+   Animates ONLY transform / opacity / filter. No looping autoplay;
+   every motion is user-triggered and self-resolving.
+   ============================================================ */
+
+/* --cx-glow is a REGISTERED custom prop so the bulb filter can
+   actually swell smoothly (0 -> 1) instead of snapping none->filter. */
+@property --cx-glow{syntax:'<number>';inherits:false;initial-value:0;}
+
+/* ---- shared sparkle: opacity-only swell, peaks ~0.6x/sec ---- */
+@keyframes cx-ride-sparkle{
+  0%,100%{opacity:1;}
+  50%{opacity:.55;}
+}
+
+/* ====================  COCKTAIL CARDS  ==================== */
+/* Baseline card already has transition:transform .3s var(--bounce)
+   and :hover{translateY(-6px) rotate(-.6deg)}. We extend the
+   transition to also ease the bulb-glow filter, and we drive the
+   filter from --cx-glow at ALL times (0 at rest = a no-op shadow)
+   so the swell interpolates instead of snapping. transform-origin
+   stays center so the lift never bleeds onto neighbouring text. */
+.ck.cx-ride{
+  transform-origin:center center;
+  --cx-glow:0;
+  transition:transform .42s var(--bounce),filter .42s var(--ease);
+  /* glow is always declared; at glow:0 the blur radius is 0 and
+     alpha is 0 -> visually nothing, but the filter node persists so
+     hover can transition the radius/alpha up smoothly. */
+  filter:
+    drop-shadow(0 0 calc(10px * var(--cx-glow)) rgba(255,186,8,calc(.55 * var(--cx-glow))))
+    drop-shadow(0 6px calc(20px * var(--cx-glow)) rgba(255,186,8,calc(.30 * var(--cx-glow))));
+}
+
+/* The heavier tilt + lift + glow is pointer-fine only (touch stays
+   flat-fast). We re-derive the existing -.6deg ride-tilt feel. */
+@media (hover:hover){
+  .ck.cx-ride:hover,
+  .ck.cx-ride:focus-within{
+    transform:translateY(-6px) rotate(.8deg);
+    --cx-glow:1;
+  }
+}
+
+/* Keyboard parity on coarse / no-hover pointers: a gentle lift on
+   focus (no tilt) so the candy stripe + layout never jitter. */
+.ck.cx-ride:focus-within{
+  --cx-glow:1;
+}
+@media (hover:none){
+  .ck.cx-ride:focus-within{transform:translateY(-4px);}
+}
+
+/* Badge winks — price + number pulse opacity only (rotate(-3deg)
+   baseline on .ck__price is preserved; we never touch transform). */
+@media (hover:hover){
+  .ck.cx-ride:hover .ck__price,
+  .ck.cx-ride:hover .ck__no{
+    animation:cx-ride-sparkle 1.6s var(--ease) infinite;
+  }
+  .ck.cx-ride:hover .ck__no{animation-delay:.2s;}
+}
+.ck.cx-ride:focus-within .ck__price,
+.ck.cx-ride:focus-within .ck__no{
+  animation:cx-ride-sparkle 1.6s var(--ease) infinite;
+}
+.ck.cx-ride:focus-within .ck__no{animation-delay:.2s;}
+
+/* ====================  CANDY CTA — PRESS  ==================== */
+/* GOLD: keep the rotate(-1.4deg) baseline + striped-candy shadow.
+   :active = quick squash (scaleY) then spring back via --bounce.
+   The existing stripe-widen on :active/:hover stays the candy beat;
+   we add a contained shimmer flash on the ::after ring (opacity). */
+.btn--gold.cx-press{
+  transform-origin:center bottom;
+  transition:transform .28s var(--bounce),box-shadow .28s var(--ease),--cta-stripe .28s var(--ease);
+}
+.btn--gold.cx-press:active,
+.btn--gold.cx-press:focus-visible:active{
+  transform:rotate(-1.4deg) translateY(0) scaleY(.92);
+  transition:transform .12s var(--ease);
+}
+/* faint shimmer sweep — opacity flash on the inset ring (no new DOM,
+   ::after already present on .btn--gold). Single grace-note. */
+@keyframes cx-press-shimmer{
+  0%{opacity:.16;}
+  45%{opacity:.5;}
+  100%{opacity:.16;}
+}
+.btn--gold.cx-press:active::after{
+  animation:cx-press-shimmer .5s var(--ease) 1;
+}
+
+/* RED: no rotate baseline. Squash-and-settle + a transform shimmer
+   sweep on a fresh ::after (red has no ::after upstream).
+   IMPORTANT: red's signature 3D lip lives in box-shadow OUTSIDE the
+   border-box, so we must NOT clip it with overflow:hidden. Instead
+   we re-express that lip as drop-shadow() (filters survive overflow
+   clipping) and THEN clip the sweep with overflow:hidden. The sweep
+   overlays at a positive z-index (a translucent light wink, like a
+   bulb) — it must NOT be z-index:-1, which inside isolation:isolate
+   would paint it behind the button's own background and hide it. */
+.btn--red.cx-press{
+  position:relative;
+  overflow:hidden;
+  transform-origin:center bottom;
+  /* re-express the upstream box-shadow lip as a filter so overflow
+     doesn't crop it. (Upstream box-shadow is neutralised below.) */
+  filter:drop-shadow(0 8px 0 var(--red-deep)) drop-shadow(0 14px 16px rgba(224,30,55,.45));
+  box-shadow:none;
+  transition:transform .25s var(--bounce),filter .25s var(--ease),background .25s var(--ease),color .25s var(--ease);
+}
+.btn--red.cx-press:hover{
+  transform:translateY(-3px);
+}
+.btn--red.cx-press:active{
+  transform:translateY(1px) scaleY(.92);
+  transition:transform .12s var(--ease);
+}
+.btn--red.cx-press::after{
+  content:"";position:absolute;z-index:1;top:0;bottom:0;left:-40%;
+  width:38%;
+  background:linear-gradient(105deg,transparent,rgba(255,248,240,.28),transparent);
+  transform:translateX(0);
+  opacity:0;
+  pointer-events:none;
+}
+@keyframes cx-press-sweep{
+  0%{transform:translateX(0);opacity:0;}
+  12%{opacity:1;}
+  100%{transform:translateX(420%);opacity:0;}
+}
+.btn--red.cx-press:active::after,
+.btn--red.cx-press.cx-shimmer::after{
+  animation:cx-press-sweep .62s var(--ease) 1;
+}
+
+/* ====================  REDUCED MOTION  ==================== */
+@media (prefers-reduced-motion:reduce){
+  /* Cards: resolve hover/focus to ONE calm lifted state — no tilt,
+     no sparkle, no glow swell. Glow forced off via the variable. */
+  .ck.cx-ride{
+    transition:transform .2s ease;
+    --cx-glow:0;
+    filter:none;
+  }
+  .ck.cx-ride:hover,
+  .ck.cx-ride:focus-within{
+    transform:translateY(-4px);
+    --cx-glow:0;
+  }
+  .ck.cx-ride:hover .ck__price,
+  .ck.cx-ride:hover .ck__no,
+  .ck.cx-ride:focus-within .ck__price,
+  .ck.cx-ride:focus-within .ck__no{
+    animation:none;
+    opacity:1;
+  }
+  /* Buttons: keep colour change only — no squash, no shimmer.
+     Restore red's static lip (no transition, no animation). */
+  .btn--gold.cx-press,
+  .btn--gold.cx-press:active{transform:rotate(-1.4deg);transition:box-shadow .15s var(--ease);}
+  .btn--red.cx-press{
+    transition:background .2s ease,color .2s ease;
+    filter:drop-shadow(0 8px 0 var(--red-deep)) drop-shadow(0 14px 16px rgba(224,30,55,.45));
+  }
+  .btn--red.cx-press:hover,
+  .btn--red.cx-press:active{transform:none;}
+  .btn--gold.cx-press:active::after,
+  .btn--red.cx-press:active::after,
+  .btn--red.cx-press.cx-shimmer::after{animation:none;opacity:0;}
+}
+/* ================= /CARROUSEL FX ================= */
+
 </style>
 </head>
 <body>
@@ -673,22 +1057,22 @@
     <div class="container">
       <span class="eyebrow reveal">Le lieu</span>
       <div class="esprit__grid">
-        <h2 class="h-big reveal" style="color:var(--red-2)">Entrez sous<br>le chapiteau</h2>
+        <h2 class="h-big reveal cx-reveal--spin" style="color:var(--red-2)">Entrez sous<br>le chapiteau</h2>
         <div>
           <p class="esprit__lead reveal" data-d="1">Un manège pour les grands, au cœur d'Annemasse.</p>
           <p class="esprit__body reveal" data-d="2" style="margin-top:1.2rem">Velours, ampoules dorées et damier au sol : on a glissé un cabaret forain dans la ville. On vient pour un verre, on reste pour l'ambiance — et on repart en parlant déjà du prochain tour.</p>
         </div>
       </div>
       <div class="feats">
-        <div class="feat reveal">
+        <div class="feat reveal cx-reveal--mount cx-reveal--stagger">
           <div class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 22h14M6 2h12M6 2c0 5 6 5 6 9s-6 4-6 9M18 2c0 5-6 5-6 9"/></svg></div>
           <h3>Cocktails maison</h3><p>Une carte signature qui ne ressemble à aucune autre.</p>
         </div>
-        <div class="feat reveal" data-d="1">
+        <div class="feat reveal cx-reveal--mount cx-reveal--stagger" data-d="1">
           <div class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
           <h3>DJ &amp; soirées</h3><p>Des nuits qui montent en température chaque week-end.</p>
         </div>
-        <div class="feat reveal" data-d="2">
+        <div class="feat reveal cx-reveal--mount cx-reveal--stagger" data-d="2">
           <div class="feat__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
           <h3>Esprit forain</h3><p>Lumières, rayures et un grain de folie. La fête comme décor.</p>
         </div>
@@ -698,19 +1082,111 @@
 
   <!-- ============ CARTE ============ -->
   <section class="section carte" id="carte">
+    <div class="cx-manege-stage" aria-hidden="true">
+  <svg class="cx-manege" viewBox="0 0 440 440" focusable="false" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <!-- static depth overlay: dims the FAR (upper) side of the ring to fake 3D -->
+      <radialGradient id="cxDepth" cx="50%" cy="72%" r="62%">
+        <stop offset="55%" stop-color="#12112a" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#12112a" stop-opacity=".5"/>
+      </radialGradient>
+      <!-- candy-stripe identity (crimson/cream) carried into the horse poles -->
+      <pattern id="cxPole" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(34)">
+        <rect width="8" height="8" fill="#fff8f0"/>
+        <rect width="4" height="8" fill="#e8173a"/>
+      </pattern>
+      <!-- one reusable carousel horse (side profile, candyfloss white + crimson tack) -->
+      <g id="cxHorse">
+        <path d="M-2 6q-5-22 18-29q26-8 39 11q11 16 3 36q-6 13-22 14q-25 4-39-11q-5-7-1-21z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M3 9q-11 6-13 19q-1 8 5 13q5 4 4 9q-7 1-12-4q-7-8-5-20q2-15 15-20z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M16 18q-3 22-2 39q1 7-2 13h-9q-2-7 0-15q-3-20 5-39z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M58 13q12 4 15 20q2 9-4 15q-4 3-2 9q-7 1-10-5q-3-6 2-12q-6-9-7-21q-1-6 6-6z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M49 22q6 19 6 37q0 7-3 14h-9q-2-7 1-15q-3-18-4-35z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M4 -10q-12-6-16-21q-4-13 2-25q-3 8-2 16q-6-9-1-20q4-8 12-9q11-1 16 7q5 6 3 14q7 2 9 9q2 7-4 12q-5 4-13 2q-3 8-13 8q5-7 4-15z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-12 -33q-9 0-14 8q-5 6-3 14q1 6 6 7q5 1 8-2q3 4 8 2q5-2 6-8q1-8-3-15q-4-8-13-15z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-7 -37q-1-11 4-15q3 6 1 15z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-2 -38q11-1 15 7q-6-2-9 3q8 1 11 8q-7-2-10 3q7 2 9 10q-11 1-17-6q-8-9-8-23q0-9 5-12z" fill="#e8173a" stroke="#7a0c1f" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M56 18q22 5 26 27q2 12-5 23q3-14-4-23q2 12-7 21q3-14-5-21q3 11-4 19q1-17-8-32z" fill="#e8173a" stroke="#7a0c1f" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M4 -8q21-7 41 0q4 11-2 23q-21 6-43 0q-4-12 4-23z" fill="#00b4a6" stroke="#7a0c1f" stroke-width="2.2" stroke-linejoin="round"/>
+        <circle cx="-18" cy="-21" r="2.6" fill="#160a12"/>
+      </g>
+    </defs>
+
+    <!-- ===== TURNING RING (one group, spins continuously) ===== -->
+    <g class="cx-manege__spin">
+      <!-- hidden circular dais the horses ride around -->
+      <ellipse cx="220" cy="300" rx="150" ry="46" fill="#1c1b3e" stroke="#1b4fd8" stroke-width="2" opacity=".5"/>
+      <!-- back horse (far side) -->
+      <g class="cx-manege__horse" style="--i:0">
+        <rect x="217" y="176" width="6" height="112" rx="3" fill="url(#cxPole)" stroke="#7a0c1f" stroke-width="1"/>
+        <g transform="translate(220 272) scale(.62) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
+      </g>
+      <!-- left horse -->
+      <g class="cx-manege__horse" style="--i:1">
+        <rect x="94" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#7a0c1f" stroke-width="1"/>
+        <g transform="translate(98 300) scale(.82) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
+      </g>
+      <!-- right horse (mirrored) -->
+      <g class="cx-manege__horse" style="--i:2">
+        <rect x="339" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#7a0c1f" stroke-width="1"/>
+        <g transform="translate(342 300) scale(.82) translate(27 0) scale(-1 1) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
+      </g>
+      <!-- front horse (full size, foreground) -->
+      <g class="cx-manege__horse" style="--i:3">
+        <rect x="216" y="206" width="9" height="130" rx="4.5" fill="url(#cxPole)" stroke="#7a0c1f" stroke-width="1.2"/>
+        <g transform="translate(220 322) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
+      </g>
+    </g>
+
+    <!-- static depth overlay sits OUTSIDE the spin group → fixed, so horses pass UNDER it
+         and the rear of the ring genuinely darkens as it turns (real 3D depth cue). -->
+    <ellipse cx="220" cy="250" rx="190" ry="150" fill="url(#cxDepth)" pointer-events="none"/>
+
+    <!-- ===== FIXED CANOPY (does NOT spin) ===== -->
+    <!-- central pole -->
+    <rect x="215" y="96" width="10" height="170" rx="4" fill="#160a12" opacity=".9"/>
+    <!-- octagonal scalloped tent: crimson / cream candy panels -->
+    <g stroke="#7a0c1f" stroke-width="2" stroke-linejoin="round">
+      <path d="M220 70 96 150 H344 Z" fill="#e8173a"/>
+      <path d="M220 70 130 150 H310 Z" fill="#fff8f0" opacity=".96"/>
+      <path d="M220 70 166 150 H274 Z" fill="#c4122f"/>
+      <path d="M220 70 200 150 H240 Z" fill="#fff8f0" opacity=".96"/>
+    </g>
+    <!-- scalloped rim -->
+    <path d="M92 150 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2" stroke-linejoin="round"/>
+    <!-- thin GOLD finial (accent only) -->
+    <line x1="220" y1="70" x2="220" y2="40" stroke="#ffba08" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="220" cy="36" r="5" fill="#ffba08" stroke="#e89c0a" stroke-width="1.2"/>
+    <!-- chasing bulb ring on the canopy rim (GOLD = the only gold besides the finial) -->
+    <g fill="#ffd98a" stroke="#e89c0a" stroke-width=".8">
+      <circle class="cx-manege__bulb" style="--b:0"  cx="100" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:1"  cx="124" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:2"  cx="148" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:3"  cx="172" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:4"  cx="196" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:5"  cx="220" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:6"  cx="244" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:7"  cx="268" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:8"  cx="292" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:9"  cx="316" cy="152" r="4.6"/>
+      <circle class="cx-manege__bulb" style="--b:10" cx="340" cy="152" r="4.6"/>
+    </g>
+  </svg>
+</div>
+    <div class="cx-drift" data-cx-drift="carte" aria-hidden="true"></div>
     <div class="container">
       <div class="carte__head">
         <div>
           <span class="eyebrow reveal">À déguster</span>
-          <h2 class="h-big reveal" data-d="1" style="color:var(--white);margin-top:.8rem">Les cocktails<br>qui <span class="gold-text">tournent</span></h2>
+          <h2 class="h-big reveal cx-reveal--spin" data-d="1" style="color:var(--white);margin-top:.8rem">Les cocktails<br>qui <span class="gold-text">tournent</span></h2>
         </div>
         <a class="btn btn--red reveal" data-d="2" href="#infos">Réserver</a>
       </div>
       <div class="carte__grid">
-        <article class="ck ck--1 reveal"><span class="ck__no">01</span><span class="ck__price">12€</span><div class="ck__name">Signature Maison</div><p class="ck__ing">Caramel · Whisky · Rhum · Vanille · Jus de pomme.</p></article>
-        <article class="ck ck--2 reveal" data-d="1"><span class="ck__no">02</span><span class="ck__price">12€</span><div class="ck__name">Pornstar</div><p class="ck__ing">Vodka · Fruit de la passion · Vanille.</p></article>
-        <article class="ck ck--3 reveal" data-d="1"><span class="ck__no">03</span><span class="ck__price">12€</span><div class="ck__name">Mojito</div><p class="ck__ing">Rhum · Menthe fraîche · Citron vert · Soda.</p></article>
-        <article class="ck ck--4 reveal" data-d="2"><span class="ck__no">04</span><span class="ck__price">12€</span><div class="ck__name">Old Fashioned</div><p class="ck__ing">Whisky · Sucre · Bitters · Zeste d'orange.</p></article>
+        <article class="ck ck--1 reveal cx-reveal--mount cx-reveal--stagger" data-d="1"><span class="ck__no">01</span><span class="ck__price">12€</span><div class="ck__name">Signature Maison</div><p class="ck__ing">Caramel · Whisky · Rhum · Vanille · Jus de pomme.</p></article>
+        <article class="ck ck--2 reveal cx-reveal--mount cx-reveal--stagger" data-d="2"><span class="ck__no">02</span><span class="ck__price">12€</span><div class="ck__name">Pornstar</div><p class="ck__ing">Vodka · Fruit de la passion · Vanille.</p></article>
+        <article class="ck ck--3 reveal cx-reveal--mount cx-reveal--stagger" data-d="3"><span class="ck__no">03</span><span class="ck__price">12€</span><div class="ck__name">Mojito</div><p class="ck__ing">Rhum · Menthe fraîche · Citron vert · Soda.</p></article>
+        <article class="ck ck--4 reveal cx-reveal--mount cx-reveal--stagger" data-d="4"><span class="ck__no">04</span><span class="ck__price">12€</span><div class="ck__name">Old Fashioned</div><p class="ck__ing">Whisky · Sucre · Bitters · Zeste d'orange.</p></article>
       </div>
       <div class="menu" data-d="1">
         <div class="menu__intro"><h3 class="menu__title">La carte complète</h3><p class="menu__sub">Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl).</p></div>
@@ -931,6 +1407,7 @@
 
   <!-- ============ EVENTS ============ -->
   <section class="section events" id="evenements">
+    <div class="cx-drift" data-cx-drift="evenements" aria-hidden="true"></div>
     <div class="decoD-mount decoD-mount--events" aria-hidden="true"><div class="decoD" role="img" aria-label="Décoration carrousel : deux chevaux de manège sous un dais">
 <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -1228,6 +1705,7 @@
 
   <!-- ============ INFOS ============ -->
   <section class="section infos" id="infos">
+    <div class="cx-drift" data-cx-drift="infos" aria-hidden="true"></div>
     <div class="container">
       <span class="eyebrow reveal">Nous trouver</span>
       <h2 class="h-big reveal" data-d="1" style="margin-top:.8rem;color:var(--white)">On vous<br>attend</h2>
@@ -1507,6 +1985,330 @@
   if(document.readyState!=='loading')build();else document.addEventListener('DOMContentLoaded',build);
   setTimeout(build,1600); /* reconstruit après le rendu dynamique Supabase */
 })();
+</script>
+<script>
+/* ============ CARROUSEL LIVING-SITE FX (cx-*) ============ */
+/* Adds `is-near` only while the stage is onscreen so will-change (GPU compositing cost) is
+   paid only when visible. Paste inside the existing main IIFE (before <\/script>). Honors
+   REDUCE: when reduced, nothing is promoted. No innerHTML — pure class toggling. */
+(function(){
+  var stage = document.querySelector('.cx-manege');
+  if(!stage) return;
+  var REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(REDUCE) return;                       /* parked state — no compositing hint needed */
+  if(!('IntersectionObserver' in window)){ stage.classList.add('is-near'); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ stage.classList.toggle('is-near', e.isIntersecting); });
+  }, {rootMargin:'120px'});
+  io.observe(stage);
+})();
+
+(function(){
+  /* Build one booth light-string rail and insert it as the host's first child.
+     Pure createElement/setAttribute/appendChild — no innerHTML (security hook safe). */
+  function makeRail(host){
+    if(!host || host.querySelector('.cx-bulbs')) return;
+    var rail=document.createElement('div');
+    rail.className='cx-bulbs';
+    rail.setAttribute('aria-hidden','true');
+    /* cap counts low and scale DOWN on small screens: 20 wide / 14 mid / 10 phone */
+    var w=window.innerWidth||document.documentElement.clientWidth||360;
+    var n = w>=900 ? 20 : (w>=600 ? 14 : 10);
+    rail.style.setProperty('--cx-n', String(n)); /* drives the seamless travelling-wave phase */
+    for(var i=0;i<n;i++){
+      var b=document.createElement('span');
+      var cls='cx-bulb';
+      var m=i%6;                       /* every 6th group gets a colour accent */
+      if(m===2) cls+=' cx-bulb--teal';
+      else if(m===5) cls+=' cx-bulb--magenta';
+      b.className=cls;
+      b.style.setProperty('--cx-i', String(i));   /* phase = -(i/n)*5s -> one full cycle across the rail */
+      rail.appendChild(b);
+    }
+    host.insertBefore(rail, host.firstChild);
+  }
+  function init(){
+    /* #carte and #infos only — the footer already has its own bulb string (#footBulbs) */
+    makeRail(document.getElementById('carte'));
+    makeRail(document.getElementById('infos'));
+  }
+  if(document.readyState!=='loading') init();
+  else document.addEventListener('DOMContentLoaded', init);
+})();
+
+/* ============================================================
+   cx-drift IIFE — builds the ambient field once, per host layer.
+   - createElement / createElementNS + setAttribute + appendChild
+     ONLY. Never innerHTML/outerHTML/insertAdjacentHTML.
+   - <=14 particles desktop, <=6 on small screens.
+   - Animate transform + opacity only (CSS keyframes do the work).
+   - Durations are harmonics of the 40s manège master clock (20-40s)
+     with ease-in-out, so the drift breathes in time with the page.
+   - IntersectionObserver pauses offscreen + clears will-change.
+   - Full reduced-motion: static scattered constellation.
+   ============================================================ */
+(function(){
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+  var REDUCE = (window.matchMedia &&
+    matchMedia('(prefers-reduced-motion: reduce)').matches) === true;
+
+  var layers = document.querySelectorAll('.cx-drift[data-cx-drift]');
+  if (!layers.length) return;
+
+  /* 40s carousel revolution = the master clock. The ambient drift
+     loops between a half-turn (20s) and a full turn (40s) so every
+     mote is a harmonic of the same heartbeat. */
+  var CLOCK = 40;
+
+  /* Bright "carrousel vif" pops — crimson / cobalt / teal / magenta.
+     Gold is reserved strictly for rare star sparkles (see makeStar). */
+  var COLORS = ['#e8173a','#1b4fd8','#00b4a6','#ff2e88','#c4122f'];
+
+  function rand(a,b){ return a + Math.random()*(b-a); }
+  function pick(arr){ return arr[(Math.random()*arr.length)|0]; }
+
+  /* ---- shape builders: return a <g> of fairground motes ---- */
+  function el(name, attrs){
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs){ if(attrs.hasOwnProperty(k)) n.setAttribute(k, attrs[k]); }
+    return n;
+  }
+
+  /* tiny ticket: striped rounded rect with a notch hint */
+  function makeTicket(color){
+    var g = el('g', {});
+    var body = el('rect', {x:-9,y:-6,width:18,height:12,rx:2.4,ry:2.4,
+      fill:color, opacity:'.92'});
+    g.appendChild(body);
+    var s1 = el('rect', {x:-5.5,y:-6,width:2,height:12,fill:'#fff8f0',opacity:'.55'});
+    var s2 = el('rect', {x:1.5,y:-6,width:2,height:12,fill:'#fff8f0',opacity:'.55'});
+    g.appendChild(s1); g.appendChild(s2);
+    g.appendChild(el('circle',{cx:-9,cy:0,r:1.6,fill:'#12112a',opacity:'.5'}));
+    g.appendChild(el('circle',{cx:9,cy:0,r:1.6,fill:'#12112a',opacity:'.5'}));
+    return g;
+  }
+
+  /* round bulb: filled disc + soft cream highlight */
+  function makeBulb(color){
+    var g = el('g', {});
+    g.appendChild(el('circle',{cx:0,cy:0,r:6,fill:color,opacity:'.9'}));
+    g.appendChild(el('circle',{cx:-2,cy:-2,r:1.8,fill:'#fff8f0',opacity:'.7'}));
+    return g;
+  }
+
+  /* 5-point star. isGold => rare amber sparkle (the ONLY gold). */
+  function makeStar(color, isGold){
+    var pts = '', R = 8.5, r = 3.6, i, ang, rad;
+    for (i=0;i<10;i++){
+      rad = (i%2===0)?R:r;
+      ang = (Math.PI/5)*i - Math.PI/2;
+      pts += (Math.cos(ang)*rad).toFixed(2)+','+(Math.sin(ang)*rad).toFixed(2)+' ';
+    }
+    var g = el('g', {});
+    var star = el('polygon',{points:pts.trim(),
+      fill:isGold?'#ffba08':color, opacity:isGold?'.95':'.85'});
+    if (isGold){
+      star.setAttribute('stroke','#e89c0a');
+      star.setAttribute('stroke-width','.8');
+      star.setAttribute('class','cx-drift__spark'); /* slow twinkle */
+    }
+    g.appendChild(star);
+    return g;
+  }
+
+  function buildParticle(kind, color, isGold){
+    var svg = document.createElementNS(SVGNS,'svg');
+    svg.setAttribute('viewBox','-12 -12 24 24');
+    svg.setAttribute('width','24');
+    svg.setAttribute('height','24');
+    svg.setAttribute('focusable','false');
+    svg.setAttribute('aria-hidden','true');
+    var shape;
+    if (kind==='ticket') shape = makeTicket(color);
+    else if (kind==='bulb') shape = makeBulb(color);
+    else shape = makeStar(color, isGold);
+    svg.appendChild(shape);
+    return svg;
+  }
+
+  /* small viewport => fewer particles (mobile-first, cheap) */
+  var small = window.matchMedia('(max-width:680px)').matches;
+  var COUNT = small ? 6 : 14;
+
+  /* Distribute kinds: mostly tickets/bulbs, a few stars,
+     and at most ~2 of those stars are rare gold sparkles. */
+  function kindFor(i){
+    var m = i % 5;
+    if (m===0 || m===2) return 'ticket';
+    if (m===1 || m===3) return 'bulb';
+    return 'star';
+  }
+
+  layers.forEach(function(layer){
+    var goldLeft = small ? 1 : 2;     /* cap gold sparkles per field */
+    var frag = document.createDocumentFragment();
+
+    for (var i=0;i<COUNT;i++){
+      var kind = kindFor(i);
+      var color = pick(COLORS);
+      var isGold = false;
+      if (kind==='star' && goldLeft>0 && Math.random() < 0.6){
+        isGold = true; goldLeft--;
+      }
+
+      var p = document.createElement('div');
+      p.className = 'cx-drift__p';
+
+      /* scatter across the layer; keep off the very edges so motes
+         don't clip awkwardly at the section seams */
+      var leftPct = rand(4, 92);
+      var topPct  = rand(6, 90);
+      var scale   = rand(.7, 1.25);
+      var baseOp  = rand(.30, .55);   /* low density: text stays legible */
+
+      p.style.left = leftPct.toFixed(2) + '%';
+      p.style.top  = topPct.toFixed(2) + '%';
+      p.style.setProperty('--cx-op', baseOp.toFixed(2));
+
+      if (REDUCE){
+        /* static constellation: place, scale, rest. No animation. */
+        p.style.transform = 'translate3d(0,0,0) scale('+scale.toFixed(2)+')';
+      } else {
+        /* long calm loop; varied delay so the field never pulses in
+           unison. Durations 20-40s = half-to-full turn of the 40s
+           master clock, keeping the drift a harmonic of the manège. */
+        var dur   = rand(CLOCK * 0.5, CLOCK);   /* 20s .. 40s */
+        var delay = -rand(0, dur);              /* negative => desynced start */
+        var ampx  = rand(10, 26) * (Math.random()<.5?-1:1);
+        var ampy  = -rand(14, 30);              /* gentle upward drift */
+        var rot   = rand(3, 9) * (Math.random()<.5?-1:1);
+        p.style.setProperty('--cx-dur',  dur.toFixed(1)+'s');
+        p.style.setProperty('--cx-delay',delay.toFixed(1)+'s');
+        p.style.setProperty('--cx-ampx', ampx.toFixed(0)+'px');
+        p.style.setProperty('--cx-ampy', ampy.toFixed(0)+'px');
+        p.style.setProperty('--cx-rot',  rot.toFixed(0)+'deg');
+        /* base scale lives on the inner svg so drift transform is clean */
+      }
+
+      var svg = buildParticle(kind, color, isGold);
+      svg.style.transform = 'scale('+scale.toFixed(2)+')';
+      svg.style.transformOrigin = '50% 50%';
+      p.appendChild(svg);
+      frag.appendChild(p);
+    }
+
+    layer.appendChild(frag);
+  });
+
+  /* No looping work under reduced motion — nothing to pause. */
+  if (REDUCE) return;
+
+  /* Pause each field while its section is offscreen + drop the
+     will-change layer so the compositor reclaims memory. */
+  if (!('IntersectionObserver' in window)){
+    layers.forEach(function(l){ l.classList.add('is-live'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var live = e.isIntersecting;
+      e.target.classList.toggle('is-live', live);     /* will-change on/off */
+      e.target.classList.toggle('is-paused', !live);  /* play-state on/off */
+    });
+  }, {rootMargin:'120px 0px 120px 0px', threshold:0});
+
+  layers.forEach(function(l){
+    l.classList.add('is-paused'); /* start paused until observed visible */
+    io.observe(l);
+  });
+})();
+
+(function(){
+  /* cx-ride: apply ride-like micro-interaction hooks to existing
+     cards and candy CTAs. No new DOM — only adds classes to elements
+     already in the page, and manages will-change so filter/transform
+     only pay their cost DURING an active interaction (then cleared). */
+  var REDUCE = (typeof window.REDUCE !== 'undefined')
+    ? window.REDUCE
+    : (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  function init(){
+    var cards = document.querySelectorAll('.ck');
+    var btns  = document.querySelectorAll('.btn--gold, .btn--red');
+
+    cards.forEach(function(card){
+      card.classList.add('cx-ride');
+
+      /* will-change lifecycle: arm only while interacting, clear on
+         rest. cx-live gates nothing visually now (the glow is driven
+         by the registered --cx-glow var so it transitions whether or
+         not the class is present); it ONLY tracks "is the GPU layer
+         currently wanted" so the clear timer can release it. */
+      var arm = function(){
+        if(REDUCE) return;
+        card.style.willChange = 'transform, filter';
+        card.classList.add('cx-live');
+      };
+      var clear = function(){
+        card.classList.remove('cx-live');
+        /* drop will-change after the settle transition so the GPU
+           layer is released — avoids permanent compositing cost. */
+        window.setTimeout(function(){
+          if(!card.classList.contains('cx-live')) card.style.willChange = 'auto';
+        }, 460);
+      };
+
+      card.addEventListener('pointerenter', arm, {passive:true});
+      card.addEventListener('pointerleave', clear, {passive:true});
+      /* keyboard parity: focus-within can't be listened to directly,
+         so use focusin / focusout bubbling from any inner focusable. */
+      card.addEventListener('focusin', arm);
+      card.addEventListener('focusout', clear);
+    });
+
+    btns.forEach(function(btn){
+      btn.classList.add('cx-press');
+      if(REDUCE) return;
+
+      var arm = function(){ btn.style.willChange = 'transform'; };
+      var clear = function(){
+        window.setTimeout(function(){ btn.style.willChange = 'auto'; }, 320);
+      };
+      /* pointerdown / keydown(Enter) arm the squash; release clears.
+         Anchors activate on Enter (not Space), so we react to Enter;
+         Space is tolerated but harmless. */
+      btn.addEventListener('pointerdown', arm, {passive:true});
+      btn.addEventListener('pointerup', clear, {passive:true});
+      btn.addEventListener('pointercancel', clear, {passive:true});
+      btn.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){ arm(); }
+      });
+      btn.addEventListener('keyup', function(e){
+        if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+          /* keyboard activation gives no reliable :active sweep on an
+             anchor — fire the contained red shimmer once via a class,
+             then strip it so it can re-trigger next time. */
+          if(btn.classList.contains('btn--red')){
+            btn.classList.remove('cx-shimmer');
+            void btn.offsetWidth;            /* reflow to restart anim */
+            btn.classList.add('cx-shimmer');
+            window.setTimeout(function(){ btn.classList.remove('cx-shimmer'); }, 680);
+          }
+          clear();
+        }
+      });
+      btn.addEventListener('blur', clear);
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+/* ============ /CARROUSEL FX ============ */
 </script>
 </body>
 </html>
