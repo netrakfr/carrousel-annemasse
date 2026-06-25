@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600;0,9..144,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet" />
 <style>
   /* ============================ TOKENS ============================ */
   :root{
@@ -31,6 +32,14 @@
     --pad:clamp(1.25rem,5vw,4.5rem);
     --ease:cubic-bezier(.22,1,.36,1);
     --bounce:cubic-bezier(.34,1.56,.64,1);
+    /* === MENU « CABARET FORAIN » — palette sombre & or (préfixe --mn-) === */
+    --mn-bg:#0b0806; --mn-bg2:#0f0b08; --mn-cover:#080605;
+    --mn-gold:#c8a24c; --mn-gold-bright:#ecc978; --mn-gold-hi:#f6e3a8; --mn-gold-deep:#8c6a26;
+    --mn-grad-gold:linear-gradient(180deg,#f3dd9a 0%,#d8af55 45%,#9c7227 100%);
+    --mn-wine:#6e1620; --mn-wine-2:#8a1f28; --mn-wine-deep:#430b10;
+    --mn-name:#e9d8b6; --mn-desc:#9c8763;
+    --mn-line:#9a7733; --mn-line-faint:rgba(154,119,51,.18); --mn-line-soft:rgba(154,119,51,.3);
+    --font-cinzel:'Cinzel',Georgia,serif;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;}
   html{-webkit-text-size-adjust:100%;overflow-x:hidden;scroll-behavior:smooth;}
@@ -995,6 +1004,263 @@
 }
 /* ================= /CARROUSEL FX ================= */
 
+/* ============================================================
+   CARTE « CABARET FORAIN » — refonte sombre & or
+   Esthétique identique à l'écran ET à l'impression.
+   Scopée sous #carte et .menu-print pour surcharger les anciennes
+   règles « vif » sans toucher au reste du site. Anime uniquement
+   transform/opacity. Classes nouvelles préfixées .mn- (sans clash
+   avec cx-*). Cadre or à double filet + fleurons d'angle.
+   ============================================================ */
+
+/* — fond de la section : nuit chaude + vignette vin — */
+#carte.carte{background:var(--mn-bg);}
+#carte.carte::before{
+  background:
+    radial-gradient(120% 80% at 50% -8%,rgba(110,22,32,.5),transparent 60%),
+    radial-gradient(80% 60% at 12% 104%,rgba(110,22,32,.28),transparent 60%);
+}
+
+/* — rail d'ampoules + confetti : or discret dans la carte (pas de teal/magenta) — */
+#carte .cx-bulb,#carte .cx-bulb--teal,#carte .cx-bulb--magenta{
+  background:radial-gradient(circle at 38% 32%,var(--mn-gold-hi),var(--mn-gold-bright) 46%,var(--mn-gold-deep))!important;
+  box-shadow:0 0 5px 1px rgba(200,162,76,.6),0 0 11px 3px rgba(140,106,38,.35)!important;}
+#carte .cx-bulbs::before{
+  background:repeating-linear-gradient(90deg,var(--mn-wine-deep) 0 7px,rgba(200,162,76,.22) 7px 11px)!important;}
+/* le champ de confetti « cx-drift » utilise des teintes vives (rouge/cobalt/teal/magenta)
+   incompatibles avec le menu sombre & or → masqué dans #carte (pas de point vif sur le fond doré) */
+#carte .cx-drift{display:none!important;}
+
+/* — panneau encadré or (surcharge .menu) — */
+#carte .menu{
+  background:
+    radial-gradient(120% 70% at 50% 0%,var(--mn-wine-deep) 0%,rgba(67,11,16,0) 42%),
+    linear-gradient(180deg,var(--mn-bg2) 0%,var(--mn-bg) 60%);
+  color:var(--mn-name);
+  border:1px solid var(--mn-line);
+  border-radius:6px;
+  overflow:visible;
+  box-shadow:
+    inset 0 0 0 6px var(--mn-bg2),
+    inset 0 0 0 7px var(--mn-gold-deep),
+    0 24px 60px -28px rgba(0,0,0,.85);
+  padding:clamp(2rem,4vw,3.4rem) clamp(1.4rem,3.4vw,2.8rem) clamp(1.6rem,3vw,2.4rem);
+}
+/* la bande foraine rayée de l'ancien thème → supprimée */
+#carte .menu::before{display:none!important;}
+/* second filet or intérieur (hairline) */
+#carte .menu::after{
+  content:"";display:block;position:absolute;inset:11px;pointer-events:none;
+  border:1px solid var(--mn-gold-deep);border-radius:3px;opacity:.7;z-index:0;
+}
+/* fleurons d'angle dorés (4 coins, glyphe ◆ en pseudo-éléments via spans dédiés) */
+.mn-corner{position:absolute;width:20px;height:20px;z-index:3;pointer-events:none;color:var(--mn-gold);}
+.mn-corner::before,.mn-corner::after{content:"";position:absolute;background:currentColor;border-radius:1px;}
+.mn-corner::before{left:0;top:0;width:18px;height:1.5px;}
+.mn-corner::after{left:0;top:0;width:1.5px;height:18px;}
+.mn-corner i{position:absolute;left:6px;top:6px;width:5px;height:5px;background:currentColor;transform:rotate(45deg);}
+.mn-corner--tl{left:7px;top:7px;}
+.mn-corner--tr{right:7px;top:7px;transform:scaleX(-1);}
+.mn-corner--bl{left:7px;bottom:7px;transform:scaleY(-1);}
+.mn-corner--br{right:7px;bottom:7px;transform:scale(-1,-1);}
+
+/* — en-tête élégant (logo + wordmark + tagline + diviseur ★) — */
+.mn-head{position:relative;z-index:2;text-align:center;margin-bottom:clamp(1.4rem,3vw,2.2rem);}
+.mn-head__logo{width:clamp(54px,9vw,86px);height:auto;margin:0 auto .4rem;
+  filter:saturate(.55) brightness(.92) drop-shadow(0 2px 6px rgba(0,0,0,.6));opacity:.96;}
+.mn-head__wordmark{font-family:var(--font-cinzel);font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;font-size:clamp(1.8rem,5.4vw,3rem);line-height:1;margin:.1rem 0 0;
+  background:var(--mn-grad-gold);-webkit-background-clip:text;background-clip:text;color:transparent;
+  /* fallback solide si background-clip non supporté */
+  color:var(--mn-gold);-webkit-text-fill-color:transparent;}
+.mn-head__tag{font-family:var(--font-cinzel);font-weight:400;text-transform:uppercase;
+  letter-spacing:.34em;font-size:clamp(.56rem,1.5vw,.72rem);color:var(--mn-gold);
+  margin:.7rem 0 0;opacity:.92;}
+.mn-head__divider{display:flex;align-items:center;justify-content:center;gap:.85rem;
+  margin:clamp(1rem,2.4vw,1.5rem) auto 0;max-width:24rem;color:var(--mn-gold);}
+.mn-head__divider::before,.mn-head__divider::after{content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--mn-gold-deep),var(--mn-gold));}
+.mn-head__divider::after{background:linear-gradient(90deg,var(--mn-gold),var(--mn-gold-deep),transparent);}
+.mn-head__divider span{font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;
+  letter-spacing:.22em;font-size:clamp(.78rem,2vw,1.05rem);color:var(--mn-gold-bright);}
+.mn-head__divider span::before,.mn-head__divider span::after{content:"\2605";color:var(--mn-gold);
+  font-size:.7em;margin:0 .55em;vertical-align:.08em;}
+.mn-head__cta{display:inline-block;margin-top:clamp(.9rem,2vw,1.3rem);
+  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.16em;
+  font-size:.66rem;color:var(--mn-gold-bright);padding:.55rem 1.2rem;border:1px solid var(--mn-gold-deep);
+  border-radius:999px;transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease);}
+.mn-head__cta:hover{color:var(--mn-cover);background:var(--mn-gold-bright);border-color:var(--mn-gold-bright);transform:translateY(-2px);}
+.mn-head__cta:focus-visible{outline:3px solid var(--mn-gold-bright);outline-offset:3px;}
+
+/* — sous-titre (menu__intro) — */
+#carte .menu__intro{position:relative;z-index:2;text-align:center;margin-top:0;margin-bottom:clamp(1.5rem,3vw,2.3rem);}
+#carte .menu__sub{font-family:var(--font-cinzel);font-weight:400;text-transform:uppercase;
+  letter-spacing:.14em;font-size:clamp(.62rem,1.5vw,.78rem);color:var(--mn-gold);opacity:.86;
+  line-height:1.55;max-width:46rem;margin-inline:auto;}
+
+/* — grille des colonnes (surcharge .menu__cols : on enlève le fond rayé) — */
+#carte .menu__cols{position:relative;z-index:2;background:none;box-shadow:none;border-radius:0;padding:0;
+  columns:2;column-gap:clamp(1.8rem,4vw,3.4rem);}
+@media (max-width:640px){#carte .menu__cols{columns:1;}}
+
+/* — catégorie (surcharge .menu__cat : transparente, posée sur le panneau) — */
+#carte .menu__cat{background:none;border:none;border-radius:0;box-shadow:none;padding:0;
+  break-inside:avoid;-webkit-column-break-inside:avoid;page-break-inside:avoid;
+  margin-bottom:clamp(1.4rem,3vw,2rem);}
+#carte .menu__cat h3{
+  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--mn-gold-bright);background:none;box-shadow:none;text-shadow:none;border-radius:0;padding:0 0 .34rem;
+  font-size:clamp(.92rem,2vw,1.06rem);display:flex;align-items:baseline;justify-content:space-between;gap:.7rem;
+  border-bottom:1px solid var(--mn-line-soft);margin-bottom:.6rem;}
+/* étiquette « note » = pastille vin à bord doré */
+#carte .menu__cat h3 small{font-family:var(--font-cinzel);font-weight:600;font-size:.56rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--mn-gold-hi);opacity:1;text-shadow:none;white-space:nowrap;
+  background:linear-gradient(180deg,var(--mn-wine-2),var(--mn-wine-deep));
+  border:1px solid var(--mn-gold-deep);border-radius:999px;padding:.2rem .6rem;align-self:center;flex:0 0 auto;}
+#carte .menu__cat--sp h3{border-bottom:1px solid var(--mn-line-soft);}
+
+/* — sous-en-tête (Au rhum…) — */
+#carte .menu__h{font-family:var(--font-script);font-style:italic;font-weight:600;
+  color:var(--mn-gold);opacity:.86;font-size:.92rem;margin:.7rem 0 .25rem;}
+
+/* — lignes simples (nom · leader · prix) — */
+#carte .menu__row{display:flex;align-items:baseline;gap:.5rem;font-size:.9rem;padding:.32rem 0;line-height:1.3;
+  border-bottom:1px solid var(--mn-line-faint);}
+#carte .menu__row .n{font-family:var(--font-script);color:var(--mn-name);}
+#carte .menu__row .d{flex:1;min-width:1rem;align-self:center;height:1px;
+  background:repeating-linear-gradient(90deg,var(--mn-line-soft) 0 2px,transparent 2px 6px);opacity:.7;}
+#carte .menu__row .p{font-family:var(--font-script);font-weight:600;color:var(--mn-gold-bright);
+  white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+/* — cocktails avec nom seul / description — */
+#carte .menu__row--name{display:block;border-bottom:1px solid var(--mn-line-faint);}
+#carte .menu__row--name{font-family:var(--font-script);font-weight:600;color:var(--mn-name);}
+#carte .menu__desc{display:block;font-family:var(--font-script);font-style:italic;font-weight:500;
+  font-size:.8rem;color:var(--mn-desc);margin-top:.04rem;line-height:1.3;}
+
+/* — colonnes spiritueux (2cl/4cl/70cl) — */
+#carte .menu__shdr,#carte .menu__spirit{display:grid;
+  grid-template-columns:minmax(0,1fr) repeat(var(--n,3),2.7rem);align-items:baseline;}
+#carte .menu__shdr{font-family:var(--font-cinzel);font-weight:600;font-size:.56rem;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--mn-gold);border-bottom:1px solid var(--mn-line-soft);
+  padding-bottom:.26rem;margin-bottom:.12rem;}
+#carte .menu__spirit{font-size:.88rem;padding:.3rem 0;border-bottom:1px solid var(--mn-line-faint);}
+#carte .menu__spirit .n{font-family:var(--font-script);color:var(--mn-name);padding-right:.5rem;}
+#carte .menu__shdr .pr,#carte .menu__spirit .pr{text-align:right;font-variant-numeric:tabular-nums;
+  border-left:1px solid var(--mn-line-soft);padding:0 .42rem 0 .3rem;}
+#carte .menu__spirit .pr{font-weight:600;color:var(--mn-gold-bright);}
+#carte .menu__shdr .pr{color:var(--mn-gold);}
+
+/* — pied de carte — */
+.mn-foot{position:relative;z-index:2;text-align:center;font-family:var(--font-cinzel);
+  text-transform:uppercase;letter-spacing:.12em;font-size:.58rem;color:var(--mn-gold-deep);
+  margin-top:clamp(1.4rem,3vw,2rem);opacity:.85;}
+
+/* ===================== IMPRESSION (Cmd+P) =====================
+   On réimprime UNIQUEMENT la carte, en pages A4 sombres encadrées
+   or, identiques à l'écran. Le système de pagination existant
+   (build/makePage) clone les .menu__cat de #menu-cols dans des
+   .menu-print__page : on les restyle ici, sans changer la logique. */
+@media print{
+  html,body{background:var(--mn-bg)!important;}
+  #carte.carte,.menu-print__page{background:var(--mn-bg)!important;}
+  /* chaque page = un panneau complet, encadré or, qui remplit l'A4 */
+  .menu-print__page.menu{
+    -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;
+    background:
+      radial-gradient(120% 60% at 50% 0%,var(--mn-wine-deep) 0%,rgba(67,11,16,0) 40%),
+      linear-gradient(180deg,var(--mn-bg2) 0%,var(--mn-bg) 60%)!important;
+    color:var(--mn-name)!important;
+    border:1px solid var(--mn-line)!important;border-radius:4px!important;
+    box-shadow:inset 0 0 0 5px var(--mn-bg2),inset 0 0 0 6px var(--mn-gold-deep)!important;
+    padding:9mm 8mm 8mm!important;margin:0!important;overflow:visible!important;
+  }
+  .menu-print__page.menu::before{display:none!important;}
+  .menu-print__page.menu::after{
+    content:""!important;display:block!important;position:absolute!important;inset:3mm!important;
+    border:1px solid var(--mn-gold-deep)!important;border-radius:2px!important;opacity:.7!important;pointer-events:none!important;}
+  /* en-tête compact de page : wordmark CARROUSEL or */
+  .menu-print__page .menu__intro{position:relative;z-index:2;text-align:center!important;margin:0 0 4mm!important;}
+  .menu-print__page .menu__title{
+    font-family:var(--font-cinzel)!important;font-weight:700!important;text-transform:uppercase!important;
+    letter-spacing:.14em!important;font-size:16pt!important;color:var(--mn-gold-bright)!important;
+    -webkit-text-fill-color:currentColor!important;background:none!important;}
+  .menu-print__page .menu__title::after{display:none!important;}
+  .menu-print__page .menu__sub{
+    font-family:var(--font-cinzel)!important;font-weight:400!important;text-transform:uppercase!important;
+    letter-spacing:.12em!important;font-size:7pt!important;color:var(--mn-gold)!important;
+    opacity:.9!important;margin-top:1.4mm!important;}
+  /* colonnes : transparentes (pas de fond rayé) */
+  .menu-print__page .menu__cols{position:relative;z-index:2;background:none!important;box-shadow:none!important;
+    border-radius:0!important;padding:0!important;column-gap:5mm!important;}
+  /* catégories : transparentes, compactes, jamais coupées */
+  .menu-print__page .menu__cat{background:none!important;border:none!important;border-radius:0!important;
+    box-shadow:none!important;padding:0!important;margin-bottom:3.4mm!important;
+    break-inside:avoid!important;-webkit-column-break-inside:avoid!important;page-break-inside:avoid!important;}
+  .menu-print__page .menu__cat h3{
+    font-family:var(--font-cinzel)!important;font-weight:600!important;color:var(--mn-gold-bright)!important;
+    background:none!important;box-shadow:none!important;text-shadow:none!important;border-radius:0!important;
+    border-bottom:.4mm solid var(--mn-line-soft)!important;padding:0 0 1mm!important;margin-bottom:1.2mm!important;
+    font-size:10pt!important;letter-spacing:.06em!important;
+    display:flex!important;align-items:baseline!important;justify-content:space-between!important;gap:2mm!important;}
+  .menu-print__page .menu__cat h3 small{
+    font-family:var(--font-cinzel)!important;font-size:6pt!important;color:var(--mn-gold-hi)!important;
+    background:var(--mn-wine-deep)!important;border:.3mm solid var(--mn-gold-deep)!important;
+    border-radius:999px!important;padding:.5mm 1.6mm!important;align-self:center!important;}
+  .menu-print__page .menu__h{font-family:var(--font-script)!important;font-style:italic!important;
+    color:var(--mn-gold)!important;font-size:8.2pt!important;margin:1mm 0 .3mm!important;}
+  .menu-print__page .menu__row,.menu-print__page .menu__spirit,.menu-print__page .menu__row--name{
+    font-size:8pt!important;padding:.4mm 0!important;line-height:1.22!important;
+    border-bottom:.25mm solid var(--mn-line-faint)!important;}
+  .menu-print__page .menu__row .n,.menu-print__page .menu__row--name,.menu-print__page .menu__spirit .n{
+    font-family:var(--font-script)!important;color:var(--mn-name)!important;}
+  .menu-print__page .menu__row .p{color:var(--mn-gold-bright)!important;font-weight:600!important;}
+  .menu-print__page .menu__desc{font-family:var(--font-script)!important;font-style:italic!important;
+    color:var(--mn-desc)!important;font-size:6.6pt!important;line-height:1.18!important;margin-top:0!important;}
+  .menu-print__page .menu__shdr{font-family:var(--font-cinzel)!important;color:var(--mn-gold)!important;
+    font-size:5.8pt!important;letter-spacing:.06em!important;
+    border-bottom:.4mm solid var(--mn-line-soft)!important;padding-bottom:.5mm!important;margin-bottom:.3mm!important;}
+  .menu-print__page .menu__spirit .pr{color:var(--mn-gold-bright)!important;font-weight:600!important;}
+  .menu-print__page .menu__shdr .pr{color:var(--mn-gold)!important;}
+  .menu-print__page .menu__shdr .pr,.menu-print__page .menu__spirit .pr{
+    border-left:.25mm solid var(--mn-line-soft)!important;}
+
+  /* ===== PAGE DE COUVERTURE (1re page d'impression) ===== */
+  .mn-print-cover{justify-content:center!important;align-items:center!important;text-align:center!important;}
+  .mn-print-cover .menu__cols{display:none!important;}
+  .mn-print-cover__logo{width:70px!important;height:auto!important;margin:0 auto 6mm!important;}
+  .mn-print-cover .mn-head__wordmark{font-size:30pt!important;letter-spacing:.16em!important;
+    line-height:1!important;margin:0 0 3mm!important;}
+  .mn-print-cover .mn-head__tag{font-size:9pt!important;letter-spacing:.34em!important;margin:0 0 7mm!important;}
+  .mn-print-cover__star{font-size:14pt!important;color:var(--mn-gold)!important;margin:0 0 7mm!important;line-height:1!important;}
+  .mn-print-cover__addr{font-family:var(--font-cinzel)!important;text-transform:uppercase!important;
+    letter-spacing:.16em!important;font-size:7.5pt!important;color:var(--mn-gold)!important;opacity:.92!important;margin:0!important;}
+
+  /* ===== PAGE CONTACT / HORAIRES (dernière page d'impression) ===== */
+  .mn-print-contact{justify-content:center!important;align-items:center!important;text-align:center!important;}
+  .mn-print-contact .menu__cols{display:none!important;}
+  .mn-print-contact__block{position:relative;z-index:2;max-width:130mm!important;margin:0 auto!important;}
+  .mn-print-contact__h{font-family:var(--font-cinzel)!important;font-weight:700!important;text-transform:uppercase!important;
+    letter-spacing:.18em!important;font-size:16pt!important;color:var(--mn-gold-bright)!important;margin:0 0 4mm!important;}
+  .mn-print-contact__h::before,.mn-print-contact__h::after{content:"\2605"!important;color:var(--mn-gold)!important;
+    font-size:.7em!important;margin:0 .5em!important;vertical-align:middle!important;}
+  .mn-print-contact__blurb{font-family:var(--font-script)!important;font-style:italic!important;
+    font-size:10.5pt!important;color:var(--mn-name)!important;line-height:1.4!important;margin:0 0 6mm!important;}
+  .mn-print-contact__line{font-family:var(--font-cinzel)!important;font-size:8.5pt!important;
+    letter-spacing:.06em!important;color:var(--mn-gold)!important;margin:0 0 1.4mm!important;}
+  .mn-print-contact__line--email{color:var(--mn-gold-bright)!important;}
+  .mn-print-contact__hh{font-family:var(--font-cinzel)!important;font-weight:600!important;text-transform:uppercase!important;
+    letter-spacing:.16em!important;font-size:11pt!important;color:var(--mn-gold-bright)!important;margin:7mm 0 3mm!important;}
+  .mn-print-contact__hours{list-style:none!important;padding:0!important;margin:0 auto 6mm!important;}
+  .mn-print-contact__hours li{font-family:var(--font-cinzel)!important;font-size:8pt!important;
+    letter-spacing:.05em!important;color:var(--mn-name)!important;margin:0 0 1.2mm!important;}
+  .mn-print-contact__note{font-family:var(--font-script)!important;font-style:italic!important;
+    font-size:7.6pt!important;color:var(--mn-desc)!important;line-height:1.35!important;
+    max-width:115mm!important;margin:0 auto 8mm!important;}
+  .mn-print-contact__foot{font-family:var(--font-cinzel)!important;text-transform:uppercase!important;
+    letter-spacing:.1em!important;font-size:5.8pt!important;color:var(--mn-gold-deep)!important;margin:0!important;}
+}
+
 </style>
 </head>
 <body>
@@ -1087,53 +1353,53 @@
     <defs>
       <!-- static depth overlay: dims the FAR (upper) side of the ring to fake 3D -->
       <radialGradient id="cxDepth" cx="50%" cy="72%" r="62%">
-        <stop offset="55%" stop-color="#12112a" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#12112a" stop-opacity=".5"/>
+        <stop offset="55%" stop-color="#1a120c" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#1a120c" stop-opacity=".5"/>
       </radialGradient>
-      <!-- candy-stripe identity (crimson/cream) carried into the horse poles -->
+      <!-- candy-stripe identity (wine/cream) carried into the horse poles -->
       <pattern id="cxPole" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(34)">
-        <rect width="8" height="8" fill="#fff8f0"/>
-        <rect width="4" height="8" fill="#e8173a"/>
+        <rect width="8" height="8" fill="#f3e6cf"/>
+        <rect width="4" height="8" fill="#6e1620"/>
       </pattern>
-      <!-- one reusable carousel horse (side profile, candyfloss white + crimson tack) -->
+      <!-- one reusable carousel horse (side profile, cream + wine tack) -->
       <g id="cxHorse">
-        <path d="M-2 6q-5-22 18-29q26-8 39 11q11 16 3 36q-6 13-22 14q-25 4-39-11q-5-7-1-21z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M3 9q-11 6-13 19q-1 8 5 13q5 4 4 9q-7 1-12-4q-7-8-5-20q2-15 15-20z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M16 18q-3 22-2 39q1 7-2 13h-9q-2-7 0-15q-3-20 5-39z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M58 13q12 4 15 20q2 9-4 15q-4 3-2 9q-7 1-10-5q-3-6 2-12q-6-9-7-21q-1-6 6-6z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M49 22q6 19 6 37q0 7-3 14h-9q-2-7 1-15q-3-18-4-35z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M4 -10q-12-6-16-21q-4-13 2-25q-3 8-2 16q-6-9-1-20q4-8 12-9q11-1 16 7q5 6 3 14q7 2 9 9q2 7-4 12q-5 4-13 2q-3 8-13 8q5-7 4-15z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M-12 -33q-9 0-14 8q-5 6-3 14q1 6 6 7q5 1 8-2q3 4 8 2q5-2 6-8q1-8-3-15q-4-8-13-15z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M-7 -37q-1-11 4-15q3 6 1 15z" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M-2 -38q11-1 15 7q-6-2-9 3q8 1 11 8q-7-2-10 3q7 2 9 10q-11 1-17-6q-8-9-8-23q0-9 5-12z" fill="#e8173a" stroke="#7a0c1f" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M56 18q22 5 26 27q2 12-5 23q3-14-4-23q2 12-7 21q3-14-5-21q3 11-4 19q1-17-8-32z" fill="#e8173a" stroke="#7a0c1f" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M4 -8q21-7 41 0q4 11-2 23q-21 6-43 0q-4-12 4-23z" fill="#00b4a6" stroke="#7a0c1f" stroke-width="2.2" stroke-linejoin="round"/>
-        <circle cx="-18" cy="-21" r="2.6" fill="#160a12"/>
+        <path d="M-2 6q-5-22 18-29q26-8 39 11q11 16 3 36q-6 13-22 14q-25 4-39-11q-5-7-1-21z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M3 9q-11 6-13 19q-1 8 5 13q5 4 4 9q-7 1-12-4q-7-8-5-20q2-15 15-20z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M16 18q-3 22-2 39q1 7-2 13h-9q-2-7 0-15q-3-20 5-39z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M58 13q12 4 15 20q2 9-4 15q-4 3-2 9q-7 1-10-5q-3-6 2-12q-6-9-7-21q-1-6 6-6z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M49 22q6 19 6 37q0 7-3 14h-9q-2-7 1-15q-3-18-4-35z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M4 -10q-12-6-16-21q-4-13 2-25q-3 8-2 16q-6-9-1-20q4-8 12-9q11-1 16 7q5 6 3 14q7 2 9 9q2 7-4 12q-5 4-13 2q-3 8-13 8q5-7 4-15z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-12 -33q-9 0-14 8q-5 6-3 14q1 6 6 7q5 1 8-2q3 4 8 2q5-2 6-8q1-8-3-15q-4-8-13-15z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-7 -37q-1-11 4-15q3 6 1 15z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-2 -38q11-1 15 7q-6-2-9 3q8 1 11 8q-7-2-10 3q7 2 9 10q-11 1-17-6q-8-9-8-23q0-9 5-12z" fill="#6e1620" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M56 18q22 5 26 27q2 12-5 23q3-14-4-23q2 12-7 21q3-14-5-21q3 11-4 19q1-17-8-32z" fill="#6e1620" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M4 -8q21-7 41 0q4 11-2 23q-21 6-43 0q-4-12 4-23z" fill="#9c7227" stroke="#4a0e14" stroke-width="2.2" stroke-linejoin="round"/>
+        <circle cx="-18" cy="-21" r="2.6" fill="#1a120c"/>
       </g>
     </defs>
 
     <!-- ===== TURNING RING (one group, spins continuously) ===== -->
     <g class="cx-manege__spin">
       <!-- hidden circular dais the horses ride around -->
-      <ellipse cx="220" cy="300" rx="150" ry="46" fill="#1c1b3e" stroke="#1b4fd8" stroke-width="2" opacity=".5"/>
+      <ellipse cx="220" cy="300" rx="150" ry="46" fill="#1a120c" stroke="#6e1620" stroke-width="2" opacity=".5"/>
       <!-- back horse (far side) -->
       <g class="cx-manege__horse" style="--i:0">
-        <rect x="217" y="176" width="6" height="112" rx="3" fill="url(#cxPole)" stroke="#7a0c1f" stroke-width="1"/>
+        <rect x="217" y="176" width="6" height="112" rx="3" fill="url(#cxPole)" stroke="#4a0e14" stroke-width="1"/>
         <g transform="translate(220 272) scale(.62) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
       </g>
       <!-- left horse -->
       <g class="cx-manege__horse" style="--i:1">
-        <rect x="94" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#7a0c1f" stroke-width="1"/>
+        <rect x="94" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#4a0e14" stroke-width="1"/>
         <g transform="translate(98 300) scale(.82) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
       </g>
       <!-- right horse (mirrored) -->
       <g class="cx-manege__horse" style="--i:2">
-        <rect x="339" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#7a0c1f" stroke-width="1"/>
+        <rect x="339" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#4a0e14" stroke-width="1"/>
         <g transform="translate(342 300) scale(.82) translate(27 0) scale(-1 1) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
       </g>
       <!-- front horse (full size, foreground) -->
       <g class="cx-manege__horse" style="--i:3">
-        <rect x="216" y="206" width="9" height="130" rx="4.5" fill="url(#cxPole)" stroke="#7a0c1f" stroke-width="1.2"/>
+        <rect x="216" y="206" width="9" height="130" rx="4.5" fill="url(#cxPole)" stroke="#4a0e14" stroke-width="1.2"/>
         <g transform="translate(220 322) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
       </g>
     </g>
@@ -1144,21 +1410,21 @@
 
     <!-- ===== FIXED CANOPY (does NOT spin) ===== -->
     <!-- central pole -->
-    <rect x="215" y="96" width="10" height="170" rx="4" fill="#160a12" opacity=".9"/>
-    <!-- octagonal scalloped tent: crimson / cream candy panels -->
-    <g stroke="#7a0c1f" stroke-width="2" stroke-linejoin="round">
-      <path d="M220 70 96 150 H344 Z" fill="#e8173a"/>
-      <path d="M220 70 130 150 H310 Z" fill="#fff8f0" opacity=".96"/>
-      <path d="M220 70 166 150 H274 Z" fill="#c4122f"/>
-      <path d="M220 70 200 150 H240 Z" fill="#fff8f0" opacity=".96"/>
+    <rect x="215" y="96" width="10" height="170" rx="4" fill="#1a120c" opacity=".9"/>
+    <!-- octagonal scalloped tent: wine / cream candy panels -->
+    <g stroke="#4a0e14" stroke-width="2" stroke-linejoin="round">
+      <path d="M220 70 96 150 H344 Z" fill="#6e1620"/>
+      <path d="M220 70 130 150 H310 Z" fill="#f3e6cf" opacity=".96"/>
+      <path d="M220 70 166 150 H274 Z" fill="#8a1f28"/>
+      <path d="M220 70 200 150 H240 Z" fill="#f3e6cf" opacity=".96"/>
     </g>
     <!-- scalloped rim -->
-    <path d="M92 150 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0" fill="#fff8f0" stroke="#7a0c1f" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M92 150 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
     <!-- thin GOLD finial (accent only) -->
-    <line x1="220" y1="70" x2="220" y2="40" stroke="#ffba08" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="220" cy="36" r="5" fill="#ffba08" stroke="#e89c0a" stroke-width="1.2"/>
-    <!-- chasing bulb ring on the canopy rim (GOLD = the only gold besides the finial) -->
-    <g fill="#ffd98a" stroke="#e89c0a" stroke-width=".8">
+    <line x1="220" y1="70" x2="220" y2="40" stroke="#e8c879" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="220" cy="36" r="5" fill="#e8c879" stroke="#9c7227" stroke-width="1.2"/>
+    <!-- chasing bulb ring on the canopy rim (gold) -->
+    <g fill="#e8c879" stroke="#9c7227" stroke-width=".8">
       <circle class="cx-manege__bulb" style="--b:0"  cx="100" cy="152" r="4.6"/>
       <circle class="cx-manege__bulb" style="--b:1"  cx="124" cy="152" r="4.6"/>
       <circle class="cx-manege__bulb" style="--b:2"  cx="148" cy="152" r="4.6"/>
@@ -1175,21 +1441,19 @@
 </div>
     <div class="cx-drift" data-cx-drift="carte" aria-hidden="true"></div>
     <div class="container">
-      <div class="carte__head">
-        <div>
-          <span class="eyebrow reveal">À déguster</span>
-          <h2 class="h-big reveal cx-reveal--spin" data-d="1" style="color:var(--white);margin-top:.8rem">Les cocktails<br>qui <span class="gold-text">tournent</span></h2>
-        </div>
-        <a class="btn btn--red reveal" data-d="2" href="#infos">Réserver</a>
-      </div>
-      <div class="carte__grid">
-        <article class="ck ck--1 reveal cx-reveal--mount cx-reveal--stagger" data-d="1"><span class="ck__no">01</span><span class="ck__price">12€</span><div class="ck__name">Signature Maison</div><p class="ck__ing">Caramel · Whisky · Rhum · Vanille · Jus de pomme.</p></article>
-        <article class="ck ck--2 reveal cx-reveal--mount cx-reveal--stagger" data-d="2"><span class="ck__no">02</span><span class="ck__price">12€</span><div class="ck__name">Pornstar</div><p class="ck__ing">Vodka · Fruit de la passion · Vanille.</p></article>
-        <article class="ck ck--3 reveal cx-reveal--mount cx-reveal--stagger" data-d="3"><span class="ck__no">03</span><span class="ck__price">12€</span><div class="ck__name">Mojito</div><p class="ck__ing">Rhum · Menthe fraîche · Citron vert · Soda.</p></article>
-        <article class="ck ck--4 reveal cx-reveal--mount cx-reveal--stagger" data-d="4"><span class="ck__no">04</span><span class="ck__price">12€</span><div class="ck__name">Old Fashioned</div><p class="ck__ing">Whisky · Sucre · Bitters · Zeste d'orange.</p></article>
-      </div>
       <div class="menu" data-d="1">
-        <div class="menu__intro"><h3 class="menu__title">La carte complète</h3><p class="menu__sub">Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl).</p></div>
+        <span class="mn-corner mn-corner--tl" aria-hidden="true"><i></i></span>
+        <span class="mn-corner mn-corner--tr" aria-hidden="true"><i></i></span>
+        <span class="mn-corner mn-corner--bl" aria-hidden="true"><i></i></span>
+        <span class="mn-corner mn-corner--br" aria-hidden="true"><i></i></span>
+        <div class="mn-head reveal">
+          <img class="mn-head__logo" src="images/logo.svg" alt="" aria-hidden="true" onerror="this.remove()" />
+          <h2 class="mn-head__wordmark">Carrousel</h2>
+          <p class="mn-head__tag">Bar · Ambiance · Partage</p>
+          <p class="mn-head__divider"><span>La Carte</span></p>
+          <a class="mn-head__cta" href="#infos">Réserver par e-mail</a>
+        </div>
+        <div class="menu__intro"><p class="menu__sub">Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl)</p></div>
       <div class="menu__cols" id="menu-cols">
         <div class="menu__cat" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Cocktails <small>Tous à 12 €</small></h3>
@@ -1383,9 +1647,9 @@
           <div class="menu__spirit"><span class="n">Jägermeister</span><span class="pr">5</span><span class="pr">10</span></div>
         </div>
       </div>
+        <p class="mn-foot">Carte non contractuelle · L'abus d'alcool est dangereux pour la santé.</p>
       </div>
       <div class="menu-print" aria-hidden="true"></div>
-      <p class="carte__note reveal">Carte non contractuelle. L'abus d'alcool est dangereux pour la santé.</p>
     </div>
   </section>
 
@@ -1762,8 +2026,10 @@
   var nav = document.getElementById('nav');
   function onScroll(){ if(nav.classList.contains('open')) return; nav.classList.toggle('solid', (window.scrollY||0) > 40); }
   onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
-  /* thème nav selon la zone sous la barre : liens foncés sur les zones claires (#esprit + carte menu) */
-  var lightZones = [document.getElementById('esprit'), document.querySelector('.carte .menu')].filter(Boolean);
+  /* thème nav selon la zone sous la barre : liens foncés sur les zones claires.
+     #carte est désormais SOMBRE (cabaret forain) → exclu des zones claires pour
+     garder les liens nav clairs/lisibles au survol du menu. Seul #esprit reste clair. */
+  var lightZones = [document.getElementById('esprit')].filter(Boolean);
   function navTheme(){
     if(nav.classList.contains('open')){ nav.classList.remove('nav--onlight'); return; }
     var line = 64;
@@ -1950,15 +2216,79 @@
     var page=document.createElement('section');
     page.className='menu menu-print__page';
     var intro=document.createElement('div');intro.className='menu__intro';
-    var h=document.createElement('h3');h.className='menu__title';h.textContent='La carte complète';
+    var h=document.createElement('h3');h.className='menu__title';h.textContent='Carrousel';
     intro.appendChild(h);
     if(first){var p=document.createElement('p');p.className='menu__sub';
-      p.textContent='Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl).';
+      p.textContent='Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl)';
       intro.appendChild(p);}
     page.appendChild(intro);
     var cols=document.createElement('div');cols.className='menu__cols';
     group.forEach(function(c){cols.appendChild(c.cloneNode(true));});
     page.appendChild(cols);
+    return page;
+  }
+  /* coins or réutilisés (mêmes flourishes que l'écran) */
+  function addCorners(page){
+    ['tl','tr','bl','br'].forEach(function(pos){
+      var c=document.createElement('span');c.className='mn-corner mn-corner--'+pos;
+      c.setAttribute('aria-hidden','true');
+      var i=document.createElement('i');c.appendChild(i);
+      page.appendChild(c);
+    });
+  }
+  /* PAGE DE COUVERTURE — logo + wordmark CARROUSEL + tagline + ★ + adresse */
+  function makeCover(){
+    var page=document.createElement('section');
+    page.className='menu menu-print__page mn-print-cover';
+    addCorners(page);
+    var logo=document.createElement('img');
+    logo.className='mn-print-cover__logo';logo.setAttribute('src','images/logo.svg');
+    logo.setAttribute('alt','');logo.setAttribute('aria-hidden','true');
+    logo.setAttribute('onerror','this.remove()');
+    page.appendChild(logo);
+    var wm=document.createElement('div');wm.className='mn-head__wordmark';wm.textContent='CARROUSEL';
+    page.appendChild(wm);
+    var tag=document.createElement('div');tag.className='mn-head__tag';tag.textContent='BAR · AMBIANCE · PARTAGE';
+    page.appendChild(tag);
+    var star=document.createElement('div');star.className='mn-print-cover__star';star.textContent='★';
+    page.appendChild(star);
+    var addr=document.createElement('div');addr.className='mn-print-cover__addr';
+    addr.textContent='1 Rue Fernand David · 74100 Annemasse';
+    page.appendChild(addr);
+    return page;
+  }
+  /* PAGE CONTACT / HORAIRES — réservation, contact, horaires, note, footer */
+  function makeContact(){
+    var page=document.createElement('section');
+    page.className='menu menu-print__page mn-print-contact';
+    addCorners(page);
+    var block=document.createElement('div');block.className='mn-print-contact__block';
+    var h=document.createElement('div');h.className='mn-print-contact__h';h.textContent='RÉSERVEZ VOTRE TOUR';
+    block.appendChild(h);
+    var blurb=document.createElement('p');blurb.className='mn-print-contact__blurb';
+    blurb.textContent="Une table ce soir, un anniversaire à fêter ou une soirée à privatiser ? On s'occupe de tout.";
+    block.appendChild(blurb);
+    var a1=document.createElement('p');a1.className='mn-print-contact__line';
+    a1.textContent='1 Rue Fernand David (passage bleu) — 74100 Annemasse';
+    block.appendChild(a1);
+    var a2=document.createElement('p');a2.className='mn-print-contact__line mn-print-contact__line--email';
+    a2.textContent='lecarrouselbar@gmail.com';
+    block.appendChild(a2);
+    var hh=document.createElement('div');hh.className='mn-print-contact__hh';hh.textContent='HORAIRES';
+    block.appendChild(hh);
+    var ul=document.createElement('ul');ul.className='mn-print-contact__hours';
+    ['Lundi — Fermé','Mardi — Fermé','Mercredi – Vendredi — 18h – 02h',
+     'Samedi — 06h – 12h et 18h – 02h','Dimanche — 06h – 12h'].forEach(function(t){
+      var li=document.createElement('li');li.textContent=t;ul.appendChild(li);
+    });
+    block.appendChild(ul);
+    var note=document.createElement('p');note.className='mn-print-contact__note';
+    note.textContent='La fête ne s’arrête jamais : after les samedis & dimanches au petit matin (6h – 12h). Ouverture possible pour des événements spéciaux.';
+    block.appendChild(note);
+    var foot=document.createElement('p');foot.className='mn-print-contact__foot';
+    foot.textContent="© 2026 Carrousel — Annemasse · L'abus d'alcool est dangereux pour la santé.";
+    block.appendChild(foot);
+    page.appendChild(block);
     return page;
   }
   function build(){
@@ -1977,7 +2307,11 @@
     }
     if(cur.length)groups.push(cur);
     while(groups.length<n)groups.push([]);
-    host.replaceChildren.apply(host,groups.map(function(g,idx){return makePage(g,idx===0);}));
+    /* couverture en PREMIER, contact/horaires en DERNIER (pages réservées à l'impression) */
+    var pages=[makeCover()];
+    groups.forEach(function(g,idx){pages.push(makePage(g,idx===0));});
+    pages.push(makeContact());
+    host.replaceChildren.apply(host,pages);
   }
   window.__buildPrintMenu=build;
   window.addEventListener('beforeprint',build);
