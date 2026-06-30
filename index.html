@@ -36,10 +36,12 @@
     --mn-bg:#0b0806; --mn-bg2:#0f0b08; --mn-cover:#080605;
     --mn-gold:#c8a24c; --mn-gold-bright:#ecc978; --mn-gold-hi:#f6e3a8; --mn-gold-deep:#8c6a26;
     --mn-grad-gold:linear-gradient(180deg,#f3dd9a 0%,#d8af55 45%,#9c7227 100%);
+    /* sheen métallique antique : haut éclairé → cœur or → ombre profonde (top-lit) */
+    --mn-grad-sheen:linear-gradient(177deg,#f6e3a8 0%,#e3c068 42%,#a9802e 100%);
     --mn-wine:#6e1620; --mn-wine-2:#8a1f28; --mn-wine-deep:#430b10;
-    --mn-name:#e9d8b6; --mn-desc:#9c8763;
+    --mn-name:#e9d8b6; --mn-desc:#b6a079;
     --mn-line:#9a7733; --mn-line-faint:rgba(154,119,51,.18); --mn-line-soft:rgba(154,119,51,.3);
-    --font-cinzel:'Cinzel',Georgia,serif;
+    --font-cinzel:'Cinzel',Georgia,serif; --font-cinzel-deco:'Cinzel Decorative','Cinzel',Georgia,serif;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;}
   html{-webkit-text-size-adjust:100%;overflow-x:hidden;scroll-behavior:smooth;}
@@ -1031,7 +1033,12 @@
    incompatibles avec le menu sombre & or → masqué dans #carte (pas de point vif sur le fond doré) */
 #carte .cx-drift{display:none!important;}
 
-/* — panneau encadré or (surcharge .menu) — */
+/* — sheen or métallique réutilisable (clip texte) — fallback solide en --mn-gold — */
+.mn-gold-text{color:var(--mn-gold);
+  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;}
+
+/* — panneau encadré or (surcharge .menu) — cadre métallique à filet ciselé + sheen — */
 #carte .menu{
   background:
     radial-gradient(120% 70% at 50% 0%,var(--mn-wine-deep) 0%,rgba(67,11,16,0) 42%),
@@ -1040,37 +1047,63 @@
   border:1px solid var(--mn-line);
   border-radius:6px;
   overflow:visible;
+  /* filet doré ciselé : trait clair → champ noir → trait or profond, + lueur or interne + ombre portée */
   box-shadow:
+    inset 0 0 0 1px #b89243,
     inset 0 0 0 6px var(--mn-bg2),
     inset 0 0 0 7px var(--mn-gold-deep),
+    inset 0 0 22px -4px rgba(246,227,168,.10),
     0 24px 60px -28px rgba(0,0,0,.85);
   padding:clamp(2rem,4vw,3.4rem) clamp(1.4rem,3.4vw,2.8rem) clamp(1.6rem,3vw,2.4rem);
 }
 /* la bande foraine rayée de l'ancien thème → supprimée */
 #carte .menu::before{display:none!important;}
-/* second filet or intérieur (hairline) */
+
+/* — révélation élégante du panneau (transform/opacity uniquement, GPU-safe) —
+   Scopée au SEUL panneau écran (#carte .container > .menu) : surtout PAS les pages
+   d'impression .menu-print__page.menu (sinon opacity:0 les laisserait blanches). */
+#carte .container > .menu{opacity:0;transform:translateY(26px) scale(.992);
+  transition:opacity .9s var(--ease),transform .9s var(--ease);will-change:opacity,transform;}
+#carte .container > .menu.mn-in{opacity:1;transform:none;}
+@media (prefers-reduced-motion:reduce){
+  #carte .container > .menu{opacity:1!important;transform:none!important;transition:none!important;}
+}
+
+/* second filet or intérieur (hairline) — dégradé métallique top-lit via border-image */
 #carte .menu::after{
   content:"";display:block;position:absolute;inset:11px;pointer-events:none;
-  border:1px solid var(--mn-gold-deep);border-radius:3px;opacity:.7;z-index:0;
+  border:1px solid var(--mn-gold-deep);
+  border-image:linear-gradient(177deg,#e9cf86 0%,#a9802e 55%,#7d5c22 100%) 1;
+  border-radius:3px;opacity:.85;z-index:0;
 }
-/* fleurons d'angle dorés (4 coins, glyphe ◆ en pseudo-éléments via spans dédiés) */
-.mn-corner{position:absolute;width:20px;height:20px;z-index:3;pointer-events:none;color:var(--mn-gold);}
-.mn-corner::before,.mn-corner::after{content:"";position:absolute;background:currentColor;border-radius:1px;}
-.mn-corner::before{left:0;top:0;width:18px;height:1.5px;}
-.mn-corner::after{left:0;top:0;width:1.5px;height:18px;}
-.mn-corner i{position:absolute;left:6px;top:6px;width:5px;height:5px;background:currentColor;transform:rotate(45deg);}
-.mn-corner--tl{left:7px;top:7px;}
-.mn-corner--tr{right:7px;top:7px;transform:scaleX(-1);}
-.mn-corner--bl{left:7px;bottom:7px;transform:scaleY(-1);}
-.mn-corner--br{right:7px;bottom:7px;transform:scale(-1,-1);}
+/* fleurons d'angle dorés (4 coins) — fin filigrane gravé via CSS mask d'un SVG inline
+   (aucun innerHTML ; le <i> conserve la structure existante mais sert de socle au masque).
+   Le fleuron est un petit motif feuillagé délicat, teinté en dégradé or métallique. */
+.mn-corner{position:absolute;width:22px;height:22px;z-index:3;pointer-events:none;
+  background:var(--mn-grad-sheen);
+  -webkit-mask:var(--mn-fleuron) no-repeat center/contain;
+          mask:var(--mn-fleuron) no-repeat center/contain;}
+.mn-corner i{display:none;}
+:root{
+  --mn-fleuron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill='%23000' d='M3 3h13a1.4 1.4 0 0 1 0 2.8H8.6c4.6 1 8.2 4.6 9.2 9.2v7.4a1.4 1.4 0 0 1-2.8 0V8.6A6 6 0 0 0 9.4 5.8 6 6 0 0 0 5.8 9.4v6a1.4 1.4 0 0 1-2.8 0Z'/%3E%3Cpath fill='%23000' d='M16.5 16.5q4.4 1.4 6 6 1.6-4.6 6-6-4.4-1.6-6-6-1.6 4.6-6 6Z'/%3E%3Ccircle cx='6.6' cy='6.6' r='1.9' fill='%23000'/%3E%3C/svg%3E");
+}
+.mn-corner--tl{left:8px;top:8px;}
+.mn-corner--tr{right:8px;top:8px;transform:scaleX(-1);}
+.mn-corner--bl{left:8px;bottom:8px;transform:scaleY(-1);}
+.mn-corner--br{right:8px;bottom:8px;transform:scale(-1,-1);}
 
 /* — en-tête élégant (logo + wordmark + tagline + diviseur ★) — */
 .mn-head{position:relative;z-index:2;text-align:center;margin-bottom:clamp(1.4rem,3vw,2.2rem);}
-.mn-head__logo{width:clamp(54px,9vw,86px);height:auto;margin:0 auto .4rem;
+/* lueur or radiale, douce, derrière le wordmark (transform/opacity-safe, purement décorative) */
+.mn-head::before{content:"";position:absolute;left:50%;top:clamp(2.6rem,7vw,4.2rem);
+  width:min(70%,30rem);height:clamp(5rem,12vw,8rem);transform:translate(-50%,-50%);
+  background:radial-gradient(60% 60% at 50% 50%,rgba(246,227,168,.16),rgba(200,162,76,.06) 45%,transparent 72%);
+  pointer-events:none;z-index:-1;filter:blur(2px);}
+.mn-head__logo{width:clamp(54px,9vw,86px);height:auto;margin:0 auto .4rem;position:relative;
   filter:saturate(.55) brightness(.92) drop-shadow(0 2px 6px rgba(0,0,0,.6));opacity:.96;}
 .mn-head__wordmark{font-family:var(--font-cinzel);font-weight:700;text-transform:uppercase;
-  letter-spacing:.14em;font-size:clamp(1.8rem,5.4vw,3rem);line-height:1;margin:.1rem 0 0;
-  background:var(--mn-grad-gold);-webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:.14em;font-size:clamp(1.8rem,5.4vw,3rem);line-height:1;margin:.1rem 0 0;position:relative;
+  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;color:transparent;
   /* fallback solide si background-clip non supporté */
   color:var(--mn-gold);-webkit-text-fill-color:transparent;}
 .mn-head__tag{font-family:var(--font-cinzel);font-weight:400;text-transform:uppercase;
@@ -1082,8 +1115,11 @@
   background:linear-gradient(90deg,transparent,var(--mn-gold-deep),var(--mn-gold));}
 .mn-head__divider::after{background:linear-gradient(90deg,var(--mn-gold),var(--mn-gold-deep),transparent);}
 .mn-head__divider span{font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;
-  letter-spacing:.22em;font-size:clamp(.78rem,2vw,1.05rem);color:var(--mn-gold-bright);}
-.mn-head__divider span::before,.mn-head__divider span::after{content:"\2605";color:var(--mn-gold);
+  letter-spacing:.22em;font-size:clamp(.78rem,2vw,1.05rem);color:var(--mn-gold-bright);
+  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;}
+.mn-head__divider span::before,.mn-head__divider span::after{content:"\2605";color:var(--mn-gold-bright);
+  -webkit-text-fill-color:var(--mn-gold-bright);background:none;
   font-size:.7em;margin:0 .55em;vertical-align:.08em;}
 .mn-head__cta{display:inline-block;margin-top:clamp(.9rem,2vw,1.3rem);
   font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.16em;
@@ -1095,8 +1131,8 @@
 /* — sous-titre (menu__intro) — */
 #carte .menu__intro{position:relative;z-index:2;text-align:center;margin-top:0;margin-bottom:clamp(1.5rem,3vw,2.3rem);}
 #carte .menu__sub{font-family:var(--font-cinzel);font-weight:400;text-transform:uppercase;
-  letter-spacing:.14em;font-size:clamp(.62rem,1.5vw,.78rem);color:var(--mn-gold);opacity:.86;
-  line-height:1.55;max-width:46rem;margin-inline:auto;}
+  font-variant:small-caps;letter-spacing:.18em;font-size:clamp(.62rem,1.5vw,.78rem);color:var(--mn-gold);opacity:.9;
+  line-height:1.6;max-width:46rem;margin-inline:auto;font-variant-numeric:tabular-nums;}
 
 /* — grille des colonnes (surcharge .menu__cols : on enlève le fond rayé) — */
 #carte .menu__cols{position:relative;z-index:2;background:none;box-shadow:none;border-radius:0;padding:0;
@@ -1108,14 +1144,17 @@
   break-inside:avoid;-webkit-column-break-inside:avoid;page-break-inside:avoid;
   margin-bottom:clamp(1.4rem,3vw,2rem);}
 #carte .menu__cat h3{
-  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.08em;
-  color:var(--mn-gold-bright);background:none;box-shadow:none;text-shadow:none;border-radius:0;padding:0 0 .34rem;
+  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--mn-gold-bright);box-shadow:none;border-radius:0;padding:0 0 .34rem;
+  /* sheen métallique top-lit (fallback gold via la déclaration color ci-dessus) */
+  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   font-size:clamp(.92rem,2vw,1.06rem);display:flex;align-items:baseline;justify-content:space-between;gap:.7rem;
   border-bottom:1px solid var(--mn-line-soft);margin-bottom:.6rem;}
 /* étiquette « note » = pastille vin à bord doré */
-#carte .menu__cat h3 small{font-family:var(--font-cinzel);font-weight:600;font-size:.56rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--mn-gold-hi);opacity:1;text-shadow:none;white-space:nowrap;
-  background:linear-gradient(180deg,var(--mn-wine-2),var(--mn-wine-deep));
+#carte .menu__cat h3 small{font-family:var(--font-cinzel);font-weight:600;font-size:.58rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mn-gold-hi);-webkit-text-fill-color:var(--mn-gold-hi);
+  opacity:1;text-shadow:none;white-space:nowrap;font-variant-numeric:tabular-nums;
+  background:linear-gradient(180deg,var(--mn-wine-2),var(--mn-wine-deep));-webkit-background-clip:border-box;background-clip:border-box;
   border:1px solid var(--mn-gold-deep);border-radius:999px;padding:.2rem .6rem;align-self:center;flex:0 0 auto;}
 #carte .menu__cat--sp h3{border-bottom:1px solid var(--mn-line-soft);}
 
@@ -1124,16 +1163,16 @@
   color:var(--mn-gold);opacity:.86;font-size:.92rem;margin:.7rem 0 .25rem;}
 
 /* — lignes simples (nom · leader · prix) — */
-#carte .menu__row{display:flex;align-items:baseline;gap:.5rem;font-size:.9rem;padding:.32rem 0;line-height:1.3;
+#carte .menu__row{display:flex;align-items:baseline;gap:.5rem;font-size:.9rem;padding:.34rem 0;line-height:1.32;
   border-bottom:1px solid var(--mn-line-faint);}
-#carte .menu__row .n{font-family:var(--font-script);color:var(--mn-name);}
+#carte .menu__row .n{font-family:var(--font-script);font-weight:600;color:var(--mn-name);}
 #carte .menu__row .d{flex:1;min-width:1rem;align-self:center;height:1px;
   background:repeating-linear-gradient(90deg,var(--mn-line-soft) 0 2px,transparent 2px 6px);opacity:.7;}
 #carte .menu__row .p{font-family:var(--font-script);font-weight:600;color:var(--mn-gold-bright);
   white-space:nowrap;font-variant-numeric:tabular-nums;}
 
 /* — cocktails avec nom seul / description — */
-#carte .menu__row--name{display:block;border-bottom:1px solid var(--mn-line-faint);}
+#carte .menu__row--name{display:block;border-bottom:1px solid var(--mn-line-faint);padding:.34rem 0;}
 #carte .menu__row--name{font-family:var(--font-script);font-weight:600;color:var(--mn-name);}
 #carte .menu__desc{display:block;font-family:var(--font-script);font-style:italic;font-weight:500;
   font-size:.8rem;color:var(--mn-desc);margin-top:.04rem;line-height:1.3;}
@@ -1145,7 +1184,8 @@
   letter-spacing:.08em;color:var(--mn-gold);border-bottom:1px solid var(--mn-line-soft);
   padding-bottom:.26rem;margin-bottom:.12rem;}
 #carte .menu__spirit{font-size:.88rem;padding:.3rem 0;border-bottom:1px solid var(--mn-line-faint);}
-#carte .menu__spirit .n{font-family:var(--font-script);color:var(--mn-name);padding-right:.5rem;}
+#carte .menu__spirit .n{font-family:var(--font-script);font-weight:600;color:var(--mn-name);padding-right:.5rem;
+  font-variant-numeric:tabular-nums;}
 #carte .menu__shdr .pr,#carte .menu__spirit .pr{text-align:right;font-variant-numeric:tabular-nums;
   border-left:1px solid var(--mn-line-soft);padding:0 .42rem 0 .3rem;}
 #carte .menu__spirit .pr{font-weight:600;color:var(--mn-gold-bright);}
@@ -1155,6 +1195,35 @@
 .mn-foot{position:relative;z-index:2;text-align:center;font-family:var(--font-cinzel);
   text-transform:uppercase;letter-spacing:.12em;font-size:.58rem;color:var(--mn-gold-deep);
   margin-top:clamp(1.4rem,3vw,2rem);opacity:.85;}
+
+/* — filet doré fin à ✦ (réutilisable à l'écran) — */
+#carte .mn-rule{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:.85rem;
+  max-width:24rem;margin:clamp(1rem,2.4vw,1.5rem) auto 0;}
+#carte .mn-rule::before,#carte .mn-rule::after{content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--mn-gold-deep),var(--mn-gold));}
+#carte .mn-rule::after{background:linear-gradient(90deg,var(--mn-gold),var(--mn-gold-deep),transparent);}
+#carte .mn-rule__star{color:var(--mn-gold-bright);font-size:.8rem;line-height:1;}
+#carte .mn-page-fleuron{display:none;} /* ornement réservé à l'impression */
+
+/* — EXCELLENCE MOBILE (≤640px) : en-tête réduit, grilles spiritueux SANS débordement — */
+@media (max-width:640px){
+  #carte .menu{padding:clamp(1.5rem,6vw,2.2rem) clamp(1rem,4.5vw,1.5rem) clamp(1.3rem,4vw,1.8rem);}
+  .mn-head__wordmark{font-size:clamp(1.6rem,9vw,2.3rem);letter-spacing:.1em;}
+  .mn-head__tag{letter-spacing:.26em;}
+  #carte .menu__sub{letter-spacing:.12em;}
+  /* colonnes spiritueux : largeur de colonne réduite + paddings serrés → tient dans la largeur */
+  #carte .menu__shdr,#carte .menu__spirit{grid-template-columns:minmax(0,1fr) repeat(var(--n,3),2.05rem);
+    column-gap:0;}
+  #carte .menu__spirit{font-size:.82rem;}
+  #carte .menu__spirit .n{padding-right:.3rem;overflow-wrap:anywhere;}
+  #carte .menu__shdr{font-size:.5rem;letter-spacing:.04em;}
+  #carte .menu__shdr .pr,#carte .menu__spirit .pr{padding:0 .22rem 0 .18rem;}
+  #carte .menu__cat{margin-bottom:1.5rem;}
+}
+@media (max-width:380px){
+  #carte .menu__shdr,#carte .menu__spirit{grid-template-columns:minmax(0,1fr) repeat(var(--n,3),1.78rem);}
+  #carte .menu__spirit .n{font-size:.78rem;}
+}
 
 /* ===================== IMPRESSION (Cmd+P) =====================
    On réimprime UNIQUEMENT la carte, en pages A4 sombres encadrées
@@ -1172,13 +1241,16 @@
       linear-gradient(180deg,var(--mn-bg2) 0%,var(--mn-bg) 60%)!important;
     color:var(--mn-name)!important;
     border:1px solid var(--mn-line)!important;border-radius:4px!important;
-    box-shadow:inset 0 0 0 5px var(--mn-bg2),inset 0 0 0 6px var(--mn-gold-deep)!important;
+    /* filet doré ciselé métallique (trait clair → champ noir → or profond) — print-safe */
+    box-shadow:inset 0 0 0 .35mm #b89243,inset 0 0 0 5px var(--mn-bg2),inset 0 0 0 6px var(--mn-gold-deep)!important;
     padding:9mm 8mm 8mm!important;margin:0!important;overflow:visible!important;
   }
   .menu-print__page.menu::before{display:none!important;}
   .menu-print__page.menu::after{
     content:""!important;display:block!important;position:absolute!important;inset:3mm!important;
-    border:1px solid var(--mn-gold-deep)!important;border-radius:2px!important;opacity:.7!important;pointer-events:none!important;}
+    border:1px solid var(--mn-gold-deep)!important;
+    border-image:linear-gradient(177deg,#e9cf86 0%,#a9802e 55%,#7d5c22 100%) 1!important;
+    border-radius:2px!important;opacity:.85!important;pointer-events:none!important;}
   /* en-tête compact de page : wordmark CARROUSEL or */
   .menu-print__page .menu__intro{position:relative;z-index:2;text-align:center!important;margin:0 0 4mm!important;}
   .menu-print__page .menu__title{
@@ -1188,8 +1260,22 @@
   .menu-print__page .menu__title::after{display:none!important;}
   .menu-print__page .menu__sub{
     font-family:var(--font-cinzel)!important;font-weight:400!important;text-transform:uppercase!important;
-    letter-spacing:.12em!important;font-size:7pt!important;color:var(--mn-gold)!important;
-    opacity:.9!important;margin-top:1.4mm!important;}
+    font-variant:small-caps!important;letter-spacing:.16em!important;font-size:7pt!important;color:var(--mn-gold)!important;
+    opacity:.92!important;margin-top:1.4mm!important;font-variant-numeric:tabular-nums!important;}
+  /* filet doré fin à ✦ sous l'en-tête CARROUSEL */
+  .menu-print__page .mn-rule{position:relative;z-index:2;display:flex!important;align-items:center!important;
+    justify-content:center!important;gap:2.4mm!important;max-width:90mm!important;margin:0 auto 3.4mm!important;}
+  .menu-print__page .mn-rule::before,.menu-print__page .mn-rule::after{content:""!important;flex:1!important;
+    height:.3mm!important;background:linear-gradient(90deg,transparent,var(--mn-gold-deep),var(--mn-gold))!important;}
+  .menu-print__page .mn-rule::after{background:linear-gradient(90deg,var(--mn-gold),var(--mn-gold-deep),transparent)!important;}
+  .menu-print__page .mn-rule__star{color:var(--mn-gold-bright)!important;font-size:7pt!important;line-height:1!important;}
+  /* fleuron centré en pied de page → la page ne paraît jamais à moitié vide */
+  .menu-print__page .mn-page-fleuron{position:relative;z-index:2;flex:0 0 auto!important;text-align:center!important;
+    color:var(--mn-gold)!important;font-size:10.5pt!important;line-height:1!important;opacity:.8!important;
+    margin:4mm 0 0!important;padding-top:3mm!important;}
+  .menu-print__page .mn-page-fleuron::before{content:""!important;display:block!important;width:34mm!important;
+    height:.3mm!important;margin:0 auto 2mm!important;
+    background:linear-gradient(90deg,transparent,var(--mn-gold-deep) 30%,var(--mn-gold-deep) 70%,transparent)!important;}
   /* colonnes : transparentes (pas de fond rayé) */
   .menu-print__page .menu__cols{position:relative;z-index:2;background:none!important;box-shadow:none!important;
     border-radius:0!important;padding:0!important;column-gap:5mm!important;}
@@ -1199,6 +1285,7 @@
     break-inside:avoid!important;-webkit-column-break-inside:avoid!important;page-break-inside:avoid!important;}
   .menu-print__page .menu__cat h3{
     font-family:var(--font-cinzel)!important;font-weight:600!important;color:var(--mn-gold-bright)!important;
+    -webkit-text-fill-color:var(--mn-gold-bright)!important;background-image:none!important;
     background:none!important;box-shadow:none!important;text-shadow:none!important;border-radius:0!important;
     border-bottom:.4mm solid var(--mn-line-soft)!important;padding:0 0 1mm!important;margin-bottom:1.2mm!important;
     font-size:10pt!important;letter-spacing:.06em!important;
@@ -1358,22 +1445,22 @@
       </radialGradient>
       <!-- candy-stripe identity (wine/cream) carried into the horse poles -->
       <pattern id="cxPole" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(34)">
-        <rect width="8" height="8" fill="#f3e6cf"/>
+        <rect width="8" height="8" fill="#ecdcba"/>
         <rect width="4" height="8" fill="#6e1620"/>
       </pattern>
       <!-- one reusable carousel horse (side profile, cream + wine tack) -->
       <g id="cxHorse">
-        <path d="M-2 6q-5-22 18-29q26-8 39 11q11 16 3 36q-6 13-22 14q-25 4-39-11q-5-7-1-21z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M3 9q-11 6-13 19q-1 8 5 13q5 4 4 9q-7 1-12-4q-7-8-5-20q2-15 15-20z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M16 18q-3 22-2 39q1 7-2 13h-9q-2-7 0-15q-3-20 5-39z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M58 13q12 4 15 20q2 9-4 15q-4 3-2 9q-7 1-10-5q-3-6 2-12q-6-9-7-21q-1-6 6-6z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M49 22q6 19 6 37q0 7-3 14h-9q-2-7 1-15q-3-18-4-35z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M4 -10q-12-6-16-21q-4-13 2-25q-3 8-2 16q-6-9-1-20q4-8 12-9q11-1 16 7q5 6 3 14q7 2 9 9q2 7-4 12q-5 4-13 2q-3 8-13 8q5-7 4-15z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M-12 -33q-9 0-14 8q-5 6-3 14q1 6 6 7q5 1 8-2q3 4 8 2q5-2 6-8q1-8-3-15q-4-8-13-15z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M-7 -37q-1-11 4-15q3 6 1 15z" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M-2 -38q11-1 15 7q-6-2-9 3q8 1 11 8q-7-2-10 3q7 2 9 10q-11 1-17-6q-8-9-8-23q0-9 5-12z" fill="#6e1620" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M56 18q22 5 26 27q2 12-5 23q3-14-4-23q2 12-7 21q3-14-5-21q3 11-4 19q1-17-8-32z" fill="#6e1620" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M4 -8q21-7 41 0q4 11-2 23q-21 6-43 0q-4-12 4-23z" fill="#9c7227" stroke="#4a0e14" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M-2 6q-5-22 18-29q26-8 39 11q11 16 3 36q-6 13-22 14q-25 4-39-11q-5-7-1-21z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M3 9q-11 6-13 19q-1 8 5 13q5 4 4 9q-7 1-12-4q-7-8-5-20q2-15 15-20z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M16 18q-3 22-2 39q1 7-2 13h-9q-2-7 0-15q-3-20 5-39z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M58 13q12 4 15 20q2 9-4 15q-4 3-2 9q-7 1-10-5q-3-6 2-12q-6-9-7-21q-1-6 6-6z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M49 22q6 19 6 37q0 7-3 14h-9q-2-7 1-15q-3-18-4-35z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M4 -10q-12-6-16-21q-4-13 2-25q-3 8-2 16q-6-9-1-20q4-8 12-9q11-1 16 7q5 6 3 14q7 2 9 9q2 7-4 12q-5 4-13 2q-3 8-13 8q5-7 4-15z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-12 -33q-9 0-14 8q-5 6-3 14q1 6 6 7q5 1 8-2q3 4 8 2q5-2 6-8q1-8-3-15q-4-8-13-15z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-7 -37q-1-11 4-15q3 6 1 15z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-2 -38q11-1 15 7q-6-2-9 3q8 1 11 8q-7-2-10 3q7 2 9 10q-11 1-17-6q-8-9-8-23q0-9 5-12z" fill="#8a1f28" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M56 18q22 5 26 27q2 12-5 23q3-14-4-23q2 12-7 21q3-14-5-21q3 11-4 19q1-17-8-32z" fill="#8a1f28" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M4 -8q21-7 41 0q4 11-2 23q-21 6-43 0q-4-12 4-23z" fill="#6e1620" stroke="#4a0e14" stroke-width="2.2" stroke-linejoin="round"/>
         <circle cx="-18" cy="-21" r="2.6" fill="#1a120c"/>
       </g>
     </defs>
@@ -1413,18 +1500,18 @@
     <rect x="215" y="96" width="10" height="170" rx="4" fill="#1a120c" opacity=".9"/>
     <!-- octagonal scalloped tent: wine / cream candy panels -->
     <g stroke="#4a0e14" stroke-width="2" stroke-linejoin="round">
-      <path d="M220 70 96 150 H344 Z" fill="#6e1620"/>
-      <path d="M220 70 130 150 H310 Z" fill="#f3e6cf" opacity=".96"/>
-      <path d="M220 70 166 150 H274 Z" fill="#8a1f28"/>
-      <path d="M220 70 200 150 H240 Z" fill="#f3e6cf" opacity=".96"/>
+      <path d="M220 70 96 150 H344 Z" fill="#8a1f28"/>
+      <path d="M220 70 130 150 H310 Z" fill="#ecdcba" opacity=".96"/>
+      <path d="M220 70 166 150 H274 Z" fill="#9a2530"/>
+      <path d="M220 70 200 150 H240 Z" fill="#ecdcba" opacity=".96"/>
     </g>
     <!-- scalloped rim -->
-    <path d="M92 150 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0" fill="#f3e6cf" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M92 150 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0" fill="#ecdcba" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
     <!-- thin GOLD finial (accent only) -->
-    <line x1="220" y1="70" x2="220" y2="40" stroke="#e8c879" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="220" cy="36" r="5" fill="#e8c879" stroke="#9c7227" stroke-width="1.2"/>
+    <line x1="220" y1="70" x2="220" y2="40" stroke="#f0d488" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="220" cy="36" r="5" fill="#f0d488" stroke="#9c7227" stroke-width="1.2"/>
     <!-- chasing bulb ring on the canopy rim (gold) -->
-    <g fill="#e8c879" stroke="#9c7227" stroke-width=".8">
+    <g fill="#f0d488" stroke="#9c7227" stroke-width=".8">
       <circle class="cx-manege__bulb" style="--b:0"  cx="100" cy="152" r="4.6"/>
       <circle class="cx-manege__bulb" style="--b:1"  cx="124" cy="152" r="4.6"/>
       <circle class="cx-manege__bulb" style="--b:2"  cx="148" cy="152" r="4.6"/>
@@ -2211,20 +2298,32 @@
    de page forcé entre les deux. Invisible à l'écran (.menu-print{display:none}). */
 (function(){
   "use strict";
-  function weight(c){return 2.4 + c.querySelectorAll('.menu__row,.menu__spirit,.menu__h,.menu__shdr').length + c.querySelectorAll('.menu__desc').length*0.85;}
+  function weight(c){return 2.6 + c.querySelectorAll('.menu__row,.menu__spirit,.menu__h,.menu__shdr').length + c.querySelectorAll('.menu__desc').length*0.9;}
+  /* filet doré fin à ✦ central — réutilisable (createElement only) */
+  function ruleNode(){
+    var r=document.createElement('div');r.className='mn-rule';r.setAttribute('aria-hidden','true');
+    var s=document.createElement('span');s.className='mn-rule__star';s.textContent='✦';
+    r.appendChild(s);
+    return r;
+  }
   function makePage(group,first){
     var page=document.createElement('section');
     page.className='menu menu-print__page';
     var intro=document.createElement('div');intro.className='menu__intro';
-    var h=document.createElement('h3');h.className='menu__title';h.textContent='Carrousel';
+    var h=document.createElement('h3');h.className='menu__title mn-gold-text';h.textContent='Carrousel';
     intro.appendChild(h);
     if(first){var p=document.createElement('p');p.className='menu__sub';
       p.textContent='Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl)';
       intro.appendChild(p);}
     page.appendChild(intro);
+    page.appendChild(ruleNode());                 /* filet sous l'en-tête CARROUSEL */
     var cols=document.createElement('div');cols.className='menu__cols';
     group.forEach(function(c){cols.appendChild(c.cloneNode(true));});
     page.appendChild(cols);
+    /* fleuron centré en pied de page → aucune page ne paraît à moitié vide */
+    var fl=document.createElement('div');fl.className='mn-page-fleuron';fl.setAttribute('aria-hidden','true');
+    fl.textContent='✦';
+    page.appendChild(fl);
     return page;
   }
   /* coins or réutilisés (mêmes flourishes que l'écran) */
@@ -2297,16 +2396,25 @@
     if(!src||!host)return;
     var cats=Array.prototype.slice.call(src.querySelectorAll(':scope > .menu__cat'));
     if(!cats.length)return;
-    var total=cats.reduce(function(s,c){return s+weight(c);},0);
-    /* nb de pages adaptatif (capacité ~88 par A4) : 2 ou 3 panneaux complets, jamais coupés */
-    var n=Math.max(2,Math.ceil(total/88));
+    var ws=cats.map(weight);
+    var total=ws.reduce(function(s,w){return s+w;},0);
+    /* Capacité ~104 par A4 sombre (type d'impression compacte) → pages PLEINES, jamais coupées.
+       Min 1 page de contenu (couverture + contact sont des pages distinctes) : un menu
+       modeste tient sur UN panneau plein plutôt que deux panneaux à moitié vides.
+       n borné par le nombre de catégories (chaque cat indivisible). */
+    var n=Math.min(cats.length,Math.max(2,Math.ceil(total/76)));
+    /* Découpe équilibrée par poids cumulé : on vise le seuil per*gi tout en laissant
+       assez de catégories pour remplir les pages restantes (évite une dernière page maigre). */
     var per=total/n,acc=0,gi=1,groups=[],cur=[];
     for(var i=0;i<cats.length;i++){
-      cur.push(cats[i]);acc+=weight(cats[i]);
-      if(gi<n && acc>=per*gi){groups.push(cur);cur=[];gi++;}
+      cur.push(cats[i]);acc+=ws[i];
+      var remainingCats=cats.length-1-i;        /* catégories encore à placer */
+      var remainingPages=n-gi;                  /* pages encore à ouvrir après celle-ci */
+      if(gi<n && acc>=per*gi && remainingCats>remainingPages){groups.push(cur);cur=[];gi++;}
     }
     if(cur.length)groups.push(cur);
     while(groups.length<n)groups.push([]);
+    groups=groups.filter(function(g){return g.length;}); /* jamais de panneau vide */
     /* couverture en PREMIER, contact/horaires en DERNIER (pages réservées à l'impression) */
     var pages=[makeCover()];
     groups.forEach(function(g,idx){pages.push(makePage(g,idx===0));});
@@ -2335,6 +2443,25 @@
     entries.forEach(function(e){ stage.classList.toggle('is-near', e.isIntersecting); });
   }, {rootMargin:'120px'});
   io.observe(stage);
+})();
+
+/* ---- Révélation élégante du panneau de carte (.menu) : transform/opacity, reduced-motion-safe ---- */
+(function(){
+  var panel = document.querySelector('#carte .container > .menu');
+  if(!panel) return;
+  var REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(REDUCE || !('IntersectionObserver' in window)){ panel.classList.add('mn-in'); return; }
+  var io = new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        panel.classList.add('mn-in');
+        /* lâcher le hint GPU une fois la transition terminée */
+        setTimeout(function(){ panel.style.willChange='auto'; }, 1000);
+        obs.unobserve(panel);
+      }
+    });
+  }, {rootMargin:'0px 0px -12% 0px', threshold:0.12});
+  io.observe(panel);
 })();
 
 (function(){
