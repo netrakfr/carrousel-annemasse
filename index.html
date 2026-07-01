@@ -32,15 +32,19 @@
     --pad:clamp(1.25rem,5vw,4.5rem);
     --ease:cubic-bezier(.22,1,.36,1);
     --bounce:cubic-bezier(.34,1.56,.64,1);
-    /* === MENU « CABARET FORAIN » — palette sombre & or (préfixe --mn-) === */
-    --mn-bg:#0b0806; --mn-bg2:#0f0b08; --mn-cover:#080605;
-    --mn-gold:#c8a24c; --mn-gold-bright:#ecc978; --mn-gold-hi:#f6e3a8; --mn-gold-deep:#8c6a26;
-    --mn-grad-gold:linear-gradient(180deg,#f3dd9a 0%,#d8af55 45%,#9c7227 100%);
-    /* sheen métallique antique : haut éclairé → cœur or → ombre profonde (top-lit) */
-    --mn-grad-sheen:linear-gradient(177deg,#f6e3a8 0%,#e3c068 42%,#a9802e 100%);
-    --mn-wine:#6e1620; --mn-wine-2:#8a1f28; --mn-wine-deep:#430b10;
-    --mn-name:#e9d8b6; --mn-desc:#b6a079;
-    --mn-line:#9a7733; --mn-line-faint:rgba(154,119,51,.18); --mn-line-soft:rgba(154,119,51,.3);
+    /* === MENU « CARROUSEL VIF » — repointé sur la palette vive (préfixe --mn- conservé) === */
+    /* Fonds : velours-nuit cohérent avec le reste du site (plus de brun-noir baroque) */
+    --mn-bg:var(--night); --mn-bg2:var(--night-2); --mn-cover:#0d0c22;
+    /* « or » repointé sur l'ambre-ampoule : accent/bulbs uniquement, jamais un cadre ni un fond dominant */
+    --mn-gold:var(--gold); --mn-gold-bright:var(--gold-light); --mn-gold-hi:#fff2cf; --mn-gold-deep:var(--gold-2);
+    --mn-grad-gold:linear-gradient(180deg,var(--gold-light) 0%,var(--gold) 55%,var(--gold-2) 100%);
+    /* plus de sheen métallique : à plat, candyfloss uni (fallback texte) */
+    --mn-grad-sheen:none;
+    /* « wine » repointé sur le crimson vif */
+    --mn-wine:var(--red); --mn-wine-2:var(--red-2); --mn-wine-deep:var(--red-deep);
+    --mn-name:var(--cream); --mn-desc:rgba(255,248,240,.72);
+    /* lignes : hairlines candyfloss propres, sans lueur or */
+    --mn-line:rgba(255,248,240,.5); --mn-line-faint:rgba(255,248,240,.14); --mn-line-soft:rgba(255,248,240,.26);
     --font-cinzel:'Cinzel',Georgia,serif; --font-cinzel-deco:'Cinzel Decorative','Cinzel',Georgia,serif;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;}
@@ -355,7 +359,7 @@
   .carte::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(80% 60% at 80% 0%,rgba(255,46,136,.18),transparent 60%),radial-gradient(70% 60% at 10% 100%,rgba(34,211,196,.14),transparent 60%);}
   .carte .container{position:relative;z-index:1;}
   .carte__head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;}
-  .carte .eyebrow{color:var(--gold);}
+  .carte .eyebrow{color:var(--magenta);}
   .carte__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(1rem,2vw,1.5rem);margin-top:clamp(2.4rem,5vw,3.6rem);}
   .ck{position:relative;border-radius:22px;overflow:hidden;padding:1.8rem;min-height:230px;display:flex;flex-direction:column;justify-content:flex-end;border:3px solid rgba(255,255,255,.12);transition:transform .3s var(--bounce);}
   .ck:hover{transform:translateY(-6px) rotate(-.6deg);}
@@ -1007,56 +1011,52 @@
 /* ================= /CARROUSEL FX ================= */
 
 /* ============================================================
-   CARTE « CABARET FORAIN » — refonte sombre & or
+   CARTE « CARROUSEL VIF » — refonte claire, plate & foraine
    Esthétique identique à l'écran ET à l'impression.
    Scopée sous #carte et .menu-print pour surcharger les anciennes
-   règles « vif » sans toucher au reste du site. Anime uniquement
-   transform/opacity. Classes nouvelles préfixées .mn- (sans clash
-   avec cx-*). Cadre or à double filet + fleurons d'angle.
+   règles « or » sans toucher au reste du site. Anime uniquement
+   transform/opacity. Classes préfixées .mn- (sans clash avec cx-*).
+   Zéro baroque : couleurs vives à plat, formes rondes propres,
+   l'ambre n'apparaît QUE sur les ampoules.
+   Palette de sections (rotation type chapiteau rayé) :
+     Signatures  → crimson  (--red)
+     Cocktails   → magenta  (--magenta)
+     Vins        → cobalt   (--cobalt)
+     Bières&Softs→ teal     (--cyan)
+     Spiritueux  → crimson  (--red)
    ============================================================ */
 
-/* — fond de la section : nuit chaude + vignette vin — */
+/* — fond de la section : velours-nuit + lueur vive discrète (plus de vignette vin) — */
 #carte.carte{background:var(--mn-bg);}
 #carte.carte::before{
   background:
-    radial-gradient(120% 80% at 50% -8%,rgba(110,22,32,.5),transparent 60%),
-    radial-gradient(80% 60% at 12% 104%,rgba(110,22,32,.28),transparent 60%);
+    radial-gradient(120% 80% at 50% -8%,rgba(255,46,136,.14),transparent 58%),
+    radial-gradient(80% 60% at 12% 104%,rgba(27,79,216,.12),transparent 60%);
 }
 
-/* — rail d'ampoules + confetti : or discret dans la carte (pas de teal/magenta) — */
+/* — rail d'ampoules : ambre-ampoule vif (les vraies ampoules du carrousel) — */
 #carte .cx-bulb,#carte .cx-bulb--teal,#carte .cx-bulb--magenta{
-  background:radial-gradient(circle at 38% 32%,var(--mn-gold-hi),var(--mn-gold-bright) 46%,var(--mn-gold-deep))!important;
-  box-shadow:0 0 5px 1px rgba(200,162,76,.6),0 0 11px 3px rgba(140,106,38,.35)!important;}
+  background:radial-gradient(circle at 38% 32%,#fff2cf,var(--gold-light) 46%,var(--gold))!important;
+  box-shadow:0 0 6px 1px rgba(255,186,8,.6),0 0 12px 3px rgba(255,186,8,.3)!important;}
 #carte .cx-bulbs::before{
-  background:repeating-linear-gradient(90deg,var(--mn-wine-deep) 0 7px,rgba(200,162,76,.22) 7px 11px)!important;}
-/* le champ de confetti « cx-drift » utilise des teintes vives (rouge/cobalt/teal/magenta)
-   incompatibles avec le menu sombre & or → masqué dans #carte (pas de point vif sur le fond doré) */
+  background:repeating-linear-gradient(90deg,rgba(255,248,240,.28) 0 7px,rgba(255,186,8,.32) 7px 11px)!important;}
+/* le confetti « cx-drift » reste masqué dans la carte (fond focalisé, propre) */
 #carte .cx-drift{display:none!important;}
 
-/* — sheen or métallique réutilisable (clip texte) — fallback solide en --mn-gold — */
-.mn-gold-text{color:var(--mn-gold);
-  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;color:transparent;}
+/* — ancien « sheen or » : désormais un simple aplat candyfloss (plus de clip texte) — */
+.mn-gold-text{color:var(--cream)!important;background:none!important;
+  -webkit-text-fill-color:currentColor!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;}
 
-/* — panneau encadré or (surcharge .menu) — cadre métallique à filet ciselé + sheen — */
+/* — panneau : velours-nuit propre, coins ronds, fin liseré candyfloss (zéro or, zéro filet ciselé) — */
 #carte .menu{
-  background:
-    radial-gradient(120% 70% at 50% 0%,var(--mn-wine-deep) 0%,rgba(67,11,16,0) 42%),
-    linear-gradient(180deg,var(--mn-bg2) 0%,var(--mn-bg) 60%);
+  background:linear-gradient(180deg,var(--mn-bg2) 0%,var(--mn-bg) 70%);
   color:var(--mn-name);
-  border:1px solid var(--mn-line);
-  border-radius:6px;
+  border:2px solid rgba(255,248,240,.14);
+  border-radius:18px;
   overflow:visible;
-  /* filet doré ciselé : trait clair → champ noir → trait or profond, + lueur or interne + ombre portée */
-  box-shadow:
-    inset 0 0 0 1px #b89243,
-    inset 0 0 0 6px var(--mn-bg2),
-    inset 0 0 0 7px var(--mn-gold-deep),
-    inset 0 0 22px -4px rgba(246,227,168,.10),
-    0 24px 60px -28px rgba(0,0,0,.85);
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.7);
   padding:clamp(2rem,4vw,3.4rem) clamp(1.4rem,3.4vw,2.8rem) clamp(1.6rem,3vw,2.4rem);
 }
-/* la bande foraine rayée de l'ancien thème → supprimée */
 #carte .menu::before{display:none!important;}
 
 /* — révélation élégante du panneau (transform/opacity uniquement, GPU-safe) —
@@ -1069,69 +1069,54 @@
   #carte .container > .menu{opacity:1!important;transform:none!important;transition:none!important;}
 }
 
-/* second filet or intérieur (hairline) — dégradé métallique top-lit via border-image */
-#carte .menu::after{
-  content:"";display:block;position:absolute;inset:11px;pointer-events:none;
-  border:1px solid var(--mn-gold-deep);
-  border-image:linear-gradient(177deg,#e9cf86 0%,#a9802e 55%,#7d5c22 100%) 1;
-  border-radius:3px;opacity:.85;z-index:0;
-}
-/* fleurons d'angle dorés (4 coins) — fin filigrane gravé via CSS mask d'un SVG inline
-   (aucun innerHTML ; le <i> conserve la structure existante mais sert de socle au masque).
-   Le fleuron est un petit motif feuillagé délicat, teinté en dégradé or métallique. */
-.mn-corner{position:absolute;width:22px;height:22px;z-index:3;pointer-events:none;
-  background:var(--mn-grad-sheen);
-  -webkit-mask:var(--mn-fleuron) no-repeat center/contain;
-          mask:var(--mn-fleuron) no-repeat center/contain;}
+/* plus de second filet or intérieur : panneau à plat */
+#carte .menu::after{display:none!important;}
+/* fleurons d'angle dorés → SUPPRIMÉS (baroque). Les <span.mn-corner> restent dans le
+   DOM (structure) mais ne rendent plus rien : zéro filigrane, zéro or. */
+.mn-corner{display:none!important;}
 .mn-corner i{display:none;}
-:root{
-  --mn-fleuron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill='%23000' d='M3 3h13a1.4 1.4 0 0 1 0 2.8H8.6c4.6 1 8.2 4.6 9.2 9.2v7.4a1.4 1.4 0 0 1-2.8 0V8.6A6 6 0 0 0 9.4 5.8 6 6 0 0 0 5.8 9.4v6a1.4 1.4 0 0 1-2.8 0Z'/%3E%3Cpath fill='%23000' d='M16.5 16.5q4.4 1.4 6 6 1.6-4.6 6-6-4.4-1.6-6-6-1.6 4.6-6 6Z'/%3E%3Ccircle cx='6.6' cy='6.6' r='1.9' fill='%23000'/%3E%3C/svg%3E");
-}
-.mn-corner--tl{left:8px;top:8px;}
-.mn-corner--tr{right:8px;top:8px;transform:scaleX(-1);}
-.mn-corner--bl{left:8px;bottom:8px;transform:scaleY(-1);}
-.mn-corner--br{right:8px;bottom:8px;transform:scale(-1,-1);}
 
 /* — en-tête élégant (logo + wordmark + tagline + diviseur ★) — */
 .mn-head{position:relative;z-index:2;text-align:center;margin-bottom:clamp(1.4rem,3vw,2.2rem);}
-/* lueur or radiale, douce, derrière le wordmark (transform/opacity-safe, purement décorative) */
+/* lueur vive douce derrière le wordmark (décorative, transform/opacity-safe) */
 .mn-head::before{content:"";position:absolute;left:50%;top:clamp(2.6rem,7vw,4.2rem);
   width:min(70%,30rem);height:clamp(5rem,12vw,8rem);transform:translate(-50%,-50%);
-  background:radial-gradient(60% 60% at 50% 50%,rgba(246,227,168,.16),rgba(200,162,76,.06) 45%,transparent 72%);
+  background:radial-gradient(60% 60% at 50% 50%,rgba(255,46,136,.16),rgba(27,79,216,.08) 45%,transparent 72%);
   pointer-events:none;z-index:-1;filter:blur(2px);}
 .mn-head__logo{width:clamp(54px,9vw,86px);height:auto;margin:0 auto .4rem;position:relative;
-  filter:saturate(.55) brightness(.92) drop-shadow(0 2px 6px rgba(0,0,0,.6));opacity:.96;}
-.mn-head__wordmark{font-family:var(--font-cinzel);font-weight:700;text-transform:uppercase;
-  letter-spacing:.14em;font-size:clamp(1.8rem,5.4vw,3rem);line-height:1;margin:.1rem 0 0;position:relative;
-  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;color:transparent;
-  /* fallback solide si background-clip non supporté */
-  color:var(--mn-gold);-webkit-text-fill-color:transparent;}
-.mn-head__tag{font-family:var(--font-cinzel);font-weight:400;text-transform:uppercase;
-  letter-spacing:.34em;font-size:clamp(.56rem,1.5vw,.72rem);color:var(--mn-gold);
-  margin:.7rem 0 0;opacity:.92;}
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.45));opacity:1;}
+/* wordmark : police d'affichage foraine (Anton), candyfloss uni — plus de Cinzel or ciselé */
+.mn-head__wordmark{font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  letter-spacing:.02em;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1;margin:.1rem 0 0;position:relative;
+  color:var(--cream);-webkit-text-fill-color:currentColor;background:none;}
+.mn-head__tag{font-family:var(--font-body);font-weight:600;text-transform:uppercase;
+  letter-spacing:.3em;font-size:clamp(.56rem,1.5vw,.72rem);color:var(--magenta);
+  margin:.7rem 0 0;opacity:1;}
 .mn-head__divider{display:flex;align-items:center;justify-content:center;gap:.85rem;
-  margin:clamp(1rem,2.4vw,1.5rem) auto 0;max-width:24rem;color:var(--mn-gold);}
-.mn-head__divider::before,.mn-head__divider::after{content:"";flex:1;height:1px;
-  background:linear-gradient(90deg,transparent,var(--mn-gold-deep),var(--mn-gold));}
-.mn-head__divider::after{background:linear-gradient(90deg,var(--mn-gold),var(--mn-gold-deep),transparent);}
-.mn-head__divider span{font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;
-  letter-spacing:.22em;font-size:clamp(.78rem,2vw,1.05rem);color:var(--mn-gold-bright);
-  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;}
-.mn-head__divider span::before,.mn-head__divider span::after{content:"\2605";color:var(--mn-gold-bright);
-  -webkit-text-fill-color:var(--mn-gold-bright);background:none;
-  font-size:.7em;margin:0 .55em;vertical-align:.08em;}
+  margin:clamp(1rem,2.4vw,1.5rem) auto 0;max-width:24rem;color:var(--cream);}
+.mn-head__divider::before,.mn-head__divider::after{content:"";flex:1;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,248,240,.55));}
+.mn-head__divider::after{background:linear-gradient(90deg,rgba(255,248,240,.55),transparent);}
+.mn-head__divider span{font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  letter-spacing:.06em;font-size:clamp(.92rem,2.4vw,1.25rem);color:var(--cream);
+  -webkit-text-fill-color:currentColor;background:none;}
+.mn-head__divider span::before,.mn-head__divider span::after{content:"\2605";color:var(--gold);
+  -webkit-text-fill-color:var(--gold);background:none;
+  font-size:.6em;margin:0 .55em;vertical-align:.14em;}
 .mn-head__cta{display:inline-block;margin-top:clamp(.9rem,2vw,1.3rem);
-  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.16em;
-  font-size:.66rem;color:var(--mn-gold-bright);padding:.55rem 1.2rem;border:1px solid var(--mn-gold-deep);
+  font-family:var(--font-body);font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+  font-size:.66rem;color:var(--cream);padding:.55rem 1.3rem;border:2px solid var(--magenta);
   border-radius:999px;transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease);}
-.mn-head__cta:hover{color:var(--mn-cover);background:var(--mn-gold-bright);border-color:var(--mn-gold-bright);transform:translateY(-2px);}
-.mn-head__cta:focus-visible{outline:3px solid var(--mn-gold-bright);outline-offset:3px;}
+.mn-head__cta:hover{color:#fff;background:var(--magenta);border-color:var(--magenta);transform:translateY(-2px);}
+.mn-head__cta:focus-visible{outline:3px solid var(--magenta);outline-offset:3px;}
+
+/* — accent de section par défaut (repris/écrasé par .mn-sec via l'id, voir plus bas) — */
+#carte .menu,#carte .menu__cols{--sec:var(--red);}
 
 /* — sous-titre (menu__intro) — */
 #carte .menu__intro{position:relative;z-index:2;text-align:center;margin-top:0;margin-bottom:clamp(1.5rem,3vw,2.3rem);}
-#carte .menu__sub{font-family:var(--font-cinzel);font-weight:400;text-transform:uppercase;
-  font-variant:small-caps;letter-spacing:.18em;font-size:clamp(.62rem,1.5vw,.78rem);color:var(--mn-gold);opacity:.9;
+#carte .menu__sub{font-family:var(--font-body);font-weight:600;text-transform:uppercase;
+  letter-spacing:.14em;font-size:clamp(.62rem,1.5vw,.78rem);color:var(--gold-light);opacity:1;
   line-height:1.6;max-width:46rem;margin-inline:auto;font-variant-numeric:tabular-nums;}
 
 /* — grille des colonnes (surcharge .menu__cols : on enlève le fond rayé) — */
@@ -1139,31 +1124,30 @@
   columns:2;column-gap:clamp(1.8rem,4vw,3.4rem);}
 @media (max-width:640px){#carte .menu__cols{columns:1;}}
 
-/* — catégorie (surcharge .menu__cat : transparente, posée sur le panneau) — */
+/* — catégorie (transparente, posée sur le panneau) — */
 #carte .menu__cat{background:none;border:none;border-radius:0;box-shadow:none;padding:0;
   break-inside:avoid;-webkit-column-break-inside:avoid;page-break-inside:avoid;
   margin-bottom:clamp(1.9rem,3.6vw,2.7rem);}
+/* titre de catégorie : police d'affichage foraine, dans la couleur vive de la section — plat, propre */
 #carte .menu__cat h3{
-  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.13em;
-  color:var(--mn-gold-bright);box-shadow:none;border-radius:0;padding:0 0 .4rem;
-  /* sheen métallique top-lit (fallback gold via la déclaration color ci-dessus) */
-  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  font-size:clamp(.98rem,2.1vw,1.14rem);display:flex;align-items:baseline;justify-content:space-between;gap:.7rem;
-  border-bottom:1px solid var(--mn-line-soft);margin-bottom:.75rem;}
-/* étiquette « note » = pastille vin à bord doré */
-#carte .menu__cat h3 small{font-family:var(--font-cinzel);font-weight:600;font-size:.58rem;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--mn-gold-hi);-webkit-text-fill-color:var(--mn-gold-hi);
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;letter-spacing:.02em;
+  color:var(--sec);-webkit-text-fill-color:currentColor;background:none;box-shadow:none;border-radius:0;padding:0 0 .4rem;
+  font-size:clamp(1.12rem,2.4vw,1.34rem);display:flex;align-items:baseline;justify-content:space-between;gap:.7rem;
+  border-bottom:2px solid var(--mn-line-soft);margin-bottom:.75rem;}
+/* étiquette « note » = chip plat dans la couleur de la section, texte candyfloss */
+#carte .menu__cat h3 small{font-family:var(--font-body);font-weight:700;font-size:.58rem;letter-spacing:.08em;
+  text-transform:uppercase;color:#fff;-webkit-text-fill-color:#fff;
   opacity:1;text-shadow:none;white-space:nowrap;font-variant-numeric:tabular-nums;
-  background:linear-gradient(180deg,var(--mn-wine-2),var(--mn-wine-deep));-webkit-background-clip:border-box;background-clip:border-box;
-  border:1px solid var(--mn-gold-deep);border-radius:999px;padding:.2rem .6rem;align-self:center;flex:0 0 auto;}
-#carte .menu__cat--sp h3{border-bottom:1px solid var(--mn-line-soft);margin-bottom:.15rem;}
+  background:var(--sec);-webkit-background-clip:border-box;background-clip:border-box;
+  border:none;border-radius:999px;padding:.24rem .64rem;align-self:center;flex:0 0 auto;}
+#carte .menu__cat--sp h3{border-bottom:2px solid var(--mn-line-soft);margin-bottom:.15rem;}
 
-/* — sous-en-tête (Au rhum, Blancs, Rouges…) : label doré italique aéré — */
+/* — sous-en-tête (Au rhum, Blancs, Rouges…) : label italique élégant, teinté section — */
 #carte .menu__h{font-family:var(--font-script);font-style:italic;font-weight:600;
-  color:var(--mn-gold);opacity:.9;font-size:1rem;letter-spacing:.01em;
+  color:var(--sec);opacity:1;font-size:1rem;letter-spacing:.01em;
   margin:1.15rem 0 .45rem;position:relative;padding-left:1.1rem;}
-#carte .menu__h::before{content:"\2767";position:absolute;left:0;top:.05em;font-size:.72em;
-  color:var(--mn-gold-deep);opacity:.8;}
+#carte .menu__h::before{content:"\2022";position:absolute;left:.15rem;top:0;font-size:1em;
+  color:var(--gold);opacity:1;}
 #carte .menu__cat--sp .menu__h:first-of-type{margin-top:.35rem;}
 
 /* — lignes simples (nom · leader fin · prix) : plus de bord dur, on respire — */
@@ -1171,7 +1155,7 @@
 #carte .menu__row .n{font-family:var(--font-script);font-weight:600;color:var(--mn-name);}
 #carte .menu__row .d{flex:1;min-width:1rem;align-self:center;height:1px;
   background:repeating-linear-gradient(90deg,var(--mn-line-soft) 0 1px,transparent 1px 7px);opacity:.55;}
-#carte .menu__row .p{font-family:var(--font-script);font-weight:600;color:var(--mn-gold-bright);
+#carte .menu__row .p{font-family:var(--font-body);font-weight:700;color:var(--gold-light);
   white-space:nowrap;font-variant-numeric:tabular-nums;}
 
 /* — cocktails avec nom seul / description : entrée éditoriale, diviseur ténu — */
@@ -1186,31 +1170,31 @@
 #carte .menu__row + .menu__row--name{
   border-top:1px solid var(--mn-line-faint);}
 
-/* — légende des mesures affichée UNE fois, en petite capitale dorée discrète — */
-#carte .menu__cap{font-family:var(--font-cinzel);font-weight:600;font-size:.56rem;text-transform:uppercase;
-  letter-spacing:.16em;color:var(--mn-gold);opacity:.72;margin:.05rem 0 .5rem;
+/* — légende des mesures affichée UNE fois, en petite capitale candyfloss discrète — */
+#carte .menu__cap{font-family:var(--font-body);font-weight:600;font-size:.56rem;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--gold-light);opacity:.85;margin:.05rem 0 .5rem;
   font-variant-numeric:tabular-nums;}
 
-/* — spiritueux : nom à gauche + grappe de prix dorée à droite, sans règles verticales — */
+/* — spiritueux : nom à gauche + grappe de prix ambre à droite, sans règles verticales — */
 #carte .menu__spirit{display:flex;align-items:baseline;gap:.8rem;font-size:.94rem;padding:.34rem 0;line-height:1.4;}
 #carte .menu__spirit + .menu__spirit{border-top:1px solid var(--mn-line-faint);}
 #carte .menu__spirit .n{font-family:var(--font-script);font-weight:600;color:var(--mn-name);flex:1;min-width:0;}
 #carte .menu__spirit .pr{flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums;
-  font-family:var(--font-cinzel);font-weight:600;font-size:.82rem;letter-spacing:.02em;
-  color:var(--mn-gold-bright);white-space:nowrap;}
+  font-family:var(--font-body);font-weight:700;font-size:.82rem;letter-spacing:.02em;
+  color:var(--gold-light);white-space:nowrap;}
 
 /* — pied de carte — */
-.mn-foot{position:relative;z-index:2;text-align:center;font-family:var(--font-cinzel);
-  text-transform:uppercase;letter-spacing:.12em;font-size:.58rem;color:var(--mn-gold-deep);
-  margin-top:clamp(1.4rem,3vw,2rem);opacity:.85;}
+.mn-foot{position:relative;z-index:2;text-align:center;font-family:var(--font-body);
+  text-transform:uppercase;letter-spacing:.12em;font-size:.58rem;color:rgba(255,248,240,.55);
+  margin-top:clamp(1.4rem,3vw,2rem);opacity:1;}
 
-/* — filet doré fin à ✦ (réutilisable à l'écran) — */
+/* — filet candyfloss fin à ✦ (réutilisable à l'écran) — */
 #carte .mn-rule{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:.85rem;
   max-width:24rem;margin:clamp(1rem,2.4vw,1.5rem) auto 0;}
-#carte .mn-rule::before,#carte .mn-rule::after{content:"";flex:1;height:1px;
-  background:linear-gradient(90deg,transparent,var(--mn-gold-deep),var(--mn-gold));}
-#carte .mn-rule::after{background:linear-gradient(90deg,var(--mn-gold),var(--mn-gold-deep),transparent);}
-#carte .mn-rule__star{color:var(--mn-gold-bright);font-size:.8rem;line-height:1;}
+#carte .mn-rule::before,#carte .mn-rule::after{content:"";flex:1;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,248,240,.5));}
+#carte .mn-rule::after{background:linear-gradient(90deg,rgba(255,248,240,.5),transparent);}
+#carte .mn-rule__star{color:var(--gold);font-size:.8rem;line-height:1;}
 #carte .mn-page-fleuron{display:none;} /* ornement réservé à l'impression */
 
 /* — EXCELLENCE MOBILE (≤640px) : en-tête réduit, spiritueux inline SANS débordement — */
@@ -1245,11 +1229,19 @@
 /* couche immersive : cachée à l'impression (le build clone #menu-cols) */
 @media print{ #carte .mn-live{display:none!important;} #carte .mn-nav{display:none!important;} }
 
-/* — lueur or ambiante douce derrière le panneau (décor, pointer-events:none) — */
+/* — lueur vive ambiante douce derrière le panneau (décor, pointer-events:none) — */
 #carte .mn-live{position:relative;z-index:2;}
 #carte .mn-live::before{content:"";position:absolute;left:50%;top:-2%;transform:translateX(-50%);
   width:min(120%,60rem);height:min(60%,34rem);pointer-events:none;z-index:-1;filter:blur(6px);
-  background:radial-gradient(60% 55% at 50% 22%,rgba(246,227,168,.10),rgba(200,162,76,.045) 46%,transparent 74%);}
+  background:radial-gradient(60% 55% at 50% 22%,rgba(255,46,136,.10),rgba(27,79,216,.06) 46%,transparent 74%);}
+
+/* — accents de section par id : rotation type chapiteau rayé — */
+#carte #mn-sec-sig,#carte .mn-ticket[data-target="mn-sec-sig"]{--sec:var(--red);}
+#carte #mn-sec-cocktails,#carte .mn-ticket[data-target="mn-sec-cocktails"]{--sec:var(--magenta);}
+#carte #mn-sec-vins,#carte .mn-ticket[data-target="mn-sec-vins"]{--sec:var(--cobalt);}
+#carte #mn-sec-bieres,#carte .mn-ticket[data-target="mn-sec-bieres"]{--sec:var(--cyan);}
+#carte #mn-sec-spirit,#carte .mn-ticket[data-target="mn-sec-spirit"]{--sec:var(--red);}
+#carte #mn-sec-autres,#carte .mn-ticket[data-target="mn-sec-autres"]{--sec:var(--cobalt);}
 
 /* ============ NAVIGATEUR ILLUMINÉ (rail collant de tickets) ============ */
 #carte .mn-nav{position:sticky;top:calc(var(--nav-h,72px) - 4px);z-index:30;
@@ -1263,61 +1255,56 @@
           mask:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);}
 @media (min-width:820px){#carte .mn-nav{justify-content:center;overflow:visible;-webkit-mask:none;mask:none;}}
 #carte .mn-nav::-webkit-scrollbar{display:none;}
-/* voile sombre derrière le rail collant → lisibilité au défilement */
+/* voile velours derrière le rail collant → lisibilité au défilement (nuit, pas brun) */
 #carte .mn-nav::before{content:"";position:absolute;inset:-2px -50vw;z-index:-1;pointer-events:none;
-  background:linear-gradient(180deg,rgba(11,8,6,.92) 0%,rgba(11,8,6,.72) 62%,transparent 100%);}
+  background:linear-gradient(180deg,var(--mn-bg) 0%,rgba(18,17,42,.72) 62%,transparent 100%);}
 
-/* — le ticket : plaque laiton & vin à bords dorés, façon billet forain — */
+/* — le ticket : chip candy plat, contour dans la couleur de sa section (inactif = outline) — */
 #carte .mn-ticket{position:relative;flex:0 0 auto;scroll-snap-align:center;cursor:pointer;
-  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.12em;
-  font-size:clamp(.56rem,1.4vw,.72rem);color:var(--mn-gold-hi);
-  padding:.5rem 1rem;border:1px solid var(--mn-gold-deep);border-radius:5px;
-  background:linear-gradient(180deg,var(--mn-wine-2),var(--mn-wine-deep));
-  box-shadow:inset 0 0 0 1px rgba(246,227,168,.12),0 3px 10px -4px rgba(0,0,0,.7);
+  font-family:var(--font-body);font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:clamp(.58rem,1.4vw,.74rem);color:var(--cream);
+  padding:.5rem 1rem;border:2px solid var(--sec);border-radius:999px;
+  background:transparent;
+  box-shadow:none;
   transition:color .3s var(--ease),border-color .3s var(--ease),box-shadow .35s var(--ease),transform .3s var(--ease),background .35s var(--ease);
   white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:.5rem;}
-/* encoches latérales du billet (petits demi-cercles noirs) */
-#carte .mn-ticket::before,#carte .mn-ticket::after{content:"";position:absolute;top:50%;width:7px;height:7px;
-  border-radius:50%;background:var(--mn-bg);transform:translateY(-50%);box-shadow:inset 0 0 0 1px var(--mn-gold-deep);}
-#carte .mn-ticket::before{left:-4px;}
-#carte .mn-ticket::after{right:-4px;}
-/* petite ampoule au bord gauche du ticket (allumée sur l'actif) */
-#carte .mn-ticket i{width:6px;height:6px;border-radius:50%;flex:0 0 auto;
-  background:radial-gradient(circle at 40% 35%,#5a4a22,#2c2410);
-  box-shadow:0 0 0 1px rgba(0,0,0,.4);transition:background .35s var(--ease),box-shadow .35s var(--ease);}
+/* petite ampoule au bord gauche du ticket (éteinte sur l'inactif, allumée sur l'actif) */
+#carte .mn-ticket i{width:7px;height:7px;border-radius:50%;flex:0 0 auto;
+  background:rgba(255,248,240,.28);
+  box-shadow:none;transition:background .35s var(--ease),box-shadow .35s var(--ease);}
 #carte .mn-ticket:hover{color:#fff;transform:translateY(-2px);
-  box-shadow:inset 0 0 0 1px rgba(246,227,168,.22),0 6px 16px -6px rgba(0,0,0,.8);}
-#carte .mn-ticket:focus-visible{outline:3px solid var(--mn-gold-bright);outline-offset:3px;}
-/* ticket ACTIF : allumé, or vif, ampoule qui brille */
-#carte .mn-ticket[aria-current="true"]{color:var(--mn-cover);border-color:var(--mn-gold-bright);
-  background:linear-gradient(180deg,var(--mn-gold-hi),var(--mn-gold));
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),0 0 20px -3px rgba(236,201,120,.55),0 4px 12px -4px rgba(0,0,0,.8);}
+  background:color-mix(in srgb,var(--sec) 22%,transparent);}
+#carte .mn-ticket:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+/* ticket ACTIF : rempli de sa couleur vive, texte candyfloss, ampoule ambre allumée */
+#carte .mn-ticket[aria-current="true"]{color:#fff;border-color:var(--sec);
+  background:var(--sec);
+  box-shadow:0 4px 14px -4px color-mix(in srgb,var(--sec) 70%,transparent);}
 #carte .mn-ticket[aria-current="true"] i{
-  background:radial-gradient(circle at 40% 35%,#fff8e6,#f0d488);
-  box-shadow:0 0 8px 2px rgba(246,227,168,.85),0 0 0 1px rgba(140,106,38,.5);
+  background:radial-gradient(circle at 40% 35%,#fff2cf,var(--gold));
+  box-shadow:0 0 8px 2px rgba(255,186,8,.8),0 0 0 1px rgba(255,255,255,.4);
   animation:mn-bulb-pulse 2.4s var(--ease) infinite;}
 @keyframes mn-bulb-pulse{0%,100%{opacity:1;}50%{opacity:.72;}}
 
 /* ============ SECTION (en-tête illuminé + diviseur d'ampoules) ============ */
 #carte .mn-sec{position:relative;z-index:2;margin:0 0 clamp(1.8rem,4vw,2.8rem);scroll-margin-top:calc(var(--nav-h,72px) + 58px);}
 #carte .mn-sec__head{position:relative;text-align:center;margin:0 0 clamp(1rem,2.4vw,1.5rem);}
-#carte .mn-sec__title{font-family:var(--font-cinzel);font-weight:700;text-transform:uppercase;
-  letter-spacing:.16em;font-size:clamp(1.1rem,3.2vw,1.7rem);line-height:1;margin:0;
-  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;color:transparent;
-  color:var(--mn-gold-bright);-webkit-text-fill-color:transparent;}
-/* halo d'en-tête de section */
+/* titre de section : police d'affichage foraine, dans la couleur vive de la section — plat */
+#carte .mn-sec__title{font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  letter-spacing:.02em;font-size:clamp(1.4rem,3.8vw,2.1rem);line-height:1;margin:0;
+  color:var(--sec);-webkit-text-fill-color:currentColor;background:none;}
+/* halo d'en-tête de section (teinté section, discret) */
 #carte .mn-sec__head::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
   width:min(80%,26rem);height:clamp(3.4rem,9vw,5.4rem);pointer-events:none;z-index:-1;filter:blur(3px);
-  background:radial-gradient(60% 60% at 50% 50%,rgba(246,227,168,.14),transparent 70%);}
-/* guirlande d'ampoules dorées sous chaque titre de section */
+  background:radial-gradient(60% 60% at 50% 50%,color-mix(in srgb,var(--sec) 22%,transparent),transparent 70%);}
+/* guirlande d'ampoules ambre/candyfloss sous chaque titre de section (pur carrousel) */
 #carte .mn-bulbs{position:relative;display:flex;align-items:center;justify-content:center;gap:.7rem;
   max-width:22rem;margin:.75rem auto 0;height:14px;}
-#carte .mn-bulbs::before,#carte .mn-bulbs::after{content:"";flex:1;height:1px;
-  background:linear-gradient(90deg,transparent,var(--mn-gold-deep),var(--mn-gold));}
-#carte .mn-bulbs::after{background:linear-gradient(90deg,var(--mn-gold),var(--mn-gold-deep),transparent);}
-#carte .mn-bulbs b{display:block;width:6px;height:6px;border-radius:50%;flex:0 0 auto;
-  background:radial-gradient(circle at 40% 35%,#fff6dd,#f0d488);
-  box-shadow:0 0 6px 1px rgba(246,227,168,.55);
+#carte .mn-bulbs::before,#carte .mn-bulbs::after{content:"";flex:1;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,248,240,.4));}
+#carte .mn-bulbs::after{background:linear-gradient(90deg,rgba(255,248,240,.4),transparent);}
+#carte .mn-bulbs b{display:block;width:7px;height:7px;border-radius:50%;flex:0 0 auto;
+  background:radial-gradient(circle at 40% 35%,#fff2cf,var(--gold));
+  box-shadow:0 0 7px 1px rgba(255,186,8,.6);
   animation:mn-string 3s var(--ease) infinite;}
 #carte .mn-bulbs b:nth-child(2){animation-delay:.6s;}
 #carte .mn-bulbs b:nth-child(3){animation-delay:1.2s;}
@@ -1334,28 +1321,32 @@
 /* ============ SIGNATURES — cartes vedettes ============ */
 #carte .mn-sig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
   gap:clamp(.9rem,2.2vw,1.4rem);margin:0;}
+/* cartes vedettes : aplats vifs (rotation crimson/magenta/cobalt/teal), texte candyfloss, plates */
 #carte .mn-sig{position:relative;display:flex;flex-direction:column;gap:.5rem;
+  --sec:var(--red);
   padding:clamp(1.1rem,2.4vw,1.5rem) clamp(1.1rem,2.4vw,1.4rem);
-  border:1px solid var(--mn-gold-deep);border-radius:8px;
-  background:
-    radial-gradient(120% 80% at 50% -10%,rgba(138,31,40,.5),transparent 55%),
-    linear-gradient(180deg,var(--mn-bg2),var(--mn-bg));
-  box-shadow:inset 0 0 0 1px rgba(246,227,168,.10),inset 0 0 24px -8px rgba(246,227,168,.10),0 14px 30px -18px rgba(0,0,0,.85);}
-#carte .mn-sig__glyph{position:absolute;top:.75rem;right:.85rem;width:26px;height:26px;opacity:.5;
-  color:var(--mn-gold);}
+  border:none;border-radius:16px;
+  background:var(--sec);
+  box-shadow:0 14px 30px -18px color-mix(in srgb,var(--sec) 70%,transparent);}
+#carte .mn-sig-grid > .mn-sig:nth-child(4n+1){--sec:var(--red);}
+#carte .mn-sig-grid > .mn-sig:nth-child(4n+2){--sec:var(--magenta);}
+#carte .mn-sig-grid > .mn-sig:nth-child(4n+3){--sec:var(--cobalt);}
+#carte .mn-sig-grid > .mn-sig:nth-child(4n+4){--sec:var(--cyan);}
+#carte .mn-sig__glyph{position:absolute;top:.75rem;right:.85rem;width:26px;height:26px;opacity:.85;
+  color:rgba(255,248,240,.9);}
 #carte .mn-sig__glyph svg{display:block;width:100%;height:100%;}
-#carte .mn-sig__name{font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;
-  letter-spacing:.06em;font-size:clamp(1rem,2.4vw,1.18rem);line-height:1.15;color:var(--mn-gold-hi);
+#carte .mn-sig__name{font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  letter-spacing:.02em;font-size:clamp(1.05rem,2.5vw,1.28rem);line-height:1.1;color:var(--cream);
   padding-right:2rem;
-  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;}
+  -webkit-text-fill-color:currentColor;background:none;}
 #carte .mn-sig__ing{font-family:var(--font-script);font-style:italic;font-weight:500;
-  font-size:.86rem;color:var(--mn-desc);line-height:1.4;flex:1;}
+  font-size:.86rem;color:rgba(255,248,240,.92);line-height:1.4;flex:1;}
+/* chip prix ambre propre */
 #carte .mn-sig__price{align-self:flex-start;margin-top:.2rem;
-  font-family:var(--font-cinzel);font-weight:600;font-size:.72rem;letter-spacing:.08em;
-  color:var(--mn-gold-hi);-webkit-text-fill-color:var(--mn-gold-hi);
-  background:linear-gradient(180deg,var(--mn-wine-2),var(--mn-wine-deep));
-  border:1px solid var(--mn-gold-deep);border-radius:999px;padding:.28rem .7rem;
+  font-family:var(--font-body);font-weight:700;font-size:.74rem;letter-spacing:.04em;
+  color:var(--wine);-webkit-text-fill-color:var(--wine);
+  background:var(--gold);
+  border:none;border-radius:999px;padding:.28rem .7rem;
   font-variant-numeric:tabular-nums;}
 
 /* ============ RÉVÉLATION au défilement (par section) ============ */
@@ -1376,56 +1367,51 @@
 }
 
 /* ===================== IMPRESSION (Cmd+P) =====================
-   On réimprime UNIQUEMENT la carte, en pages A4 sombres encadrées
-   or, identiques à l'écran. Le système de pagination existant
-   (build/makePage) clone les .menu__cat de #menu-cols dans des
-   .menu-print__page : on les restyle ici, sans changer la logique. */
+   On réimprime UNIQUEMENT la carte, en pages A4 velours-nuit à filet
+   candyfloss fin (zéro or, zéro filigrane), identiques à l'écran vif.
+   Le système de pagination existant (build/makePage) clone les
+   .menu__cat de #menu-cols dans des .menu-print__page : on les
+   restyle ici, sans changer la logique (5 panneaux : couverture +
+   3 contenu + contact). */
 @media print{
   html,body{background:var(--mn-bg)!important;}
   #carte.carte,.menu-print__page{background:var(--mn-bg)!important;}
-  /* chaque page = un panneau complet, encadré or, qui remplit l'A4 */
+  /* chaque page = un panneau velours plein, filet candyfloss fin, qui remplit l'A4 */
   .menu-print__page.menu{
     -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;
-    background:
-      radial-gradient(120% 60% at 50% 0%,var(--mn-wine-deep) 0%,rgba(67,11,16,0) 40%),
-      linear-gradient(180deg,var(--mn-bg2) 0%,var(--mn-bg) 60%)!important;
+    background:linear-gradient(180deg,var(--mn-bg2) 0%,var(--mn-bg) 70%)!important;
     color:var(--mn-name)!important;
-    border:1px solid var(--mn-line)!important;border-radius:4px!important;
-    /* filet doré ciselé métallique (trait clair → champ noir → or profond) — print-safe */
-    box-shadow:inset 0 0 0 .35mm #b89243,inset 0 0 0 5px var(--mn-bg2),inset 0 0 0 6px var(--mn-gold-deep)!important;
+    border:.5mm solid rgba(255,248,240,.5)!important;border-radius:3mm!important;
+    box-shadow:none!important;
     padding:9mm 8mm 8mm!important;margin:0!important;overflow:visible!important;
   }
   .menu-print__page.menu::before{display:none!important;}
-  .menu-print__page.menu::after{
-    content:""!important;display:block!important;position:absolute!important;inset:3mm!important;
-    border:1px solid var(--mn-gold-deep)!important;
-    border-image:linear-gradient(177deg,#e9cf86 0%,#a9802e 55%,#7d5c22 100%) 1!important;
-    border-radius:2px!important;opacity:.85!important;pointer-events:none!important;}
-  /* en-tête compact de page : wordmark CARROUSEL or */
+  .menu-print__page.menu::after{display:none!important;}
+  /* en-tête compact de page : wordmark CARROUSEL candyfloss, police d'affichage */
   .menu-print__page .menu__intro{position:relative;z-index:2;text-align:center!important;margin:0 0 4mm!important;}
   .menu-print__page .menu__title{
-    font-family:var(--font-cinzel)!important;font-weight:700!important;text-transform:uppercase!important;
-    letter-spacing:.14em!important;font-size:16pt!important;color:var(--mn-gold-bright)!important;
+    font-family:var(--font-display)!important;font-weight:400!important;text-transform:uppercase!important;
+    letter-spacing:.02em!important;font-size:20pt!important;color:var(--cream)!important;
     -webkit-text-fill-color:currentColor!important;background:none!important;}
   .menu-print__page .menu__title::after{display:none!important;}
   .menu-print__page .menu__sub{
-    font-family:var(--font-cinzel)!important;font-weight:400!important;text-transform:uppercase!important;
-    font-variant:small-caps!important;letter-spacing:.16em!important;font-size:7pt!important;color:var(--mn-gold)!important;
-    opacity:.92!important;margin-top:1.4mm!important;font-variant-numeric:tabular-nums!important;}
-  /* filet doré fin à ✦ sous l'en-tête CARROUSEL */
+    font-family:var(--font-body)!important;font-weight:600!important;text-transform:uppercase!important;
+    letter-spacing:.12em!important;font-size:7pt!important;color:var(--gold-light)!important;
+    opacity:1!important;margin-top:1.4mm!important;font-variant-numeric:tabular-nums!important;}
+  /* filet candyfloss fin à ✦ sous l'en-tête CARROUSEL */
   .menu-print__page .mn-rule{position:relative;z-index:2;display:flex!important;align-items:center!important;
     justify-content:center!important;gap:2.4mm!important;max-width:90mm!important;margin:0 auto 3.4mm!important;}
   .menu-print__page .mn-rule::before,.menu-print__page .mn-rule::after{content:""!important;flex:1!important;
-    height:.3mm!important;background:linear-gradient(90deg,transparent,var(--mn-gold-deep),var(--mn-gold))!important;}
-  .menu-print__page .mn-rule::after{background:linear-gradient(90deg,var(--mn-gold),var(--mn-gold-deep),transparent)!important;}
-  .menu-print__page .mn-rule__star{color:var(--mn-gold-bright)!important;font-size:7pt!important;line-height:1!important;}
-  /* fleuron centré en pied de page → la page ne paraît jamais à moitié vide */
+    height:.4mm!important;background:linear-gradient(90deg,transparent,rgba(255,248,240,.55))!important;}
+  .menu-print__page .mn-rule::after{background:linear-gradient(90deg,rgba(255,248,240,.55),transparent)!important;}
+  .menu-print__page .mn-rule__star{color:var(--gold)!important;font-size:7pt!important;line-height:1!important;}
+  /* ✦ centré en pied de page → la page ne paraît jamais à moitié vide */
   .menu-print__page .mn-page-fleuron{position:relative;z-index:2;flex:0 0 auto!important;text-align:center!important;
-    color:var(--mn-gold)!important;font-size:10.5pt!important;line-height:1!important;opacity:.8!important;
+    color:var(--gold)!important;font-size:10.5pt!important;line-height:1!important;opacity:1!important;
     margin:4mm 0 0!important;padding-top:3mm!important;}
   .menu-print__page .mn-page-fleuron::before{content:""!important;display:block!important;width:34mm!important;
-    height:.3mm!important;margin:0 auto 2mm!important;
-    background:linear-gradient(90deg,transparent,var(--mn-gold-deep) 30%,var(--mn-gold-deep) 70%,transparent)!important;}
+    height:.4mm!important;margin:0 auto 2mm!important;
+    background:linear-gradient(90deg,transparent,rgba(255,248,240,.45) 30%,rgba(255,248,240,.45) 70%,transparent)!important;}
   /* colonnes : transparentes (pas de fond rayé) */
   .menu-print__page .menu__cols{position:relative;z-index:2;background:none!important;box-shadow:none!important;
     border-radius:0!important;padding:0!important;column-gap:5mm!important;}
@@ -1433,22 +1419,25 @@
   .menu-print__page .menu__cat{background:none!important;border:none!important;border-radius:0!important;
     box-shadow:none!important;padding:0!important;margin-bottom:3.4mm!important;
     break-inside:avoid!important;-webkit-column-break-inside:avoid!important;page-break-inside:avoid!important;}
+  /* titre de catégorie : police d'affichage, crimson vif, plat */
   .menu-print__page .menu__cat h3{
-    font-family:var(--font-cinzel)!important;font-weight:600!important;color:var(--mn-gold-bright)!important;
-    -webkit-text-fill-color:var(--mn-gold-bright)!important;background-image:none!important;
+    font-family:var(--font-display)!important;font-weight:400!important;color:var(--red)!important;
+    -webkit-text-fill-color:var(--red)!important;background-image:none!important;
     background:none!important;box-shadow:none!important;text-shadow:none!important;border-radius:0!important;
-    border-bottom:.4mm solid var(--mn-line-soft)!important;padding:0 0 1mm!important;margin-bottom:1.2mm!important;
-    font-size:10pt!important;letter-spacing:.06em!important;
+    border-bottom:.4mm solid rgba(255,248,240,.3)!important;padding:0 0 1mm!important;margin-bottom:1.2mm!important;
+    font-size:12pt!important;letter-spacing:.02em!important;
     display:flex!important;align-items:baseline!important;justify-content:space-between!important;gap:2mm!important;}
+  /* chip note : aplat crimson, texte blanc */
   .menu-print__page .menu__cat h3 small{
-    font-family:var(--font-cinzel)!important;font-size:6pt!important;color:var(--mn-gold-hi)!important;
-    background:var(--mn-wine-deep)!important;border:.3mm solid var(--mn-gold-deep)!important;
-    border-radius:999px!important;padding:.5mm 1.6mm!important;align-self:center!important;}
+    font-family:var(--font-body)!important;font-weight:700!important;font-size:6pt!important;color:#fff!important;
+    -webkit-text-fill-color:#fff!important;
+    background:var(--red)!important;border:none!important;
+    border-radius:999px!important;padding:.5mm 1.8mm!important;align-self:center!important;}
   .menu-print__page .menu__h{font-family:var(--font-script)!important;font-style:italic!important;
-    color:var(--mn-gold)!important;font-size:8.4pt!important;margin:1.6mm 0 .5mm!important;
+    color:var(--cobalt)!important;font-size:8.4pt!important;margin:1.6mm 0 .5mm!important;
     padding-left:2.4mm!important;position:relative!important;}
-  .menu-print__page .menu__h::before{content:"\2767"!important;position:absolute!important;left:0!important;
-    top:.1em!important;font-size:.7em!important;color:var(--mn-gold-deep)!important;opacity:.85!important;}
+  .menu-print__page .menu__h::before{content:"\2022"!important;position:absolute!important;left:.2mm!important;
+    top:0!important;font-size:1em!important;color:var(--gold)!important;opacity:1!important;}
   .menu-print__page .menu__row,.menu-print__page .menu__spirit,.menu-print__page .menu__row--name{
     font-size:8pt!important;padding:.55mm 0!important;line-height:1.28!important;border-bottom:none!important;}
   /* filet ténu SEULEMENT entre entrées consécutives (rythme, pas de grille) */
@@ -1457,59 +1446,59 @@
   .menu-print__page .menu__row--name + .menu__row--name,
   .menu-print__page .menu__row--name + .menu__row,
   .menu-print__page .menu__row + .menu__row--name{
-    border-top:.2mm solid var(--mn-line-faint)!important;}
+    border-top:.2mm solid rgba(255,248,240,.16)!important;}
   .menu-print__page .menu__row .n,.menu-print__page .menu__row--name,.menu-print__page .menu__spirit .n{
     font-family:var(--font-script)!important;color:var(--mn-name)!important;}
-  .menu-print__page .menu__row .p{color:var(--mn-gold-bright)!important;font-weight:600!important;}
+  .menu-print__page .menu__row .p{color:var(--gold-light)!important;font-family:var(--font-body)!important;font-weight:700!important;}
   .menu-print__page .menu__desc{font-family:var(--font-script)!important;font-style:italic!important;
     color:var(--mn-desc)!important;font-size:6.6pt!important;line-height:1.2!important;margin-top:.2mm!important;}
   /* légende des mesures affichée UNE fois */
-  .menu-print__page .menu__cap{font-family:var(--font-cinzel)!important;font-weight:600!important;
-    color:var(--mn-gold)!important;font-size:5.6pt!important;letter-spacing:.14em!important;
-    text-transform:uppercase!important;opacity:.75!important;margin:.2mm 0 1mm!important;}
-  /* spiritueux : nom à gauche + grappe de prix dorée à droite, sans règles */
+  .menu-print__page .menu__cap{font-family:var(--font-body)!important;font-weight:600!important;
+    color:var(--gold-light)!important;font-size:5.6pt!important;letter-spacing:.12em!important;
+    text-transform:uppercase!important;opacity:.9!important;margin:.2mm 0 1mm!important;}
+  /* spiritueux : nom à gauche + grappe de prix ambre à droite, sans règles */
   .menu-print__page .menu__spirit{display:flex!important;align-items:baseline!important;
     justify-content:space-between!important;gap:2mm!important;}
   .menu-print__page .menu__spirit .n{flex:1!important;min-width:0!important;}
   .menu-print__page .menu__spirit .pr{flex:0 0 auto!important;text-align:right!important;
-    font-family:var(--font-cinzel)!important;font-weight:600!important;font-size:7pt!important;
-    color:var(--mn-gold-bright)!important;white-space:nowrap!important;border-left:0!important;padding:0!important;
+    font-family:var(--font-body)!important;font-weight:700!important;font-size:7pt!important;
+    color:var(--gold-light)!important;white-space:nowrap!important;border-left:0!important;padding:0!important;
     font-variant-numeric:tabular-nums!important;}
 
   /* ===== PAGE DE COUVERTURE (1re page d'impression) ===== */
   .mn-print-cover{justify-content:center!important;align-items:center!important;text-align:center!important;}
   .mn-print-cover .menu__cols{display:none!important;}
   .mn-print-cover__logo{width:70px!important;height:auto!important;margin:0 auto 6mm!important;}
-  .mn-print-cover .mn-head__wordmark{font-size:30pt!important;letter-spacing:.16em!important;
+  .mn-print-cover .mn-head__wordmark{font-size:34pt!important;letter-spacing:.02em!important;
     line-height:1!important;margin:0 0 3mm!important;}
-  .mn-print-cover .mn-head__tag{font-size:9pt!important;letter-spacing:.34em!important;margin:0 0 7mm!important;}
-  .mn-print-cover__star{font-size:14pt!important;color:var(--mn-gold)!important;margin:0 0 7mm!important;line-height:1!important;}
-  .mn-print-cover__addr{font-family:var(--font-cinzel)!important;text-transform:uppercase!important;
-    letter-spacing:.16em!important;font-size:7.5pt!important;color:var(--mn-gold)!important;opacity:.92!important;margin:0!important;}
+  .mn-print-cover .mn-head__tag{font-size:9pt!important;letter-spacing:.28em!important;margin:0 0 7mm!important;}
+  .mn-print-cover__star{font-size:14pt!important;color:var(--gold)!important;margin:0 0 7mm!important;line-height:1!important;}
+  .mn-print-cover__addr{font-family:var(--font-body)!important;font-weight:600!important;text-transform:uppercase!important;
+    letter-spacing:.14em!important;font-size:7.5pt!important;color:var(--gold-light)!important;opacity:1!important;margin:0!important;}
 
   /* ===== PAGE CONTACT / HORAIRES (dernière page d'impression) ===== */
   .mn-print-contact{justify-content:center!important;align-items:center!important;text-align:center!important;}
   .mn-print-contact .menu__cols{display:none!important;}
   .mn-print-contact__block{position:relative;z-index:2;max-width:130mm!important;margin:0 auto!important;}
-  .mn-print-contact__h{font-family:var(--font-cinzel)!important;font-weight:700!important;text-transform:uppercase!important;
-    letter-spacing:.18em!important;font-size:16pt!important;color:var(--mn-gold-bright)!important;margin:0 0 4mm!important;}
-  .mn-print-contact__h::before,.mn-print-contact__h::after{content:"\2605"!important;color:var(--mn-gold)!important;
-    font-size:.7em!important;margin:0 .5em!important;vertical-align:middle!important;}
+  .mn-print-contact__h{font-family:var(--font-display)!important;font-weight:400!important;text-transform:uppercase!important;
+    letter-spacing:.02em!important;font-size:20pt!important;color:var(--magenta)!important;margin:0 0 4mm!important;}
+  .mn-print-contact__h::before,.mn-print-contact__h::after{content:"\2605"!important;color:var(--gold)!important;
+    font-size:.5em!important;margin:0 .5em!important;vertical-align:middle!important;}
   .mn-print-contact__blurb{font-family:var(--font-script)!important;font-style:italic!important;
     font-size:10.5pt!important;color:var(--mn-name)!important;line-height:1.4!important;margin:0 0 6mm!important;}
-  .mn-print-contact__line{font-family:var(--font-cinzel)!important;font-size:8.5pt!important;
-    letter-spacing:.06em!important;color:var(--mn-gold)!important;margin:0 0 1.4mm!important;}
-  .mn-print-contact__line--email{color:var(--mn-gold-bright)!important;}
-  .mn-print-contact__hh{font-family:var(--font-cinzel)!important;font-weight:600!important;text-transform:uppercase!important;
-    letter-spacing:.16em!important;font-size:11pt!important;color:var(--mn-gold-bright)!important;margin:7mm 0 3mm!important;}
+  .mn-print-contact__line{font-family:var(--font-body)!important;font-size:8.5pt!important;
+    letter-spacing:.04em!important;color:var(--cream)!important;margin:0 0 1.4mm!important;}
+  .mn-print-contact__line--email{color:var(--gold-light)!important;font-weight:700!important;}
+  .mn-print-contact__hh{font-family:var(--font-display)!important;font-weight:400!important;text-transform:uppercase!important;
+    letter-spacing:.04em!important;font-size:13pt!important;color:var(--cyan)!important;margin:7mm 0 3mm!important;}
   .mn-print-contact__hours{list-style:none!important;padding:0!important;margin:0 auto 6mm!important;}
-  .mn-print-contact__hours li{font-family:var(--font-cinzel)!important;font-size:8pt!important;
-    letter-spacing:.05em!important;color:var(--mn-name)!important;margin:0 0 1.2mm!important;}
+  .mn-print-contact__hours li{font-family:var(--font-body)!important;font-size:8pt!important;
+    letter-spacing:.03em!important;color:var(--mn-name)!important;margin:0 0 1.2mm!important;}
   .mn-print-contact__note{font-family:var(--font-script)!important;font-style:italic!important;
     font-size:7.6pt!important;color:var(--mn-desc)!important;line-height:1.35!important;
     max-width:115mm!important;margin:0 auto 8mm!important;}
-  .mn-print-contact__foot{font-family:var(--font-cinzel)!important;text-transform:uppercase!important;
-    letter-spacing:.1em!important;font-size:5.8pt!important;color:var(--mn-gold-deep)!important;margin:0!important;}
+  .mn-print-contact__foot{font-family:var(--font-body)!important;text-transform:uppercase!important;
+    letter-spacing:.08em!important;font-size:5.8pt!important;color:rgba(255,248,240,.5)!important;margin:0!important;}
 }
 
 </style>
@@ -1604,53 +1593,53 @@
     <defs>
       <!-- static depth overlay: dims the FAR (upper) side of the ring to fake 3D -->
       <radialGradient id="cxDepth" cx="50%" cy="72%" r="62%">
-        <stop offset="55%" stop-color="#1a120c" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#1a120c" stop-opacity=".5"/>
+        <stop offset="55%" stop-color="#12112a" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#12112a" stop-opacity=".5"/>
       </radialGradient>
-      <!-- candy-stripe identity (wine/cream) carried into the horse poles -->
+      <!-- candy-stripe identity (crimson/candyfloss) carried into the horse poles -->
       <pattern id="cxPole" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(34)">
-        <rect width="8" height="8" fill="#ecdcba"/>
-        <rect width="4" height="8" fill="#6e1620"/>
+        <rect width="8" height="8" fill="#fff8f0"/>
+        <rect width="4" height="8" fill="#e8173a"/>
       </pattern>
-      <!-- one reusable carousel horse (side profile, cream + wine tack) -->
+      <!-- one reusable carousel horse (side profile, candyfloss body + crimson mane/tail, teal saddle) -->
       <g id="cxHorse">
-        <path d="M-2 6q-5-22 18-29q26-8 39 11q11 16 3 36q-6 13-22 14q-25 4-39-11q-5-7-1-21z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M3 9q-11 6-13 19q-1 8 5 13q5 4 4 9q-7 1-12-4q-7-8-5-20q2-15 15-20z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M16 18q-3 22-2 39q1 7-2 13h-9q-2-7 0-15q-3-20 5-39z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M58 13q12 4 15 20q2 9-4 15q-4 3-2 9q-7 1-10-5q-3-6 2-12q-6-9-7-21q-1-6 6-6z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M49 22q6 19 6 37q0 7-3 14h-9q-2-7 1-15q-3-18-4-35z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M4 -10q-12-6-16-21q-4-13 2-25q-3 8-2 16q-6-9-1-20q4-8 12-9q11-1 16 7q5 6 3 14q7 2 9 9q2 7-4 12q-5 4-13 2q-3 8-13 8q5-7 4-15z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M-12 -33q-9 0-14 8q-5 6-3 14q1 6 6 7q5 1 8-2q3 4 8 2q5-2 6-8q1-8-3-15q-4-8-13-15z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M-7 -37q-1-11 4-15q3 6 1 15z" fill="#ecdcba" stroke="#4a0e14" stroke-width="2.4" stroke-linejoin="round"/>
-        <path d="M-2 -38q11-1 15 7q-6-2-9 3q8 1 11 8q-7-2-10 3q7 2 9 10q-11 1-17-6q-8-9-8-23q0-9 5-12z" fill="#8a1f28" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M56 18q22 5 26 27q2 12-5 23q3-14-4-23q2 12-7 21q3-14-5-21q3 11-4 19q1-17-8-32z" fill="#8a1f28" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M4 -8q21-7 41 0q4 11-2 23q-21 6-43 0q-4-12 4-23z" fill="#6e1620" stroke="#4a0e14" stroke-width="2.2" stroke-linejoin="round"/>
-        <circle cx="-18" cy="-21" r="2.6" fill="#1a120c"/>
+        <path d="M-2 6q-5-22 18-29q26-8 39 11q11 16 3 36q-6 13-22 14q-25 4-39-11q-5-7-1-21z" fill="#fff8f0" stroke="#160a12" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M3 9q-11 6-13 19q-1 8 5 13q5 4 4 9q-7 1-12-4q-7-8-5-20q2-15 15-20z" fill="#fff8f0" stroke="#160a12" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M16 18q-3 22-2 39q1 7-2 13h-9q-2-7 0-15q-3-20 5-39z" fill="#fff8f0" stroke="#160a12" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M58 13q12 4 15 20q2 9-4 15q-4 3-2 9q-7 1-10-5q-3-6 2-12q-6-9-7-21q-1-6 6-6z" fill="#fff8f0" stroke="#160a12" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M49 22q6 19 6 37q0 7-3 14h-9q-2-7 1-15q-3-18-4-35z" fill="#fff8f0" stroke="#160a12" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M4 -10q-12-6-16-21q-4-13 2-25q-3 8-2 16q-6-9-1-20q4-8 12-9q11-1 16 7q5 6 3 14q7 2 9 9q2 7-4 12q-5 4-13 2q-3 8-13 8q5-7 4-15z" fill="#fff8f0" stroke="#160a12" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-12 -33q-9 0-14 8q-5 6-3 14q1 6 6 7q5 1 8-2q3 4 8 2q5-2 6-8q1-8-3-15q-4-8-13-15z" fill="#fff8f0" stroke="#160a12" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-7 -37q-1-11 4-15q3 6 1 15z" fill="#fff8f0" stroke="#160a12" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M-2 -38q11-1 15 7q-6-2-9 3q8 1 11 8q-7-2-10 3q7 2 9 10q-11 1-17-6q-8-9-8-23q0-9 5-12z" fill="#c4122f" stroke="#160a12" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M56 18q22 5 26 27q2 12-5 23q3-14-4-23q2 12-7 21q3-14-5-21q3 11-4 19q1-17-8-32z" fill="#c4122f" stroke="#160a12" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M4 -8q21-7 41 0q4 11-2 23q-21 6-43 0q-4-12 4-23z" fill="#00b4a6" stroke="#160a12" stroke-width="2.2" stroke-linejoin="round"/>
+        <circle cx="-18" cy="-21" r="2.6" fill="#160a12"/>
       </g>
     </defs>
 
     <!-- ===== TURNING RING (one group, spins continuously) ===== -->
     <g class="cx-manege__spin">
       <!-- hidden circular dais the horses ride around -->
-      <ellipse cx="220" cy="300" rx="150" ry="46" fill="#1a120c" stroke="#6e1620" stroke-width="2" opacity=".5"/>
+      <ellipse cx="220" cy="300" rx="150" ry="46" fill="#1c1b3e" stroke="#1b4fd8" stroke-width="2" opacity=".5"/>
       <!-- back horse (far side) -->
       <g class="cx-manege__horse" style="--i:0">
-        <rect x="217" y="176" width="6" height="112" rx="3" fill="url(#cxPole)" stroke="#4a0e14" stroke-width="1"/>
+        <rect x="217" y="176" width="6" height="112" rx="3" fill="url(#cxPole)" stroke="#160a12" stroke-width="1"/>
         <g transform="translate(220 272) scale(.62) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
       </g>
       <!-- left horse -->
       <g class="cx-manege__horse" style="--i:1">
-        <rect x="94" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#4a0e14" stroke-width="1"/>
+        <rect x="94" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#160a12" stroke-width="1"/>
         <g transform="translate(98 300) scale(.82) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
       </g>
       <!-- right horse (mirrored) -->
       <g class="cx-manege__horse" style="--i:2">
-        <rect x="339" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#4a0e14" stroke-width="1"/>
+        <rect x="339" y="196" width="7" height="118" rx="3.5" fill="url(#cxPole)" stroke="#160a12" stroke-width="1"/>
         <g transform="translate(342 300) scale(.82) translate(27 0) scale(-1 1) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
       </g>
       <!-- front horse (full size, foreground) -->
       <g class="cx-manege__horse" style="--i:3">
-        <rect x="216" y="206" width="9" height="130" rx="4.5" fill="url(#cxPole)" stroke="#4a0e14" stroke-width="1.2"/>
+        <rect x="216" y="206" width="9" height="130" rx="4.5" fill="url(#cxPole)" stroke="#160a12" stroke-width="1.2"/>
         <g transform="translate(220 322) translate(-27 0)"><use href="#cxHorse" xlink:href="#cxHorse"/></g>
       </g>
     </g>
@@ -1661,21 +1650,21 @@
 
     <!-- ===== FIXED CANOPY (does NOT spin) ===== -->
     <!-- central pole -->
-    <rect x="215" y="96" width="10" height="170" rx="4" fill="#1a120c" opacity=".9"/>
-    <!-- octagonal scalloped tent: wine / cream candy panels -->
-    <g stroke="#4a0e14" stroke-width="2" stroke-linejoin="round">
-      <path d="M220 70 96 150 H344 Z" fill="#8a1f28"/>
-      <path d="M220 70 130 150 H310 Z" fill="#ecdcba" opacity=".96"/>
-      <path d="M220 70 166 150 H274 Z" fill="#9a2530"/>
-      <path d="M220 70 200 150 H240 Z" fill="#ecdcba" opacity=".96"/>
+    <rect x="215" y="96" width="10" height="170" rx="4" fill="#160a12" opacity=".85"/>
+    <!-- octagonal scalloped tent: crimson / candyfloss candy panels (vif) -->
+    <g stroke="#160a12" stroke-width="2" stroke-linejoin="round">
+      <path d="M220 70 96 150 H344 Z" fill="#e8173a"/>
+      <path d="M220 70 130 150 H310 Z" fill="#fff8f0" opacity=".98"/>
+      <path d="M220 70 166 150 H274 Z" fill="#c4122f"/>
+      <path d="M220 70 200 150 H240 Z" fill="#fff8f0" opacity=".98"/>
     </g>
-    <!-- scalloped rim -->
-    <path d="M92 150 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0" fill="#ecdcba" stroke="#4a0e14" stroke-width="2" stroke-linejoin="round"/>
-    <!-- thin GOLD finial (accent only) -->
-    <line x1="220" y1="70" x2="220" y2="40" stroke="#f0d488" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="220" cy="36" r="5" fill="#f0d488" stroke="#9c7227" stroke-width="1.2"/>
-    <!-- chasing bulb ring on the canopy rim (gold) -->
-    <g fill="#f0d488" stroke="#9c7227" stroke-width=".8">
+    <!-- scalloped rim (candyfloss) -->
+    <path d="M92 150 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0 q11 16 22 0" fill="#fff8f0" stroke="#160a12" stroke-width="2" stroke-linejoin="round"/>
+    <!-- thin amber finial (bulb accent) -->
+    <line x1="220" y1="70" x2="220" y2="40" stroke="#ffba08" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="220" cy="36" r="5" fill="#ffba08" stroke="#e89c0a" stroke-width="1.2"/>
+    <!-- chasing bulb ring on the canopy rim (amber) -->
+    <g fill="#ffba08" stroke="#e89c0a" stroke-width=".8">
       <circle class="cx-manege__bulb" style="--b:0"  cx="100" cy="152" r="4.6"/>
       <circle class="cx-manege__bulb" style="--b:1"  cx="124" cy="152" r="4.6"/>
       <circle class="cx-manege__bulb" style="--b:2"  cx="148" cy="152" r="4.6"/>
