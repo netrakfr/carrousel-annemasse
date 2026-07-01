@@ -1142,54 +1142,62 @@
 /* — catégorie (surcharge .menu__cat : transparente, posée sur le panneau) — */
 #carte .menu__cat{background:none;border:none;border-radius:0;box-shadow:none;padding:0;
   break-inside:avoid;-webkit-column-break-inside:avoid;page-break-inside:avoid;
-  margin-bottom:clamp(1.4rem,3vw,2rem);}
+  margin-bottom:clamp(1.9rem,3.6vw,2.7rem);}
 #carte .menu__cat h3{
-  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.12em;
-  color:var(--mn-gold-bright);box-shadow:none;border-radius:0;padding:0 0 .34rem;
+  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.13em;
+  color:var(--mn-gold-bright);box-shadow:none;border-radius:0;padding:0 0 .4rem;
   /* sheen métallique top-lit (fallback gold via la déclaration color ci-dessus) */
   background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  font-size:clamp(.92rem,2vw,1.06rem);display:flex;align-items:baseline;justify-content:space-between;gap:.7rem;
-  border-bottom:1px solid var(--mn-line-soft);margin-bottom:.6rem;}
+  font-size:clamp(.98rem,2.1vw,1.14rem);display:flex;align-items:baseline;justify-content:space-between;gap:.7rem;
+  border-bottom:1px solid var(--mn-line-soft);margin-bottom:.75rem;}
 /* étiquette « note » = pastille vin à bord doré */
 #carte .menu__cat h3 small{font-family:var(--font-cinzel);font-weight:600;font-size:.58rem;letter-spacing:.12em;
   text-transform:uppercase;color:var(--mn-gold-hi);-webkit-text-fill-color:var(--mn-gold-hi);
   opacity:1;text-shadow:none;white-space:nowrap;font-variant-numeric:tabular-nums;
   background:linear-gradient(180deg,var(--mn-wine-2),var(--mn-wine-deep));-webkit-background-clip:border-box;background-clip:border-box;
   border:1px solid var(--mn-gold-deep);border-radius:999px;padding:.2rem .6rem;align-self:center;flex:0 0 auto;}
-#carte .menu__cat--sp h3{border-bottom:1px solid var(--mn-line-soft);}
+#carte .menu__cat--sp h3{border-bottom:1px solid var(--mn-line-soft);margin-bottom:.15rem;}
 
-/* — sous-en-tête (Au rhum…) — */
+/* — sous-en-tête (Au rhum, Blancs, Rouges…) : label doré italique aéré — */
 #carte .menu__h{font-family:var(--font-script);font-style:italic;font-weight:600;
-  color:var(--mn-gold);opacity:.86;font-size:.92rem;margin:.7rem 0 .25rem;}
+  color:var(--mn-gold);opacity:.9;font-size:1rem;letter-spacing:.01em;
+  margin:1.15rem 0 .45rem;position:relative;padding-left:1.1rem;}
+#carte .menu__h::before{content:"\2767";position:absolute;left:0;top:.05em;font-size:.72em;
+  color:var(--mn-gold-deep);opacity:.8;}
+#carte .menu__cat--sp .menu__h:first-of-type{margin-top:.35rem;}
 
-/* — lignes simples (nom · leader · prix) — */
-#carte .menu__row{display:flex;align-items:baseline;gap:.5rem;font-size:.9rem;padding:.34rem 0;line-height:1.32;
-  border-bottom:1px solid var(--mn-line-faint);}
+/* — lignes simples (nom · leader fin · prix) : plus de bord dur, on respire — */
+#carte .menu__row{display:flex;align-items:baseline;gap:.6rem;font-size:.95rem;padding:.42rem 0;line-height:1.4;}
 #carte .menu__row .n{font-family:var(--font-script);font-weight:600;color:var(--mn-name);}
 #carte .menu__row .d{flex:1;min-width:1rem;align-self:center;height:1px;
-  background:repeating-linear-gradient(90deg,var(--mn-line-soft) 0 2px,transparent 2px 6px);opacity:.7;}
+  background:repeating-linear-gradient(90deg,var(--mn-line-soft) 0 1px,transparent 1px 7px);opacity:.55;}
 #carte .menu__row .p{font-family:var(--font-script);font-weight:600;color:var(--mn-gold-bright);
   white-space:nowrap;font-variant-numeric:tabular-nums;}
 
-/* — cocktails avec nom seul / description — */
-#carte .menu__row--name{display:block;border-bottom:1px solid var(--mn-line-faint);padding:.34rem 0;}
-#carte .menu__row--name{font-family:var(--font-script);font-weight:600;color:var(--mn-name);}
+/* — cocktails avec nom seul / description : entrée éditoriale, diviseur ténu — */
+#carte .menu__row--name{display:block;padding:.42rem 0;
+  font-family:var(--font-script);font-weight:600;font-size:1rem;color:var(--mn-name);line-height:1.35;}
 #carte .menu__desc{display:block;font-family:var(--font-script);font-style:italic;font-weight:500;
-  font-size:.8rem;color:var(--mn-desc);margin-top:.04rem;line-height:1.3;}
+  font-size:.84rem;color:var(--mn-desc);margin-top:.12rem;line-height:1.4;}
+/* filet ténu entre entrées consécutives (jamais sur la première) → rythme, pas grille */
+#carte .menu__row + .menu__row,
+#carte .menu__row--name + .menu__row--name,
+#carte .menu__row--name + .menu__row,
+#carte .menu__row + .menu__row--name{
+  border-top:1px solid var(--mn-line-faint);}
 
-/* — colonnes spiritueux (2cl/4cl/70cl) — */
-#carte .menu__shdr,#carte .menu__spirit{display:grid;
-  grid-template-columns:minmax(0,1fr) repeat(var(--n,3),2.7rem);align-items:baseline;}
-#carte .menu__shdr{font-family:var(--font-cinzel);font-weight:600;font-size:.56rem;text-transform:uppercase;
-  letter-spacing:.08em;color:var(--mn-gold);border-bottom:1px solid var(--mn-line-soft);
-  padding-bottom:.26rem;margin-bottom:.12rem;}
-#carte .menu__spirit{font-size:.88rem;padding:.3rem 0;border-bottom:1px solid var(--mn-line-faint);}
-#carte .menu__spirit .n{font-family:var(--font-script);font-weight:600;color:var(--mn-name);padding-right:.5rem;
+/* — légende des mesures affichée UNE fois, en petite capitale dorée discrète — */
+#carte .menu__cap{font-family:var(--font-cinzel);font-weight:600;font-size:.56rem;text-transform:uppercase;
+  letter-spacing:.16em;color:var(--mn-gold);opacity:.72;margin:.05rem 0 .5rem;
   font-variant-numeric:tabular-nums;}
-#carte .menu__shdr .pr,#carte .menu__spirit .pr{text-align:right;font-variant-numeric:tabular-nums;
-  border-left:1px solid var(--mn-line-soft);padding:0 .42rem 0 .3rem;}
-#carte .menu__spirit .pr{font-weight:600;color:var(--mn-gold-bright);}
-#carte .menu__shdr .pr{color:var(--mn-gold);}
+
+/* — spiritueux : nom à gauche + grappe de prix dorée à droite, sans règles verticales — */
+#carte .menu__spirit{display:flex;align-items:baseline;gap:.8rem;font-size:.94rem;padding:.34rem 0;line-height:1.4;}
+#carte .menu__spirit + .menu__spirit{border-top:1px solid var(--mn-line-faint);}
+#carte .menu__spirit .n{font-family:var(--font-script);font-weight:600;color:var(--mn-name);flex:1;min-width:0;}
+#carte .menu__spirit .pr{flex:0 0 auto;text-align:right;font-variant-numeric:tabular-nums;
+  font-family:var(--font-cinzel);font-weight:600;font-size:.82rem;letter-spacing:.02em;
+  color:var(--mn-gold-bright);white-space:nowrap;}
 
 /* — pied de carte — */
 .mn-foot{position:relative;z-index:2;text-align:center;font-family:var(--font-cinzel);
@@ -1205,24 +1213,21 @@
 #carte .mn-rule__star{color:var(--mn-gold-bright);font-size:.8rem;line-height:1;}
 #carte .mn-page-fleuron{display:none;} /* ornement réservé à l'impression */
 
-/* — EXCELLENCE MOBILE (≤640px) : en-tête réduit, grilles spiritueux SANS débordement — */
+/* — EXCELLENCE MOBILE (≤640px) : en-tête réduit, spiritueux inline SANS débordement — */
 @media (max-width:640px){
   #carte .menu{padding:clamp(1.5rem,6vw,2.2rem) clamp(1rem,4.5vw,1.5rem) clamp(1.3rem,4vw,1.8rem);}
   .mn-head__wordmark{font-size:clamp(1.6rem,9vw,2.3rem);letter-spacing:.1em;}
   .mn-head__tag{letter-spacing:.26em;}
   #carte .menu__sub{letter-spacing:.12em;}
-  /* colonnes spiritueux : largeur de colonne réduite + paddings serrés → tient dans la largeur */
-  #carte .menu__shdr,#carte .menu__spirit{grid-template-columns:minmax(0,1fr) repeat(var(--n,3),2.05rem);
-    column-gap:0;}
-  #carte .menu__spirit{font-size:.82rem;}
-  #carte .menu__spirit .n{padding-right:.3rem;overflow-wrap:anywhere;}
-  #carte .menu__shdr{font-size:.5rem;letter-spacing:.04em;}
-  #carte .menu__shdr .pr,#carte .menu__spirit .pr{padding:0 .22rem 0 .18rem;}
+  /* nom + grappe de prix : le nom peut passer à la ligne, la grappe reste groupée */
+  #carte .menu__spirit{gap:.55rem;}
+  #carte .menu__spirit .n{overflow-wrap:anywhere;}
+  #carte .menu__spirit .pr{font-size:.78rem;}
   #carte .menu__cat{margin-bottom:1.5rem;}
 }
 @media (max-width:380px){
-  #carte .menu__shdr,#carte .menu__spirit{grid-template-columns:minmax(0,1fr) repeat(var(--n,3),1.78rem);}
-  #carte .menu__spirit .n{font-size:.78rem;}
+  #carte .menu__spirit .n{font-size:.86rem;}
+  #carte .menu__spirit .pr{font-size:.74rem;}
 }
 
 /* ===================================================================
@@ -1440,22 +1445,36 @@
     background:var(--mn-wine-deep)!important;border:.3mm solid var(--mn-gold-deep)!important;
     border-radius:999px!important;padding:.5mm 1.6mm!important;align-self:center!important;}
   .menu-print__page .menu__h{font-family:var(--font-script)!important;font-style:italic!important;
-    color:var(--mn-gold)!important;font-size:8.2pt!important;margin:1mm 0 .3mm!important;}
+    color:var(--mn-gold)!important;font-size:8.4pt!important;margin:1.6mm 0 .5mm!important;
+    padding-left:2.4mm!important;position:relative!important;}
+  .menu-print__page .menu__h::before{content:"\2767"!important;position:absolute!important;left:0!important;
+    top:.1em!important;font-size:.7em!important;color:var(--mn-gold-deep)!important;opacity:.85!important;}
   .menu-print__page .menu__row,.menu-print__page .menu__spirit,.menu-print__page .menu__row--name{
-    font-size:8pt!important;padding:.4mm 0!important;line-height:1.22!important;
-    border-bottom:.25mm solid var(--mn-line-faint)!important;}
+    font-size:8pt!important;padding:.55mm 0!important;line-height:1.28!important;border-bottom:none!important;}
+  /* filet ténu SEULEMENT entre entrées consécutives (rythme, pas de grille) */
+  .menu-print__page .menu__row + .menu__row,
+  .menu-print__page .menu__spirit + .menu__spirit,
+  .menu-print__page .menu__row--name + .menu__row--name,
+  .menu-print__page .menu__row--name + .menu__row,
+  .menu-print__page .menu__row + .menu__row--name{
+    border-top:.2mm solid var(--mn-line-faint)!important;}
   .menu-print__page .menu__row .n,.menu-print__page .menu__row--name,.menu-print__page .menu__spirit .n{
     font-family:var(--font-script)!important;color:var(--mn-name)!important;}
   .menu-print__page .menu__row .p{color:var(--mn-gold-bright)!important;font-weight:600!important;}
   .menu-print__page .menu__desc{font-family:var(--font-script)!important;font-style:italic!important;
-    color:var(--mn-desc)!important;font-size:6.6pt!important;line-height:1.18!important;margin-top:0!important;}
-  .menu-print__page .menu__shdr{font-family:var(--font-cinzel)!important;color:var(--mn-gold)!important;
-    font-size:5.8pt!important;letter-spacing:.06em!important;
-    border-bottom:.4mm solid var(--mn-line-soft)!important;padding-bottom:.5mm!important;margin-bottom:.3mm!important;}
-  .menu-print__page .menu__spirit .pr{color:var(--mn-gold-bright)!important;font-weight:600!important;}
-  .menu-print__page .menu__shdr .pr{color:var(--mn-gold)!important;}
-  .menu-print__page .menu__shdr .pr,.menu-print__page .menu__spirit .pr{
-    border-left:.25mm solid var(--mn-line-soft)!important;}
+    color:var(--mn-desc)!important;font-size:6.6pt!important;line-height:1.2!important;margin-top:.2mm!important;}
+  /* légende des mesures affichée UNE fois */
+  .menu-print__page .menu__cap{font-family:var(--font-cinzel)!important;font-weight:600!important;
+    color:var(--mn-gold)!important;font-size:5.6pt!important;letter-spacing:.14em!important;
+    text-transform:uppercase!important;opacity:.75!important;margin:.2mm 0 1mm!important;}
+  /* spiritueux : nom à gauche + grappe de prix dorée à droite, sans règles */
+  .menu-print__page .menu__spirit{display:flex!important;align-items:baseline!important;
+    justify-content:space-between!important;gap:2mm!important;}
+  .menu-print__page .menu__spirit .n{flex:1!important;min-width:0!important;}
+  .menu-print__page .menu__spirit .pr{flex:0 0 auto!important;text-align:right!important;
+    font-family:var(--font-cinzel)!important;font-weight:600!important;font-size:7pt!important;
+    color:var(--mn-gold-bright)!important;white-space:nowrap!important;border-left:0!important;padding:0!important;
+    font-variant-numeric:tabular-nums!important;}
 
   /* ===== PAGE DE COUVERTURE (1re page d'impression) ===== */
   .mn-print-cover{justify-content:center!important;align-items:center!important;text-align:center!important;}
@@ -1779,109 +1798,109 @@
           <div class="menu__row"><span class="n">Mètre — alcools à 5 €</span><span class="d"></span><span class="p">40 €</span></div>
           <div class="menu__row"><span class="n">Mètre — alcools 6–7 €</span><span class="d"></span><span class="p">60 €</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;">
           <h3>Vodka</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
-          <div class="menu__spirit"><span class="n">Absolut « Flavors »</span><span class="pr">5</span><span class="pr">10</span><span class="pr">120</span></div>
-          <div class="menu__spirit"><span class="n">Cîroc « Flavors »</span><span class="pr">7</span><span class="pr">12</span><span class="pr">140</span></div>
-          <div class="menu__spirit"><span class="n">Belvedere</span><span class="pr">7</span><span class="pr">13</span><span class="pr">150</span></div>
-          <div class="menu__spirit"><span class="n">Grey Goose</span><span class="pr">7</span><span class="pr">13</span><span class="pr">150</span></div>
+          <div class="menu__cap">2cl  ·  4cl  ·  70cl</div>
+          <div class="menu__spirit"><span class="n">Absolut « Flavors »</span><span class="pr">5 · 10 · 120</span></div>
+          <div class="menu__spirit"><span class="n">Cîroc « Flavors »</span><span class="pr">7 · 12 · 140</span></div>
+          <div class="menu__spirit"><span class="n">Belvedere</span><span class="pr">7 · 13 · 150</span></div>
+          <div class="menu__spirit"><span class="n">Grey Goose</span><span class="pr">7 · 13 · 150</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Gin</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
-          <div class="menu__spirit"><span class="n">Gordon's</span><span class="pr">5</span><span class="pr">9</span><span class="pr">100</span></div>
-          <div class="menu__spirit"><span class="n">Bombay Sapphire</span><span class="pr">5</span><span class="pr">10</span><span class="pr">120</span></div>
-          <div class="menu__spirit"><span class="n">Tanqueray</span><span class="pr">5</span><span class="pr">11</span><span class="pr">130</span></div>
-          <div class="menu__spirit"><span class="n">Monkey 47</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Roku Gin</span><span class="pr">8</span><span class="pr">15</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Hendrick's</span><span class="pr">8</span><span class="pr">15</span><span class="pr">150</span></div>
+          <div class="menu__cap">2cl  ·  4cl  ·  70cl</div>
+          <div class="menu__spirit"><span class="n">Gordon's</span><span class="pr">5 · 9 · 100</span></div>
+          <div class="menu__spirit"><span class="n">Bombay Sapphire</span><span class="pr">5 · 10 · 120</span></div>
+          <div class="menu__spirit"><span class="n">Tanqueray</span><span class="pr">5 · 11 · 130</span></div>
+          <div class="menu__spirit"><span class="n">Monkey 47</span><span class="pr">7 · 14</span></div>
+          <div class="menu__spirit"><span class="n">Roku Gin</span><span class="pr">8 · 15</span></div>
+          <div class="menu__spirit"><span class="n">Hendrick's</span><span class="pr">8 · 15 · 150</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;">
           <h3>Rhum</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
-          <div class="menu__spirit"><span class="n">Captain Morgan</span><span class="pr">5</span><span class="pr">8</span><span class="pr">100</span></div>
-          <div class="menu__spirit"><span class="n">Bacardi Blanca</span><span class="pr">5</span><span class="pr">9</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Trois Rivières</span><span class="pr">5</span><span class="pr">9</span><span class="pr">110</span></div>
-          <div class="menu__spirit"><span class="n">Havana Club Especial</span><span class="pr">5</span><span class="pr">10</span><span class="pr">110</span></div>
-          <div class="menu__spirit"><span class="n">Havana 7 ans</span><span class="pr">7</span><span class="pr">12</span><span class="pr">130</span></div>
-          <div class="menu__spirit"><span class="n">Diplomático</span><span class="pr">7</span><span class="pr">12</span><span class="pr">130</span></div>
-          <div class="menu__spirit"><span class="n">Don Papa Baroko</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Don Papa</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
+          <div class="menu__cap">2cl  ·  4cl  ·  70cl</div>
+          <div class="menu__spirit"><span class="n">Captain Morgan</span><span class="pr">5 · 8 · 100</span></div>
+          <div class="menu__spirit"><span class="n">Bacardi Blanca</span><span class="pr">5 · 9</span></div>
+          <div class="menu__spirit"><span class="n">Trois Rivières</span><span class="pr">5 · 9 · 110</span></div>
+          <div class="menu__spirit"><span class="n">Havana Club Especial</span><span class="pr">5 · 10 · 110</span></div>
+          <div class="menu__spirit"><span class="n">Havana 7 ans</span><span class="pr">7 · 12 · 130</span></div>
+          <div class="menu__spirit"><span class="n">Diplomático</span><span class="pr">7 · 12 · 130</span></div>
+          <div class="menu__spirit"><span class="n">Don Papa Baroko</span><span class="pr">7 · 14</span></div>
+          <div class="menu__spirit"><span class="n">Don Papa</span><span class="pr">7 · 14</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:1;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Cachaça <small>environ</small></h3>
-          <div class="menu__shdr"><span></span><span class="pr">4cl</span></div>
+          <div class="menu__cap">4cl</div>
           <div class="menu__spirit"><span class="n">Ypióca</span><span class="pr">12</span></div>
           <div class="menu__spirit"><span class="n">Aguacana</span><span class="pr">10</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;">
           <h3>Whiskies</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
-          <div class="menu__spirit"><span class="n">Red Label</span><span class="pr">5</span><span class="pr">8</span><span class="pr">100</span></div>
-          <div class="menu__spirit"><span class="n">Ballantine's</span><span class="pr">5</span><span class="pr">8</span><span class="pr">100</span></div>
-          <div class="menu__spirit"><span class="n">J&amp;B</span><span class="pr">5</span><span class="pr">8</span><span class="pr">100</span></div>
-          <div class="menu__spirit"><span class="n">Johnnie Walker Black</span><span class="pr">7</span><span class="pr">11</span><span class="pr">130</span></div>
-          <div class="menu__spirit"><span class="n">Deacon</span><span class="pr">—</span><span class="pr"></span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Chivas 12</span><span class="pr">5</span><span class="pr">12</span><span class="pr">130</span></div>
-          <div class="menu__spirit"><span class="n">Chivas 15</span><span class="pr">7</span><span class="pr">15</span><span class="pr">160</span></div>
-          <div class="menu__spirit"><span class="n">Monkey Shoulder</span><span class="pr">7</span><span class="pr">15</span><span class="pr">150</span></div>
-          <div class="menu__spirit"><span class="n">Chivas 18</span><span class="pr">10</span><span class="pr">18</span><span class="pr">200</span></div>
+          <div class="menu__cap">2cl  ·  4cl  ·  70cl</div>
+          <div class="menu__spirit"><span class="n">Red Label</span><span class="pr">5 · 8 · 100</span></div>
+          <div class="menu__spirit"><span class="n">Ballantine's</span><span class="pr">5 · 8 · 100</span></div>
+          <div class="menu__spirit"><span class="n">J&amp;B</span><span class="pr">5 · 8 · 100</span></div>
+          <div class="menu__spirit"><span class="n">Johnnie Walker Black</span><span class="pr">7 · 11 · 130</span></div>
+          <div class="menu__spirit"><span class="n">Deacon</span><span class="pr"></span></div>
+          <div class="menu__spirit"><span class="n">Chivas 12</span><span class="pr">5 · 12 · 130</span></div>
+          <div class="menu__spirit"><span class="n">Chivas 15</span><span class="pr">7 · 15 · 160</span></div>
+          <div class="menu__spirit"><span class="n">Monkey Shoulder</span><span class="pr">7 · 15 · 150</span></div>
+          <div class="menu__spirit"><span class="n">Chivas 18</span><span class="pr">10 · 18 · 200</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Bourbon</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
-          <div class="menu__spirit"><span class="n">Jack Daniel's</span><span class="pr">5</span><span class="pr">10</span><span class="pr">120</span></div>
-          <div class="menu__spirit"><span class="n">Bulleit</span><span class="pr">7</span><span class="pr">14</span><span class="pr">150</span></div>
-          <div class="menu__spirit"><span class="n">Jack Daniel's « Flavors »</span><span class="pr">6</span><span class="pr">12</span><span class="pr">140</span></div>
-          <div class="menu__spirit"><span class="n">Jack Daniel's N°7 Black</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Jack Daniel's Single Barrel</span><span class="pr">7</span><span class="pr">15</span><span class="pr"></span></div>
+          <div class="menu__cap">2cl  ·  4cl  ·  70cl</div>
+          <div class="menu__spirit"><span class="n">Jack Daniel's</span><span class="pr">5 · 10 · 120</span></div>
+          <div class="menu__spirit"><span class="n">Bulleit</span><span class="pr">7 · 14 · 150</span></div>
+          <div class="menu__spirit"><span class="n">Jack Daniel's « Flavors »</span><span class="pr">6 · 12 · 140</span></div>
+          <div class="menu__spirit"><span class="n">Jack Daniel's N°7 Black</span><span class="pr">7 · 14</span></div>
+          <div class="menu__spirit"><span class="n">Jack Daniel's Single Barrel</span><span class="pr">7 · 15</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;">
           <h3>Cognacs</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
-          <div class="menu__spirit"><span class="n">Hennessy Special</span><span class="pr">7</span><span class="pr">14</span><span class="pr">150</span></div>
-          <div class="menu__spirit"><span class="n">Courvoisier</span><span class="pr">7</span><span class="pr">13</span><span class="pr">140</span></div>
+          <div class="menu__cap">2cl  ·  4cl  ·  70cl</div>
+          <div class="menu__spirit"><span class="n">Hennessy Special</span><span class="pr">7 · 14 · 150</span></div>
+          <div class="menu__spirit"><span class="n">Courvoisier</span><span class="pr">7 · 13 · 140</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:3;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Tequila</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span><span class="pr">70cl</span></div>
-          <div class="menu__spirit"><span class="n">Sierra</span><span class="pr">5</span><span class="pr"></span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Don Julio Blanco</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Don Julio Reposado</span><span class="pr">8</span><span class="pr">16</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Patrón Silver</span><span class="pr">7</span><span class="pr">14</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Azul Reposado</span><span class="pr">35</span><span class="pr">70</span><span class="pr">800</span></div>
+          <div class="menu__cap">2cl  ·  4cl  ·  70cl</div>
+          <div class="menu__spirit"><span class="n">Sierra</span><span class="pr">5</span></div>
+          <div class="menu__spirit"><span class="n">Don Julio Blanco</span><span class="pr">7 · 14</span></div>
+          <div class="menu__spirit"><span class="n">Don Julio Reposado</span><span class="pr">8 · 16</span></div>
+          <div class="menu__spirit"><span class="n">Patrón Silver</span><span class="pr">7 · 14</span></div>
+          <div class="menu__spirit"><span class="n">Azul Reposado</span><span class="pr">35 · 70 · 800</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:2;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;">
           <h3>Apéritifs</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span></div>
-          <div class="menu__spirit"><span class="n">Martini</span><span class="pr">5</span><span class="pr">8</span></div>
-          <div class="menu__spirit"><span class="n">Campari</span><span class="pr">5</span><span class="pr">8</span></div>
-          <div class="menu__spirit"><span class="n">Suze</span><span class="pr">5</span><span class="pr">8</span></div>
-          <div class="menu__spirit"><span class="n">Ricard</span><span class="pr">4</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Pastis 51</span><span class="pr">4</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Jet 27 / Jet 31</span><span class="pr">5</span><span class="pr">8</span></div>
+          <div class="menu__cap">2cl  ·  4cl</div>
+          <div class="menu__spirit"><span class="n">Martini</span><span class="pr">5 · 8</span></div>
+          <div class="menu__spirit"><span class="n">Campari</span><span class="pr">5 · 8</span></div>
+          <div class="menu__spirit"><span class="n">Suze</span><span class="pr">5 · 8</span></div>
+          <div class="menu__spirit"><span class="n">Ricard</span><span class="pr">4</span></div>
+          <div class="menu__spirit"><span class="n">Pastis 51</span><span class="pr">4</span></div>
+          <div class="menu__spirit"><span class="n">Jet 27 / Jet 31</span><span class="pr">5 · 8</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;--n:2;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Digestifs</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span></div>
-          <div class="menu__spirit"><span class="n">Poire Williams</span><span class="pr">5</span><span class="pr">10</span></div>
-          <div class="menu__spirit"><span class="n">Saké</span><span class="pr">5</span><span class="pr"></span></div>
-          <div class="menu__spirit"><span class="n">Bailey's</span><span class="pr">5</span><span class="pr">8</span></div>
-          <div class="menu__spirit"><span class="n">Chartreuse</span><span class="pr">7</span><span class="pr">12</span></div>
-          <div class="menu__spirit"><span class="n">Amaretto</span><span class="pr">5</span><span class="pr">10</span></div>
-          <div class="menu__spirit"><span class="n">Limoncello</span><span class="pr">5</span><span class="pr">8</span></div>
-          <div class="menu__spirit"><span class="n">Sambuca</span><span class="pr">5</span><span class="pr">9</span></div>
+          <div class="menu__cap">2cl  ·  4cl</div>
+          <div class="menu__spirit"><span class="n">Poire Williams</span><span class="pr">5 · 10</span></div>
+          <div class="menu__spirit"><span class="n">Saké</span><span class="pr">5</span></div>
+          <div class="menu__spirit"><span class="n">Bailey's</span><span class="pr">5 · 8</span></div>
+          <div class="menu__spirit"><span class="n">Chartreuse</span><span class="pr">7 · 12</span></div>
+          <div class="menu__spirit"><span class="n">Amaretto</span><span class="pr">5 · 10</span></div>
+          <div class="menu__spirit"><span class="n">Limoncello</span><span class="pr">5 · 8</span></div>
+          <div class="menu__spirit"><span class="n">Sambuca</span><span class="pr">5 · 9</span></div>
         </div>
-        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;--n:2;">
+        <div class="menu__cat menu__cat--sp" style="--cat:#1b4fd8;--catt:#fff;--catbg:#fff8f0;">
           <h3>Liqueurs</h3>
-          <div class="menu__shdr"><span></span><span class="pr">2cl</span><span class="pr">4cl</span></div>
-          <div class="menu__spirit"><span class="n">Malibu</span><span class="pr">5</span><span class="pr">9</span></div>
-          <div class="menu__spirit"><span class="n">Midori</span><span class="pr">5</span><span class="pr">9</span></div>
-          <div class="menu__spirit"><span class="n">Soho</span><span class="pr">5</span><span class="pr">9</span></div>
-          <div class="menu__spirit"><span class="n">Passoa</span><span class="pr">5</span><span class="pr">10</span></div>
-          <div class="menu__spirit"><span class="n">Manzana</span><span class="pr">5</span><span class="pr">10</span></div>
-          <div class="menu__spirit"><span class="n">Jägermeister</span><span class="pr">5</span><span class="pr">10</span></div>
+          <div class="menu__cap">2cl  ·  4cl</div>
+          <div class="menu__spirit"><span class="n">Malibu</span><span class="pr">5 · 9</span></div>
+          <div class="menu__spirit"><span class="n">Midori</span><span class="pr">5 · 9</span></div>
+          <div class="menu__spirit"><span class="n">Soho</span><span class="pr">5 · 9</span></div>
+          <div class="menu__spirit"><span class="n">Passoa</span><span class="pr">5 · 10</span></div>
+          <div class="menu__spirit"><span class="n">Manzana</span><span class="pr">5 · 10</span></div>
+          <div class="menu__spirit"><span class="n">Jägermeister</span><span class="pr">5 · 10</span></div>
         </div>
       </div>
         <p class="mn-foot">Carte non contractuelle · L'abus d'alcool est dangereux pour la santé.</p>
@@ -2364,14 +2383,14 @@
     if(c.note){h3.appendChild(document.createTextNode(' '));h3.appendChild(el('small',null,c.note));}
     cat.appendChild(h3);
     if(sp){
-      var shdr=el('div','menu__shdr');shdr.appendChild(el('span'));
-      cols.forEach(function(x){shdr.appendChild(el('span','pr',x));});
-      cat.appendChild(shdr);
+      /* mesures affichées UNE seule fois, en légende dorée discrète (plus de grille) */
+      if(cols.length)cat.appendChild(el('div','menu__cap',cols.join('  ·  ')));
       items.forEach(function(it){
         var row=el('div','menu__spirit');row.appendChild(el('span','n',it.name));
-        var vals=(it.price||'').split('·').map(function(s){return s.trim();});
-        while(vals.length<cols.length)vals.push('');vals=vals.slice(0,cols.length);
-        vals.forEach(function(v){row.appendChild(el('span','pr',v));});
+        /* on ne garde QUE les prix réels (pas de « — », pas de cellules vides) */
+        var vals=(it.price||'').split('·').map(function(s){return s.trim();})
+          .filter(function(v){return v&&v!=='-'&&v!=='—';});
+        row.appendChild(el('span','pr',vals.join(' · ')));
         cat.appendChild(row);
       });
     }else{
@@ -2523,14 +2542,14 @@
     if(c.note){h3.appendChild(document.createTextNode(' '));h3.appendChild(el('small',null,c.note));}
     cat.appendChild(h3);
     if(sp){
-      var shdr=el('div','menu__shdr');shdr.appendChild(el('span'));
-      cols.forEach(function(x){shdr.appendChild(el('span','pr',x));});
-      cat.appendChild(shdr);
+      /* mesures affichées UNE seule fois, en légende dorée discrète (plus de grille) */
+      if(cols.length)cat.appendChild(el('div','menu__cap',cols.join('  ·  ')));
       items.forEach(function(it){
         var row=el('div','menu__spirit');row.appendChild(el('span','n',it.name));
-        var vals=(it.price||'').split('·').map(function(s){return s.trim();});
-        while(vals.length<cols.length)vals.push('');vals=vals.slice(0,cols.length);
-        vals.forEach(function(v){row.appendChild(el('span','pr',v));});
+        /* on ne garde QUE les prix réels (pas de « — », pas de cellules vides) */
+        var vals=(it.price||'').split('·').map(function(s){return s.trim();})
+          .filter(function(v){return v&&v!=='-'&&v!=='—';});
+        row.appendChild(el('span','pr',vals.join(' · ')));
         cat.appendChild(row);
       });
     }else{
@@ -2707,7 +2726,7 @@
    de page forcé entre les deux. Invisible à l'écran (.menu-print{display:none}). */
 (function(){
   "use strict";
-  function weight(c){return 2.6 + c.querySelectorAll('.menu__row,.menu__spirit,.menu__h,.menu__shdr').length + c.querySelectorAll('.menu__desc').length*0.9;}
+  function weight(c){return 2.6 + c.querySelectorAll('.menu__row,.menu__spirit,.menu__h,.menu__cap').length + c.querySelectorAll('.menu__desc').length*0.9;}
   /* filet doré fin à ✦ central — réutilisable (createElement only) */
   function ruleNode(){
     var r=document.createElement('div');r.className='mn-rule';r.setAttribute('aria-hidden','true');
