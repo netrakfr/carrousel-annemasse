@@ -44,8 +44,8 @@
     --font-cinzel:'Cinzel',Georgia,serif; --font-cinzel-deco:'Cinzel Decorative','Cinzel',Georgia,serif;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;}
-  html{-webkit-text-size-adjust:100%;overflow-x:hidden;scroll-behavior:smooth;}
-  body{background:var(--night);color:var(--cream);font-family:var(--font-body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  html{-webkit-text-size-adjust:100%;overflow-x:clip;scroll-behavior:smooth;}
+  body{background:var(--night);color:var(--cream);font-family:var(--font-body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip;}
   img{display:block;max-width:100%;}
   a{color:inherit;text-decoration:none;}
   button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
@@ -351,7 +351,7 @@
   .feat p{font-size:.95rem;color:#6a352a;margin-top:.4rem;}
 
   /* CARTE — vibrant cocktail blocks */
-  .carte{background:var(--night);position:relative;overflow:hidden;}
+  .carte{background:var(--night);position:relative;overflow:clip;}
   .carte::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(80% 60% at 80% 0%,rgba(255,46,136,.18),transparent 60%),radial-gradient(70% 60% at 10% 100%,rgba(34,211,196,.14),transparent 60%);}
   .carte .container{position:relative;z-index:1;}
   .carte__head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;}
@@ -1225,6 +1225,151 @@
   #carte .menu__spirit .n{font-size:.78rem;}
 }
 
+/* ===================================================================
+   « LE MANÈGE ILLUMINÉ » — carte immersive À L'ÉCRAN UNIQUEMENT.
+   La source d'impression (#menu-cols → .menu__cat) reste intacte mais
+   masquée à l'écran ; la couche vivante .mn-live est construite en JS
+   depuis les mêmes données Supabase et rendue seulement à l'écran.
+   Toutes les règles ci-dessous sont hors @media print (donc écran).
+   Animations : transform/opacity uniquement ; reduced-motion-safe.
+   =================================================================== */
+
+/* #menu-cols = source d'impression : présente mais invisible à l'écran.
+   (cloner un nœud display:none pour l'impression fonctionne toujours) */
+#carte #menu-cols{display:none;}
+/* couche immersive : cachée à l'impression (le build clone #menu-cols) */
+@media print{ #carte .mn-live{display:none!important;} #carte .mn-nav{display:none!important;} }
+
+/* — lueur or ambiante douce derrière le panneau (décor, pointer-events:none) — */
+#carte .mn-live{position:relative;z-index:2;}
+#carte .mn-live::before{content:"";position:absolute;left:50%;top:-2%;transform:translateX(-50%);
+  width:min(120%,60rem);height:min(60%,34rem);pointer-events:none;z-index:-1;filter:blur(6px);
+  background:radial-gradient(60% 55% at 50% 22%,rgba(246,227,168,.10),rgba(200,162,76,.045) 46%,transparent 74%);}
+
+/* ============ NAVIGATEUR ILLUMINÉ (rail collant de tickets) ============ */
+#carte .mn-nav{position:sticky;top:calc(var(--nav-h,72px) - 4px);z-index:30;
+  margin:0 auto clamp(1.4rem,3vw,2.2rem);
+  /* le rail défile horizontalement sur mobile, sans déborder la page */
+  display:flex;gap:.55rem;overflow-x:auto;overflow-y:visible;padding:.7rem .2rem .8rem;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  justify-content:flex-start;
+  /* fondu latéral pour signaler qu'on peut faire défiler */
+  -webkit-mask:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+          mask:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);}
+@media (min-width:820px){#carte .mn-nav{justify-content:center;overflow:visible;-webkit-mask:none;mask:none;}}
+#carte .mn-nav::-webkit-scrollbar{display:none;}
+/* voile sombre derrière le rail collant → lisibilité au défilement */
+#carte .mn-nav::before{content:"";position:absolute;inset:-2px -50vw;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,8,6,.92) 0%,rgba(11,8,6,.72) 62%,transparent 100%);}
+
+/* — le ticket : plaque laiton & vin à bords dorés, façon billet forain — */
+#carte .mn-ticket{position:relative;flex:0 0 auto;scroll-snap-align:center;cursor:pointer;
+  font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;letter-spacing:.12em;
+  font-size:clamp(.56rem,1.4vw,.72rem);color:var(--mn-gold-hi);
+  padding:.5rem 1rem;border:1px solid var(--mn-gold-deep);border-radius:5px;
+  background:linear-gradient(180deg,var(--mn-wine-2),var(--mn-wine-deep));
+  box-shadow:inset 0 0 0 1px rgba(246,227,168,.12),0 3px 10px -4px rgba(0,0,0,.7);
+  transition:color .3s var(--ease),border-color .3s var(--ease),box-shadow .35s var(--ease),transform .3s var(--ease),background .35s var(--ease);
+  white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:.5rem;}
+/* encoches latérales du billet (petits demi-cercles noirs) */
+#carte .mn-ticket::before,#carte .mn-ticket::after{content:"";position:absolute;top:50%;width:7px;height:7px;
+  border-radius:50%;background:var(--mn-bg);transform:translateY(-50%);box-shadow:inset 0 0 0 1px var(--mn-gold-deep);}
+#carte .mn-ticket::before{left:-4px;}
+#carte .mn-ticket::after{right:-4px;}
+/* petite ampoule au bord gauche du ticket (allumée sur l'actif) */
+#carte .mn-ticket i{width:6px;height:6px;border-radius:50%;flex:0 0 auto;
+  background:radial-gradient(circle at 40% 35%,#5a4a22,#2c2410);
+  box-shadow:0 0 0 1px rgba(0,0,0,.4);transition:background .35s var(--ease),box-shadow .35s var(--ease);}
+#carte .mn-ticket:hover{color:#fff;transform:translateY(-2px);
+  box-shadow:inset 0 0 0 1px rgba(246,227,168,.22),0 6px 16px -6px rgba(0,0,0,.8);}
+#carte .mn-ticket:focus-visible{outline:3px solid var(--mn-gold-bright);outline-offset:3px;}
+/* ticket ACTIF : allumé, or vif, ampoule qui brille */
+#carte .mn-ticket[aria-current="true"]{color:var(--mn-cover);border-color:var(--mn-gold-bright);
+  background:linear-gradient(180deg,var(--mn-gold-hi),var(--mn-gold));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),0 0 20px -3px rgba(236,201,120,.55),0 4px 12px -4px rgba(0,0,0,.8);}
+#carte .mn-ticket[aria-current="true"] i{
+  background:radial-gradient(circle at 40% 35%,#fff8e6,#f0d488);
+  box-shadow:0 0 8px 2px rgba(246,227,168,.85),0 0 0 1px rgba(140,106,38,.5);
+  animation:mn-bulb-pulse 2.4s var(--ease) infinite;}
+@keyframes mn-bulb-pulse{0%,100%{opacity:1;}50%{opacity:.72;}}
+
+/* ============ SECTION (en-tête illuminé + diviseur d'ampoules) ============ */
+#carte .mn-sec{position:relative;z-index:2;margin:0 0 clamp(1.8rem,4vw,2.8rem);scroll-margin-top:calc(var(--nav-h,72px) + 58px);}
+#carte .mn-sec__head{position:relative;text-align:center;margin:0 0 clamp(1rem,2.4vw,1.5rem);}
+#carte .mn-sec__title{font-family:var(--font-cinzel);font-weight:700;text-transform:uppercase;
+  letter-spacing:.16em;font-size:clamp(1.1rem,3.2vw,1.7rem);line-height:1;margin:0;
+  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;color:transparent;
+  color:var(--mn-gold-bright);-webkit-text-fill-color:transparent;}
+/* halo d'en-tête de section */
+#carte .mn-sec__head::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(80%,26rem);height:clamp(3.4rem,9vw,5.4rem);pointer-events:none;z-index:-1;filter:blur(3px);
+  background:radial-gradient(60% 60% at 50% 50%,rgba(246,227,168,.14),transparent 70%);}
+/* guirlande d'ampoules dorées sous chaque titre de section */
+#carte .mn-bulbs{position:relative;display:flex;align-items:center;justify-content:center;gap:.7rem;
+  max-width:22rem;margin:.75rem auto 0;height:14px;}
+#carte .mn-bulbs::before,#carte .mn-bulbs::after{content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--mn-gold-deep),var(--mn-gold));}
+#carte .mn-bulbs::after{background:linear-gradient(90deg,var(--mn-gold),var(--mn-gold-deep),transparent);}
+#carte .mn-bulbs b{display:block;width:6px;height:6px;border-radius:50%;flex:0 0 auto;
+  background:radial-gradient(circle at 40% 35%,#fff6dd,#f0d488);
+  box-shadow:0 0 6px 1px rgba(246,227,168,.55);
+  animation:mn-string 3s var(--ease) infinite;}
+#carte .mn-bulbs b:nth-child(2){animation-delay:.6s;}
+#carte .mn-bulbs b:nth-child(3){animation-delay:1.2s;}
+#carte .mn-bulbs b:nth-child(4){animation-delay:.3s;}
+#carte .mn-bulbs b:nth-child(5){animation-delay:.9s;}
+@keyframes mn-string{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.55;transform:scale(.88);}}
+
+/* corps de section : réutilise les colonnes/catégories existantes du menu */
+#carte .mn-sec__body{position:relative;z-index:2;columns:2;column-gap:clamp(1.8rem,4vw,3.4rem);}
+@media (max-width:760px){#carte .mn-sec__body{columns:1;}}
+/* une seule catégorie (Signatures) → pas de colonnes */
+#carte .mn-sec--solo .mn-sec__body{columns:1;}
+
+/* ============ SIGNATURES — cartes vedettes ============ */
+#carte .mn-sig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
+  gap:clamp(.9rem,2.2vw,1.4rem);margin:0;}
+#carte .mn-sig{position:relative;display:flex;flex-direction:column;gap:.5rem;
+  padding:clamp(1.1rem,2.4vw,1.5rem) clamp(1.1rem,2.4vw,1.4rem);
+  border:1px solid var(--mn-gold-deep);border-radius:8px;
+  background:
+    radial-gradient(120% 80% at 50% -10%,rgba(138,31,40,.5),transparent 55%),
+    linear-gradient(180deg,var(--mn-bg2),var(--mn-bg));
+  box-shadow:inset 0 0 0 1px rgba(246,227,168,.10),inset 0 0 24px -8px rgba(246,227,168,.10),0 14px 30px -18px rgba(0,0,0,.85);}
+#carte .mn-sig__glyph{position:absolute;top:.75rem;right:.85rem;width:26px;height:26px;opacity:.5;
+  color:var(--mn-gold);}
+#carte .mn-sig__glyph svg{display:block;width:100%;height:100%;}
+#carte .mn-sig__name{font-family:var(--font-cinzel);font-weight:600;text-transform:uppercase;
+  letter-spacing:.06em;font-size:clamp(1rem,2.4vw,1.18rem);line-height:1.15;color:var(--mn-gold-hi);
+  padding-right:2rem;
+  background:var(--mn-grad-sheen);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;}
+#carte .mn-sig__ing{font-family:var(--font-script);font-style:italic;font-weight:500;
+  font-size:.86rem;color:var(--mn-desc);line-height:1.4;flex:1;}
+#carte .mn-sig__price{align-self:flex-start;margin-top:.2rem;
+  font-family:var(--font-cinzel);font-weight:600;font-size:.72rem;letter-spacing:.08em;
+  color:var(--mn-gold-hi);-webkit-text-fill-color:var(--mn-gold-hi);
+  background:linear-gradient(180deg,var(--mn-wine-2),var(--mn-wine-deep));
+  border:1px solid var(--mn-gold-deep);border-radius:999px;padding:.28rem .7rem;
+  font-variant-numeric:tabular-nums;}
+
+/* ============ RÉVÉLATION au défilement (par section) ============ */
+#carte .mn-sec{opacity:0;transform:translateY(26px);
+  transition:opacity .8s var(--ease),transform .8s var(--ease);will-change:opacity,transform;}
+#carte .mn-sec.mn-shown{opacity:1;transform:none;}
+/* léger décalage des cartes signatures */
+#carte .mn-sig{opacity:0;transform:translateY(18px) scale(.985);
+  transition:opacity .7s var(--ease),transform .7s var(--ease);}
+#carte .mn-sec.mn-shown .mn-sig{opacity:1;transform:none;}
+#carte .mn-sec.mn-shown .mn-sig:nth-child(2){transition-delay:.08s;}
+#carte .mn-sec.mn-shown .mn-sig:nth-child(3){transition-delay:.16s;}
+#carte .mn-sec.mn-shown .mn-sig:nth-child(4){transition-delay:.24s;}
+
+@media (prefers-reduced-motion:reduce){
+  #carte .mn-sec,#carte .mn-sig{opacity:1!important;transform:none!important;transition:none!important;}
+  #carte .mn-ticket[aria-current="true"] i,#carte .mn-bulbs b{animation:none!important;}
+}
+
 /* ===================== IMPRESSION (Cmd+P) =====================
    On réimprime UNIQUEMENT la carte, en pages A4 sombres encadrées
    or, identiques à l'écran. Le système de pagination existant
@@ -1541,6 +1686,11 @@
           <a class="mn-head__cta" href="#infos">Réserver par e-mail</a>
         </div>
         <div class="menu__intro"><p class="menu__sub">Tous les cocktails à 12 € · spiritueux servis au 2cl, 4cl ou à la bouteille (70cl)</p></div>
+      <!-- navigateur illuminé (rail de tickets) — peuplé en JS depuis Supabase -->
+      <nav class="mn-nav" id="mnNav" aria-label="Sections de la carte"></nav>
+      <!-- couche immersive « Manège Illuminé » — construite en JS (écran uniquement) -->
+      <div class="mn-live" id="mnLive"></div>
+      <!-- SOURCE D'IMPRESSION : rendu plat des catégories (masqué à l'écran, cloné pour le PDF) -->
       <div class="menu__cols" id="menu-cols">
         <div class="menu__cat" style="--cat:#e8173a;--catt:#fff;--catbg:#fff8f0;">
           <h3>Cocktails <small>Tous à 12 €</small></h3>
@@ -2289,6 +2439,265 @@
       return c;
     }));
   });
+})();
+</script>
+
+<!-- ============ « LE MANÈGE ILLUMINÉ » — carte immersive (ÉCRAN) ============
+     Reconstruit la carte à l'écran depuis les MÊMES données Supabase, groupée
+     en 5 sections illuminées avec navigateur collant + scroll-spy + révélations.
+     N'altère JAMAIS #menu-cols (source du PDF) ni le build d'impression.
+     DOM 100 % createElement / textContent / setAttribute / appendChild
+     (SVG via createElementNS) — aucun innerHTML (hook de sécurité). -->
+<script>
+(function(){
+  "use strict";
+  var carte=document.getElementById('carte');
+  var nav=document.getElementById('mnNav'), live=document.getElementById('mnLive');
+  if(!carte||!nav||!live) return;
+
+  var SVGNS="http://www.w3.org/2000/svg";
+  var REDUCE=(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)===true;
+
+  /* --- --nav-h : hauteur réelle de la barre → le rail colle juste dessous --- */
+  var siteNav=document.getElementById('nav');
+  function setNavH(){
+    if(!siteNav) return;
+    var h=Math.round(siteNav.getBoundingClientRect().height)||72;
+    document.documentElement.style.setProperty('--nav-h',h+'px');
+  }
+  setNavH();
+  var nhT;
+  window.addEventListener('resize',function(){clearTimeout(nhT);nhT=setTimeout(setNavH,150);},{passive:true});
+  /* la barre change de hauteur en défilant (solid) → resync, rAF-throttlé + passif */
+  var nhTick=false;
+  window.addEventListener('scroll',function(){
+    if(nhTick) return; nhTick=true;
+    requestAnimationFrame(function(){ setNavH(); nhTick=false; });
+  },{passive:true});
+
+  /* --- Définition des 5 sections (par NOM exact de catégorie) --- */
+  var SECTIONS=[
+    {id:'sig',   label:'Signatures',       names:['Nos Signatures']},
+    {id:'cocktails', label:'Cocktails',    names:['Frais & Vif','Sombre & Remué']},
+    {id:'vins',  label:'Vins',             names:['Vins','Bulles & Champagnes']},
+    {id:'bieres',label:'Bières & Softs',   names:['Bières','Softs','Jus de fruits','Shots']},
+    {id:'spirit',label:'Spiritueux',       names:['Vodka','Gin','Rhum','Cachaça','Whiskies','Bourbon','Cognacs','Tequila','Apéritifs','Digestifs','Liqueurs']}
+  ];
+  function sectionFor(name){
+    for(var i=0;i<SECTIONS.length;i++){ if(SECTIONS[i].names.indexOf(name)>-1) return SECTIONS[i].id; }
+    return 'autres';
+  }
+
+  function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+  function svgEl(name,attrs){var n=document.createElementNS(SVGNS,name);if(attrs)for(var k in attrs){if(attrs.hasOwnProperty(k))n.setAttribute(k,attrs[k]);}return n;}
+
+  /* petit glyphe or (verre de cocktail stylisé) pour les cartes vedettes */
+  function sigGlyph(){
+    var s=svgEl('svg',{viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'1.6','stroke-linecap':'round','stroke-linejoin':'round','aria-hidden':'true','focusable':'false'});
+    s.appendChild(svgEl('path',{d:'M4 4h16l-8 9z'}));   /* coupe */
+    s.appendChild(svgEl('line',{x1:'12',y1:'13',x2:'12',y2:'20'}));
+    s.appendChild(svgEl('line',{x1:'8',y1:'20',x2:'16',y2:'20'}));
+    s.appendChild(svgEl('circle',{cx:'17.5',cy:'6.5',r:'1.1',fill:'currentColor',stroke:'none'})); /* olive/cerise */
+    return s;
+  }
+  function bulbsRow(){
+    var w=el('div','mn-bulbs');w.setAttribute('aria-hidden','true');
+    for(var i=0;i<5;i++) w.appendChild(el('b'));
+    return w;
+  }
+  function sectionHead(label){
+    var head=el('div','mn-sec__head');
+    head.appendChild(el('h3','mn-sec__title',label));
+    head.appendChild(bulbsRow());
+    return head;
+  }
+
+  /* Rend une catégorie « classique » en réutilisant les classes existantes du menu
+     (.menu__cat / h3 / .menu__row / .menu__spirit / .menu__desc / pastilles / grille spiritueux). */
+  function catNode(c,items){
+    var sp=c.layout==='spirit';
+    var cat=el('div',sp?'menu__cat menu__cat--sp':'menu__cat');
+    var cols=[];
+    if(sp){cols=(c.cols||'').split(',').map(function(s){return s.trim();}).filter(Boolean);cat.style.setProperty('--n',cols.length);}
+    var h3=el('h3',null,c.name);
+    if(c.note){h3.appendChild(document.createTextNode(' '));h3.appendChild(el('small',null,c.note));}
+    cat.appendChild(h3);
+    if(sp){
+      var shdr=el('div','menu__shdr');shdr.appendChild(el('span'));
+      cols.forEach(function(x){shdr.appendChild(el('span','pr',x));});
+      cat.appendChild(shdr);
+      items.forEach(function(it){
+        var row=el('div','menu__spirit');row.appendChild(el('span','n',it.name));
+        var vals=(it.price||'').split('·').map(function(s){return s.trim();});
+        while(vals.length<cols.length)vals.push('');vals=vals.slice(0,cols.length);
+        vals.forEach(function(v){row.appendChild(el('span','pr',v));});
+        cat.appendChild(row);
+      });
+    }else{
+      items.forEach(function(it){
+        if(it.kind==='subheader')cat.appendChild(el('div','menu__h',it.name));
+        else if(it.price==null||it.price===''){var nm=el('div','menu__row menu__row--name',it.name);if(it.description)nm.appendChild(el('span','menu__desc',it.description));cat.appendChild(nm);}
+        else{var row=el('div','menu__row');row.appendChild(el('span','n',it.name));row.appendChild(el('span','d'));row.appendChild(el('span','p',it.price));cat.appendChild(row);}
+      });
+    }
+    return cat;
+  }
+
+  /* Carte vedette « Signature » (nom + ligne d'ingrédients + ticket prix + glyphe or) */
+  function sigCard(it){
+    var card=el('div','mn-sig');
+    var glyph=el('span','mn-sig__glyph');glyph.setAttribute('aria-hidden','true');glyph.appendChild(sigGlyph());
+    card.appendChild(glyph);
+    card.appendChild(el('h4','mn-sig__name',it.name));
+    if(it.description) card.appendChild(el('p','mn-sig__ing',it.description));
+    card.appendChild(el('span','mn-sig__price',(it.price!=null&&it.price!=='')?(it.price):'12 €'));
+    return card;
+  }
+
+  function buildLive(cats,byCat){
+    /* buckets par section (préserve l'ordre du tri Supabase à l'intérieur) */
+    var buckets={};SECTIONS.forEach(function(s){buckets[s.id]=[];});buckets.autres=[];
+    cats.forEach(function(c){ (buckets[sectionFor(c.name)]||buckets.autres).push(c); });
+
+    var order=SECTIONS.slice();
+    if(buckets.autres.length) order.push({id:'autres',label:'Autres',names:[]});
+
+    var liveFrag=document.createDocumentFragment();
+    var navFrag=document.createDocumentFragment();
+    var built=[];
+
+    order.forEach(function(sec){
+      var group=buckets[sec.id];
+      if(!group||!group.length) return;
+
+      var domId='mn-sec-'+sec.id;
+      var sect=el('section','mn-sec');sect.id=domId;
+      sect.setAttribute('aria-labelledby',domId+'-t');
+      var head=sectionHead(sec.label);
+      var titleEl=head.querySelector('.mn-sec__title');if(titleEl)titleEl.id=domId+'-t';
+      sect.appendChild(head);
+
+      var body=el('div','mn-sec__body');
+      if(sec.id==='sig'){
+        sect.classList.add('mn-sec--solo');
+        var grid=el('div','mn-sig-grid');
+        group.forEach(function(c){
+          (byCat[c.id]||[]).forEach(function(it){
+            if(it.kind==='subheader') return;         /* les vedettes = cocktails, pas de sous-titre */
+            grid.appendChild(sigCard(it));
+          });
+        });
+        body.appendChild(grid);
+      }else{
+        if(group.length<2) sect.classList.add('mn-sec--solo');
+        group.forEach(function(c){ body.appendChild(catNode(c,byCat[c.id]||[])); });
+      }
+      sect.appendChild(body);
+      liveFrag.appendChild(sect);
+
+      /* ticket de navigation */
+      var t=el('a','mn-ticket');
+      t.setAttribute('href','#'+domId);
+      t.setAttribute('role','button');
+      t.setAttribute('data-target',domId);
+      t.appendChild(el('i'));                          /* ampoule */
+      t.appendChild(document.createTextNode(sec.label));
+      navFrag.appendChild(t);
+
+      built.push({id:domId,ticket:t,section:sect});
+    });
+
+    if(!built.length) return null;
+    live.replaceChildren(liveFrag);
+    nav.replaceChildren(navFrag);
+    return built;
+  }
+
+  /* --- interactions : smooth-scroll, scroll-spy, révélations --- */
+  function wire(built){
+    var byId={};built.forEach(function(b){byId[b.id]=b;});
+
+    function activate(id){
+      built.forEach(function(b){
+        var on=(b.id===id);
+        if(on) b.ticket.setAttribute('aria-current','true');
+        else b.ticket.removeAttribute('aria-current');
+      });
+    }
+    /* clic ticket : défilement doux vers la section (respecte reduced-motion) */
+    nav.addEventListener('click',function(e){
+      var t=e.target.closest('.mn-ticket');if(!t)return;
+      e.preventDefault();
+      var id=t.getAttribute('data-target');var b=byId[id];if(!b)return;
+      activate(id);
+      try{ b.section.scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'}); }
+      catch(_){ b.section.scrollIntoView(); }
+      /* met à jour le hash sans saut brutal */
+      if(history&&history.replaceState) history.replaceState(null,'','#'+id);
+    });
+    /* accessibilité clavier : Entrée/Espace activent le ticket (role=button) */
+    nav.addEventListener('keydown',function(e){
+      if(e.key!=='Enter'&&e.key!==' '&&e.key!=='Spacebar')return;
+      var t=e.target.closest('.mn-ticket');if(!t)return;
+      e.preventDefault();t.click();
+    });
+
+    /* scroll-spy : allume le ticket de la section la plus « en vue ».
+       rootMargin décale la zone active sous la barre nav + le rail (~140px). */
+    /* scroll-spy robuste (indépendant de la hauteur des sections) : la section
+       active est la DERNIÈRE dont le haut est passé sous le rail collant. */
+    function spyLine(){ var nh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))||72; return Math.max(nh+70, window.innerHeight*0.3); }
+    function updateSpy(){
+      var line=spyLine(), curId=built[0]?built[0].id:null;
+      built.forEach(function(b){ if(b.section.getBoundingClientRect().top-line<=1) curId=b.id; });
+      if(curId) activate(curId);
+    }
+    var spyRAF=false;
+    function onSpyScroll(){ if(spyRAF)return; spyRAF=true; requestAnimationFrame(function(){ spyRAF=false; updateSpy(); }); }
+    window.addEventListener('scroll',onSpyScroll,{passive:true});
+    window.addEventListener('resize',onSpyScroll,{passive:true});
+    updateSpy();
+
+    /* révélations par section (transform/opacity, reduced-motion-safe) */
+    if(REDUCE||!('IntersectionObserver' in window)){
+      built.forEach(function(b){ b.section.classList.add('mn-shown'); });
+    }else{
+      var rev=new IntersectionObserver(function(entries,obs){
+        entries.forEach(function(en){
+          if(en.isIntersecting){ en.target.classList.add('mn-shown'); obs.unobserve(en.target); }
+        });
+      },{rootMargin:'0px 0px -10% 0px', threshold:0.08});
+      built.forEach(function(b){
+        if(b.section.getBoundingClientRect().height>window.innerHeight*0.9) b.section.classList.add('mn-shown');
+        else rev.observe(b.section);
+      });
+      /* filet de sécurité : rien ne reste invisible */
+      setTimeout(function(){ built.forEach(function(b){ b.section.classList.add('mn-shown'); }); },4200);
+    }
+  }
+
+  /* --- Récupération des données (fetch dédié, propre & robuste) --- */
+  function fetchAndBuild(){
+    if(!window.supabase||!window.supabase.createClient) return;
+    var SB_URL="https://hwkuwotvpnhisxrbjcxc.supabase.co";
+    var SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3a3V3b3R2cG5oaXN4cmJqY3hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3Nzk0ODcsImV4cCI6MjA5NzM1NTQ4N30.rUbvxZF-tD_YPWJAhFIN8U8ydWb1Fl89RFMzW4gk6rQ";
+    /* client léger, sans persistance de session : évite le conflit de clé de
+       stockage auth avec le client du menu plat (« Multiple GoTrueClient »). */
+    var sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+    sb.from('menu_categories').select('*').order('sort').then(function(cr){
+      if(cr.error||!cr.data||!cr.data.length) return;
+      sb.from('menu_items').select('*').then(function(ir){
+        if(ir.error||!ir.data) return;
+        var byCat={};ir.data.forEach(function(it){(byCat[it.category_id]=byCat[it.category_id]||[]).push(it);});
+        Object.keys(byCat).forEach(function(k){byCat[k].sort(function(a,b){return (a.sort||0)-(b.sort||0);});});
+        var built=buildLive(cr.data,byCat);
+        if(built) wire(built);
+      });
+    });
+  }
+
+  if(document.readyState!=='loading') fetchAndBuild();
+  else document.addEventListener('DOMContentLoaded',fetchAndBuild);
 })();
 </script>
 <script>
