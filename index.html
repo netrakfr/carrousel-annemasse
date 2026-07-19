@@ -6,9 +6,25 @@
 <title>Carrousel — Bar · Ambiance · Partage · Annemasse</title>
 <meta name="description" content="Carrousel — le bar forain d'Annemasse. Cocktails, lumières et nuits qui tournent. Bar · Ambiance · Partage." />
 <meta name="theme-color" content="#12112a" />
+<link rel="canonical" href="https://carrouselbar.fr/" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="author" content="Carrousel — Bar forain, Annemasse" />
+<meta name="geo.region" content="FR-74" />
+<meta name="geo.placename" content="Annemasse" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Carrousel" />
+<meta property="og:url" content="https://carrouselbar.fr/" />
 <meta property="og:title" content="Carrousel — Bar · Ambiance · Partage" />
 <meta property="og:description" content="Le bar forain d'Annemasse. La fête ne s'arrête jamais." />
 <meta property="og:locale" content="fr_FR" />
+<meta property="og:image" content="https://carrouselbar.fr/images/logo.png" />
+<meta property="og:image:width" content="1225" />
+<meta property="og:image:height" content="851" />
+<meta property="og:image:alt" content="Carrousel — Bar · Ambiance · Partage — Annemasse" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Carrousel — Bar · Ambiance · Partage" />
+<meta name="twitter:description" content="Le bar forain d'Annemasse. La fête ne s'arrête jamais." />
+<meta name="twitter:image" content="https://carrouselbar.fr/images/logo.png" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b0b2e'/%3E%3Cpath d='M16 5l10 14H6z' fill='%23f8c63a'/%3E%3Cpath d='M16 5l3.4 14h-6.8z' fill='%23e01e37'/%3E%3Ccircle cx='16' cy='4' r='2' fill='%23ffe08a'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1348,6 +1364,22 @@
   background:var(--gold);
   border:none;border-radius:999px;padding:.28rem .7rem;
   font-variant-numeric:tabular-nums;}
+/* --- Photo dans la carte vedette / cocktails (Higgsfield) --- */
+#carte .mn-sig--photo{padding:0;overflow:hidden;background:var(--sec);
+  transition:opacity .7s var(--ease),transform .32s var(--ease),box-shadow .32s var(--ease);}
+#carte .mn-sig__img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:#0d0c22;}
+#carte .mn-sig__body{display:flex;flex-direction:column;gap:.42rem;}
+#carte .mn-sig--photo .mn-sig__body{padding:clamp(.85rem,2vw,1.1rem);}
+#carte .mn-sec.mn-shown .mn-sig--photo:hover{transform:translateY(-5px);
+  box-shadow:0 22px 44px -18px color-mix(in srgb,var(--gold) 55%,transparent),0 0 0 1px rgba(255,186,8,.55);}
+#carte .mn-sig-sub{font-family:var(--font-display);text-transform:uppercase;letter-spacing:.04em;
+  font-size:1rem;color:var(--gold-light);margin:1.5rem 0 .75rem;display:flex;align-items:baseline;gap:.5rem;}
+#carte .mn-sig-sub:first-child{margin-top:0;}
+#carte .mn-sig-sub small{font-family:var(--font-body);font-weight:700;font-size:.72rem;color:var(--gold);letter-spacing:.04em;}
+@media (prefers-reduced-motion:reduce){
+  #carte .mn-sig--photo{transition:none!important;}
+  #carte .mn-sec.mn-shown .mn-sig--photo:hover{transform:none!important;}
+}
 
 /* ============ RÉVÉLATION au défilement (par section) ============ */
 #carte .mn-sec{opacity:0;transform:translateY(26px);
@@ -1502,6 +1534,39 @@
 }
 
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BarOrPub",
+  "@id": "https://carrouselbar.fr/#carrousel",
+  "name": "Carrousel",
+  "alternateName": "Le Carrousel — Bar forain",
+  "description": "Le bar forain d'Annemasse : cocktails maison, ambiance chapiteau, DJ sets et afters le week-end. La fête ne s'arrête jamais.",
+  "slogan": "La fête ne s'arrête jamais",
+  "url": "https://carrouselbar.fr/",
+  "image": "https://carrouselbar.fr/images/logo.png",
+  "logo": "https://carrouselbar.fr/images/logo.png",
+  "email": "lecarrouselbar@gmail.com",
+  "priceRange": "€€",
+  "acceptsReservations": true,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1 Rue Fernand David",
+    "postalCode": "74100",
+    "addressLocality": "Annemasse",
+    "addressRegion": "Haute-Savoie",
+    "addressCountry": "FR"
+  },
+  "hasMap": "https://www.google.com/maps/search/?api=1&query=1+Rue+Fernand+David+74100+Annemasse",
+  "sameAs": ["https://instagram.com/carrousel_bar"],
+  "openingHoursSpecification": [
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday","Thursday","Friday"],"opens":"18:00","closes":"02:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"06:00","closes":"12:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"18:00","closes":"02:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"06:00","closes":"12:00"}
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -1905,11 +1970,11 @@
       <span class="eyebrow reveal">En images</span>
       <h2 class="h-big reveal" data-d="1" style="margin-top:.8rem">La nuit <em>Carrousel</em></h2>
       <div class="gal">
-        <div class="tile tall reveal"><div class="tile__art a-red"></div><img src="images/ambiance-1.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Le comptoir</span></div>
-        <div class="tile wide reveal" data-d="1"><div class="tile__art a-stripes"></div><img src="images/ambiance-2.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Le chapiteau</span></div>
-        <div class="tile reveal" data-d="2"><div class="tile__art a-gold"></div><img src="images/ambiance-3.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Les lumières</span></div>
-        <div class="tile reveal" data-d="2"><div class="tile__art a-checker"></div><img src="images/ambiance-4.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Le damier</span></div>
-        <div class="tile wide reveal" data-d="3"><div class="tile__art a-neon"></div><img src="images/ambiance-5.jpg" alt="" onerror="this.remove()"><span class="tile__cap">Les nuits</span></div>
+        <div class="tile tall reveal"><div class="tile__art a-red"></div><img src="images/ambiance-1.jpg" alt="Le comptoir du Carrousel, bar illuminé d'ampoules colorées un soir d'affluence à Annemasse" onerror="this.remove()"><span class="tile__cap">Le comptoir</span></div>
+        <div class="tile wide reveal" data-d="1"><div class="tile__art a-stripes"></div><img src="images/ambiance-2.jpg" alt="L'ambiance chapiteau du Carrousel sous les rayures rouge et crème et les guirlandes lumineuses" onerror="this.remove()"><span class="tile__cap">Le chapiteau</span></div>
+        <div class="tile reveal" data-d="2"><div class="tile__art a-gold"></div><img src="images/ambiance-3.jpg" alt="Les lumières dorées et ampoules d'ambiance du bar forain Carrousel" onerror="this.remove()"><span class="tile__cap">Les lumières</span></div>
+        <div class="tile reveal" data-d="2"><div class="tile__art a-checker"></div><img src="images/ambiance-4.jpg" alt="Le sol en damier noir et blanc du Carrousel, clin d'œil à la fête foraine" onerror="this.remove()"><span class="tile__cap">Le damier</span></div>
+        <div class="tile wide reveal" data-d="3"><div class="tile__art a-neon"></div><img src="images/ambiance-5.jpg" alt="Une nuit de fête au Carrousel, bar forain d'Annemasse" onerror="this.remove()"><span class="tile__cap">Les nuits</span></div>
       </div>
     </div>
   </section>
@@ -2256,6 +2321,7 @@
     </div>
     <div class="footer__base container">
       <span>© <span id="year">2026</span> Carrousel — Annemasse</span>
+      <span class="footer__legal"><a href="mentions-legales.html" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Mentions légales</a> · <a href="mentions-legales.html#confidentialite" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Confidentialité</a></span>
       <span>L'abus d'alcool est dangereux pour la santé</span>
     </div>
   </footer>
@@ -2551,14 +2617,43 @@
     return cat;
   }
 
-  /* Carte vedette « Signature » (nom + ligne d'ingrédients + ticket prix + glyphe or) */
+  /* Photos cocktails (Higgsfield / Nano Banana Pro), mapped by name -> slug.
+     A cocktail without a photo falls back to the glyph card (graceful degrade). */
+  var COCKTAIL_SLUG={
+    'signature maison':'signature-maison','pornstar':'pornstar','mojito':'mojito',
+    'old fashioned':'old-fashioned','daiquiri':'daiquiri','cuba libre':'cuba-libre',
+    'moscow mule':'moscow-mule','pina colada':'pina-colada','blue hawaiian':'blue-hawaiian',
+    'mai tai':'mai-tai','sex on the beach':'sex-on-the-beach','pain killer':'painkiller',
+    'painkiller':'painkiller','godfather':'godfather','mint julep':'mint-julep',
+    'screaming orgasm':'screaming-orgasm'
+  };
+  function cocktailKey(s){
+    s=(s||'').toLowerCase().normalize('NFD');
+    var out='';
+    for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);if(c>=768&&c<=879)continue;out+=s.charAt(i);}
+    return out.replace(/[^a-z0-9]+/g,' ').trim();
+  }
+  function photoFor(name){var slug=COCKTAIL_SLUG[cocktailKey(name)];return slug?('images/cocktails/'+slug+'.jpg'):null;}
+
+  /* Signature / cocktail card, with photo when available (name + ingredients + price ticket) */
   function sigCard(it){
     var card=el('div','mn-sig');
-    var glyph=el('span','mn-sig__glyph');glyph.setAttribute('aria-hidden','true');glyph.appendChild(sigGlyph());
-    card.appendChild(glyph);
-    card.appendChild(el('h4','mn-sig__name',it.name));
-    if(it.description) card.appendChild(el('p','mn-sig__ing',it.description));
-    card.appendChild(el('span','mn-sig__price',(it.price!=null&&it.price!=='')?(it.price):'12 €'));
+    var src=photoFor(it.name);
+    if(src){
+      card.classList.add('mn-sig--photo');
+      var img=document.createElement('img');
+      img.className='mn-sig__img';img.src=src;img.alt=it.name;
+      img.loading='lazy';img.decoding='async';img.setAttribute('width','820');img.setAttribute('height','1025');
+      card.appendChild(img);
+    }else{
+      var glyph=el('span','mn-sig__glyph');glyph.setAttribute('aria-hidden','true');glyph.appendChild(sigGlyph());
+      card.appendChild(glyph);
+    }
+    var body=el('div','mn-sig__body');
+    body.appendChild(el('h4','mn-sig__name',it.name));
+    if(it.description) body.appendChild(el('p','mn-sig__ing',it.description));
+    body.appendChild(el('span','mn-sig__price',(it.price!=null&&it.price!=='')?(it.price):'12 €'));
+    card.appendChild(body);
     return card;
   }
 
@@ -2596,6 +2691,18 @@
           });
         });
         body.appendChild(grid);
+      }else if(sec.id==='cocktails'){
+        sect.classList.add('mn-sec--solo');
+        group.forEach(function(c){
+          var catItems=(byCat[c.id]||[]).filter(function(it){return it.kind!=='subheader';});
+          if(!catItems.length) return;
+          var lbl=el('div','mn-sig-sub',c.name);
+          if(c.note){lbl.appendChild(document.createTextNode(' '));lbl.appendChild(el('small',null,c.note));}
+          body.appendChild(lbl);
+          var g=el('div','mn-sig-grid');
+          catItems.forEach(function(it){ g.appendChild(sigCard(it)); });
+          body.appendChild(g);
+        });
       }else{
         if(group.length<2) sect.classList.add('mn-sec--solo');
         group.forEach(function(c){ body.appendChild(catNode(c,byCat[c.id]||[])); });
