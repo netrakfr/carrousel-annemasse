@@ -17,14 +17,14 @@
 <meta property="og:title" content="Carrousel — Bar · Ambiance · Partage" />
 <meta property="og:description" content="Le bar forain d'Annemasse. La fête ne s'arrête jamais." />
 <meta property="og:locale" content="fr_FR" />
-<meta property="og:image" content="https://carrouselbar.fr/images/logo.png" />
-<meta property="og:image:width" content="1225" />
-<meta property="og:image:height" content="851" />
+<meta property="og:image" content="https://carrouselbar.fr/images/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="Carrousel — Bar · Ambiance · Partage — Annemasse" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Carrousel — Bar · Ambiance · Partage" />
 <meta name="twitter:description" content="Le bar forain d'Annemasse. La fête ne s'arrête jamais." />
-<meta name="twitter:image" content="https://carrouselbar.fr/images/logo.png" />
+<meta name="twitter:image" content="https://carrouselbar.fr/images/og-image.jpg" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b0b2e'/%3E%3Cpath d='M16 5l10 14H6z' fill='%23f8c63a'/%3E%3Cpath d='M16 5l3.4 14h-6.8z' fill='%23e01e37'/%3E%3Ccircle cx='16' cy='4' r='2' fill='%23ffe08a'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1970,11 +1970,11 @@
       <span class="eyebrow reveal">En images</span>
       <h2 class="h-big reveal" data-d="1" style="margin-top:.8rem">La nuit <em>Carrousel</em></h2>
       <div class="gal">
-        <div class="tile tall reveal"><div class="tile__art a-red"></div><img src="images/ambiance-1.jpg" alt="Le comptoir du Carrousel, bar illuminé d'ampoules colorées un soir d'affluence à Annemasse" onerror="this.remove()"><span class="tile__cap">Le comptoir</span></div>
-        <div class="tile wide reveal" data-d="1"><div class="tile__art a-stripes"></div><img src="images/ambiance-2.jpg" alt="L'ambiance chapiteau du Carrousel sous les rayures rouge et crème et les guirlandes lumineuses" onerror="this.remove()"><span class="tile__cap">Le chapiteau</span></div>
-        <div class="tile reveal" data-d="2"><div class="tile__art a-gold"></div><img src="images/ambiance-3.jpg" alt="Les lumières dorées et ampoules d'ambiance du bar forain Carrousel" onerror="this.remove()"><span class="tile__cap">Les lumières</span></div>
-        <div class="tile reveal" data-d="2"><div class="tile__art a-checker"></div><img src="images/ambiance-4.jpg" alt="Le sol en damier noir et blanc du Carrousel, clin d'œil à la fête foraine" onerror="this.remove()"><span class="tile__cap">Le damier</span></div>
-        <div class="tile wide reveal" data-d="3"><div class="tile__art a-neon"></div><img src="images/ambiance-5.jpg" alt="Une nuit de fête au Carrousel, bar forain d'Annemasse" onerror="this.remove()"><span class="tile__cap">Les nuits</span></div>
+        <div class="tile tall reveal"><div class="tile__art a-red"></div><img src="images/ambiance-1.jpg" loading="lazy" decoding="async" width="1400" height="1050" alt="Le comptoir du Carrousel, bar illuminé d'ampoules colorées un soir d'affluence à Annemasse" onerror="this.remove()"><span class="tile__cap">Le comptoir</span></div>
+        <div class="tile wide reveal" data-d="1"><div class="tile__art a-stripes"></div><img src="images/ambiance-2.jpg" loading="lazy" decoding="async" width="1400" height="1050" alt="L'ambiance chapiteau du Carrousel sous les rayures rouge et crème et les guirlandes lumineuses" onerror="this.remove()"><span class="tile__cap">Le chapiteau</span></div>
+        <div class="tile reveal" data-d="2"><div class="tile__art a-gold"></div><img src="images/ambiance-3.jpg" loading="lazy" decoding="async" width="1400" height="1050" alt="Les lumières dorées et ampoules d'ambiance du bar forain Carrousel" onerror="this.remove()"><span class="tile__cap">Les lumières</span></div>
+        <div class="tile reveal" data-d="2"><div class="tile__art a-checker"></div><img src="images/ambiance-4.jpg" loading="lazy" decoding="async" width="1400" height="1050" alt="Le sol en damier noir et blanc du Carrousel, clin d'œil à la fête foraine" onerror="this.remove()"><span class="tile__cap">Le damier</span></div>
+        <div class="tile wide reveal" data-d="3"><div class="tile__art a-neon"></div><img src="images/ambiance-5.jpg" loading="lazy" decoding="async" width="1400" height="1050" alt="Une nuit de fête au Carrousel, bar forain d'Annemasse" onerror="this.remove()"><span class="tile__cap">Les nuits</span></div>
       </div>
     </div>
   </section>
@@ -2413,6 +2413,23 @@
   }
 
   var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
+})();
+</script>
+
+<!-- ============ Auto-masquage calendrier Coupe du Monde (après la finale) ============ -->
+<script>
+/* La finale de la Coupe du Monde 2026 est le 19/07/2026. Passé le lendemain,
+   on masque automatiquement le calendrier : le site bascule seul sur la
+   programmation régulière (soirées, DJ sets, afters) sans intervention.
+   Le réglage manuel « show_wc » de l'admin reste prioritaire par ailleurs. */
+(function(){
+  try{
+    var END=new Date('2026-07-20T06:00:00+02:00');
+    if(new Date()>=END){
+      var wc=document.getElementById('wcCal'); if(wc) wc.style.display='none';
+      var wt=document.getElementById('wcTitle'); if(wt) wt.style.display='none';
+    }
+  }catch(e){}
 })();
 </script>
 
