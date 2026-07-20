@@ -1,5 +1,6 @@
-User-agent: *
+User-Agent: *
 Allow: /
 Disallow: /admin.html
 
+Host: https://carrouselbar.fr
 Sitemap: https://carrouselbar.fr/sitemap.xml
