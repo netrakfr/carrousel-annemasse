@@ -1,4 +1,4 @@
 :HL["/_next/static/media/52b5d5098cb87ddd-s.p.3r2y_bth_sjsm.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/680aa1e827d679d2-s.p.42ymt1gosxo71.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/brand/logo-480.webp","image",{"imageSrcSet":"/brand/logo-240.webp 240w, /brand/logo-360.webp 360w, /brand/logo-480.webp 480w, /brand/logo-960.webp 960w","imageSizes":"140px","fetchPriority":"auto"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":0,"slots":{"children":{"name":"(fr)","param":null,"prefetchHints":16,"slots":{"children":{"name":"mentions-legales","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"a052a2ac0c24e5e3"}
+0:{"tree":{"name":"","param":null,"prefetchHints":0,"slots":{"children":{"name":"(fr)","param":null,"prefetchHints":16,"slots":{"children":{"name":"mentions-legales","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"f9235799d6a6693e"}

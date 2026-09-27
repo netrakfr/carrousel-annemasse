@@ -1,2 +1,2 @@
 :HL["/brand/logo-480.webp","image",{"imageSrcSet":"/brand/logo-240.webp 240w, /brand/logo-360.webp 360w, /brand/logo-480.webp 480w, /brand/logo-960.webp 960w","imageSizes":"140px","fetchPriority":"auto"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"a052a2ac0c24e5e3"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"f9235799d6a6693e"}
