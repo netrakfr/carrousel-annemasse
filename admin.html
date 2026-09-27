@@ -141,7 +141,7 @@
   function settingsCard(){
     var card=el('div','cat');card.style.padding='1rem';card.style.marginBottom='1.2rem';
     card.appendChild(el('h3','','⚙︎ Réglages du site'));
-    var hint=el('p','',"Visible sur le site à la prochaine publication. Annonce : laisse vide pour la masquer. Horaires : format « 18h — 02h », plusieurs plages séparées par « · », ou « Fermé » — le site calcule tout seul « Ouvert maintenant » et les créneaux de réservation.");hint.style.cssText='font-size:.8rem;opacity:.7;margin:.2rem 0 .8rem;';
+    var hint=el('p','',"Visible tout de suite sur le site. Annonce : laisse vide pour la masquer. Horaires : format « 18h — 02h », plusieurs plages séparées par « · », ou « Fermé » — le site calcule tout seul « Ouvert maintenant » et les créneaux de réservation.");hint.style.cssText='font-size:.8rem;opacity:.7;margin:.2rem 0 .8rem;';
     card.appendChild(hint);
     card.appendChild(settingRow('🍸 Cocktail de la semaine (commence par le nom exact d’un cocktail de la carte, ex. « Mojito — … », pour afficher sa photo)','cocktail_semaine',settings.cocktail_semaine));
     card.appendChild(settingRow('📣 Annonce (bandeau en haut du site et de la carte)','annonce',settings.annonce,true));
@@ -252,7 +252,7 @@
 
     var wrap=el('div','wrap');
     var intro=el('p');intro.style.fontSize='.88rem';intro.style.opacity='.75';intro.style.marginBottom='1rem';
-    intro.textContent='Horaires, annonce et événements : modifiés ici (sauvegarde automatique), ils apparaissent sur le site à la prochaine publication du site.';
+    intro.textContent='Horaires, annonce, cocktail de la semaine et événements : modifiés ici (sauvegarde automatique), ils apparaissent tout de suite sur le site et sur la carte QR — il suffit de recharger la page.';
     wrap.appendChild(intro);
     wrap.appendChild(settingsCard());
     wrap.appendChild(eventsCard());
