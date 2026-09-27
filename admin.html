@@ -128,11 +128,6 @@
     var add=el('button','btn btn--sm','+ Nouvel événement');
     add.addEventListener('click',async function(){var mx=events.reduce(function(m,e){return Math.max(m,e.sort||0);},-1);await guard(sb.from('events').insert({day:'',time:'',title:'Nouvel événement',tag:'',sort:mx+1}));refresh();});
     card.appendChild(add);
-    var w=el('div');w.style.cssText='margin-top:1rem;display:flex;align-items:center;gap:.5rem;';
-    var cb=el('input');cb.type='checkbox';cb.checked=(settings.show_wc!=='false');cb.id='showwc';
-    cb.addEventListener('change',function(){guard(sb.from('site_settings').upsert({key:'show_wc',value:cb.checked?'true':'false'}));settings.show_wc=cb.checked?'true':'false';});
-    var lb=el('label','','Afficher le calendrier Coupe du Monde');lb.setAttribute('for','showwc');
-    w.appendChild(cb);w.appendChild(lb);card.appendChild(w);
     return card;
   }
   function settingRow(label,key,val,multi){
@@ -146,10 +141,10 @@
   function settingsCard(){
     var card=el('div','cat');card.style.padding='1rem';card.style.marginBottom='1.2rem';
     card.appendChild(el('h3','','⚙︎ Réglages du site'));
-    var hint=el('p','',"Cocktail de la semaine, annonce (laisse vide pour la masquer) et e-mail — mis à jour en direct sur le site.");hint.style.cssText='font-size:.8rem;opacity:.7;margin:.2rem 0 .8rem;';
+    var hint=el('p','',"Visible sur le site à la prochaine publication. Annonce : laisse vide pour la masquer. Horaires : format « 18h — 02h », plusieurs plages séparées par « · », ou « Fermé » — le site calcule tout seul « Ouvert maintenant » et les créneaux de réservation.");hint.style.cssText='font-size:.8rem;opacity:.7;margin:.2rem 0 .8rem;';
     card.appendChild(hint);
-    card.appendChild(settingRow('🍸 Cocktail de la semaine','cocktail_semaine',settings.cocktail_semaine));
-    card.appendChild(settingRow('📣 Annonce','annonce',settings.annonce,true));
+    card.appendChild(settingRow('🍸 Cocktail de la semaine (commence par le nom exact d’un cocktail de la carte, ex. « Mojito — … », pour afficher sa photo)','cocktail_semaine',settings.cocktail_semaine));
+    card.appendChild(settingRow('📣 Annonce (bandeau en haut du site et de la carte)','annonce',settings.annonce,true));
     card.appendChild(settingRow('✉︎ E-mail de contact','email',settings.email));
     card.appendChild(settingRow('🕐 Horaires — Lun/Mar','h_lunmar',settings.h_lunmar));
     card.appendChild(settingRow('🕐 Horaires — Mer→Ven','h_merven',settings.h_merven));
