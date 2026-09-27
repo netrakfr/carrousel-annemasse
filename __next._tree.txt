@@ -2,4 +2,4 @@
 :HL["/_next/static/media/680aa1e827d679d2-s.p.42ymt1gosxo71.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/ambiance/hero-portrait-480.avif","image",{"type":"image/avif","fetchPriority":"high","imageSrcSet":"/ambiance/hero-portrait-480.avif 480w, /ambiance/hero-portrait-720.avif 720w, /ambiance/hero-portrait-1080.avif 1080w","imageSizes":"100vw","media":"(max-width: 768px)"}]
 :HL["/ambiance/hero-640.avif","image",{"type":"image/avif","fetchPriority":"high","imageSrcSet":"/ambiance/hero-640.avif 640w, /ambiance/hero-1024.avif 1024w, /ambiance/hero-1600.avif 1600w, /ambiance/hero-2200.avif 2200w","imageSizes":"100vw","media":"(min-width: 769px)"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":0,"slots":{"children":{"name":"(fr)","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"fd60e1eac2728fff"}
+0:{"tree":{"name":"","param":null,"prefetchHints":0,"slots":{"children":{"name":"(fr)","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"db8c87f2091439ba"}
