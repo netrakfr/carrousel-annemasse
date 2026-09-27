@@ -247,7 +247,7 @@
   function renderAdmin(){
     app.replaceChildren();
     var bar=el('header','bar');
-    bar.appendChild(el('h1','','Carrousel · Carte'));
+    bar.appendChild(el('h1','','Carrousel · Administration'));
     var right=el('div');right.style.display='flex';right.style.gap='.7rem';right.style.alignItems='center';
     right.appendChild(el('span','who',(session&&session.user?session.user.email:'')));
     var out=el('button','btn btn--sm btn--ghost','Déconnexion');out.style.color='var(--cream)';out.style.borderColor='rgba(253,243,224,.4)';
@@ -257,14 +257,26 @@
 
     var wrap=el('div','wrap');
     var intro=el('p');intro.style.fontSize='.88rem';intro.style.opacity='.75';intro.style.marginBottom='1rem';
-    intro.textContent='Modifie noms et prix directement (sauvegarde automatique). Ajoute / supprime / réordonne avec les boutons. Les changements apparaissent sur le site en direct.';
+    intro.textContent='Horaires, annonce et événements : modifiés ici (sauvegarde automatique), ils apparaissent sur le site à la prochaine publication du site.';
     wrap.appendChild(intro);
     wrap.appendChild(settingsCard());
     wrap.appendChild(eventsCard());
-    cats.forEach(function(c){wrap.appendChild(catCard(c));});
+
+    /* Depuis septembre 2026, la carte du site, de la carte QR et de la caisse SumUp
+       vient d'une source unique (carta/carta-master.mjs). L'ancien éditeur reste
+       accessible pour mémoire, replié, avec un avertissement clair. */
+    var old=document.createElement('details');old.style.marginTop='1.5rem';
+    var sum=document.createElement('summary');sum.style.cursor='pointer';sum.style.fontWeight='700';sum.style.padding='.8rem 0';
+    sum.textContent='Ancienne carte — n’est plus affichée sur le site';
+    old.appendChild(sum);
+    var warn=el('p','hint','La carte affichée sur le site, sur la carte QR et dans SumUp est désormais gérée à part, pour que les trois restent identiques. Les modifications faites ci-dessous ne changent plus rien sur le site. Pour changer un prix ou un cocktail, contactez la personne qui gère le site.');
+    warn.style.margin='0 0 1rem';warn.style.padding='.8rem 1rem';warn.style.border='1px solid rgba(217,168,78,.5)';warn.style.borderRadius='.6rem';
+    old.appendChild(warn);
+    cats.forEach(function(c){old.appendChild(catCard(c));});
     var addCat=el('button','btn','+ Nouvelle catégorie');
     addCat.addEventListener('click',newCat);
-    wrap.appendChild(addCat);
+    old.appendChild(addCat);
+    wrap.appendChild(old);
     app.appendChild(wrap);
   }
 

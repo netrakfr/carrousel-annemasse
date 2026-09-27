@@ -1,1 +1,3 @@
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"I3k6rO0hY0TBmp85e9o4U"}
+:HL["/_next/static/chunks/19guq9xi1vlf5.css","style"]
+:HL["/brand/logo-480.webp","image",{"imageSrcSet":"/brand/logo-240.webp 240w, /brand/logo-480.webp 480w, /brand/logo-960.webp 960w","imageSizes":"140px","fetchPriority":"high"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"SqWi6nWNz8tNpzSisTjzp"}
